@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface Profile {
   id: string;
-  email: string | null;
+  
   display_name: string | null;
   creator_id: string | null;
   avatar_url: string | null;
