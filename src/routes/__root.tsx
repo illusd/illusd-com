@@ -69,6 +69,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "從0開始 Vibe Coding，10歲也能寫出屬於自己的作品。" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "illusd — 從10歲開始做起" },
+      { name: "twitter:description", content: "從0開始 Vibe Coding，10歲也能寫出屬於自己的作品。" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e35dc76c-2d26-4769-aa4c-25b68b8c4407/id-preview-de4c24fa--88205b60-d011-4945-89db-9feb853e5f7d.lovable.app-1782393825974.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e35dc76c-2d26-4769-aa4c-25b68b8c4407/id-preview-de4c24fa--88205b60-d011-4945-89db-9feb853e5f7d.lovable.app-1782393825974.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
