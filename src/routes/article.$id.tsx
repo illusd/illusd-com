@@ -27,7 +27,64 @@ interface Comment {
 }
 
 export const Route = createFileRoute("/article/$id")({
-  head: () => ({ meta: [{ title: "文章 — illusd" }] }),
+  loader: async ({ params }) => {
+    const { data } = await supabase
+      .from("articles")
+      .select("id, raw_title, topic_title, episode_num, episode_title, cover_url, content, created_at, author_id")
+      .eq("id", params.id)
+      .maybeSingle();
+    return { meta: data as Article | null };
+  },
+  head: ({ params, loaderData }) => {
+    const a = loaderData?.meta;
+    const url = `https://illusd.com/article/${params.id}`;
+    if (!a) {
+      return {
+        meta: [
+          { title: "文章 — illusd" },
+          { name: "description", content: "illusd 上的 Vibe Coding 文章。" },
+          { property: "og:url", content: url },
+        ],
+        links: [{ rel: "canonical", href: url }],
+      };
+    }
+    const headline = a.episode_title
+      ? (a.episode_num != null ? `Ep.${a.episode_num} ${a.episode_title}` : a.episode_title)
+      : a.topic_title;
+    const title = `${headline} — ${a.topic_title} | illusd`;
+    const plain = (a.content || "").replace(/\s+/g, " ").trim();
+    const description = (plain || `《${a.topic_title}》系列文章，由 illusd 創作者發表。`).slice(0, 158);
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: headline },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "article" },
+        ...(a.cover_url ? [{ property: "og:image", content: a.cover_url }, { name: "twitter:image", content: a.cover_url }] : []),
+        { name: "twitter:title", content: headline },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline,
+            description,
+            datePublished: a.created_at,
+            image: a.cover_url ?? undefined,
+            mainEntityOfPage: url,
+            inLanguage: "zh-Hant",
+            isPartOf: { "@type": "CreativeWorkSeries", name: a.topic_title },
+          }),
+        },
+      ],
+    };
+  },
   component: ArticleDetail,
 });
 
