@@ -14,6 +14,7 @@ import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
@@ -40,6 +41,12 @@ const ArticleIdRoute = ArticleIdRouteImport.update({
   path: '/article/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +54,7 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof SignUpRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +62,7 @@ export interface FileRoutesByTo {
   '/sign-up': typeof SignUpRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,12 +71,25 @@ export interface FileRoutesById {
   '/sign-up': typeof SignUpRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
+  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/new-article' | '/sign-up' | '/article/$id' | '/topic/all'
+  fullPaths:
+    | '/'
+    | '/new-article'
+    | '/sign-up'
+    | '/article/$id'
+    | '/topic/all'
+    | '/lovable/email/queue/process'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/new-article' | '/sign-up' | '/article/$id' | '/topic/all'
+  to:
+    | '/'
+    | '/new-article'
+    | '/sign-up'
+    | '/article/$id'
+    | '/topic/all'
+    | '/lovable/email/queue/process'
   id:
     | '__root__'
     | '/'
@@ -75,6 +97,7 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/article/$id'
     | '/topic/all'
+    | '/lovable/email/queue/process'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -83,6 +106,7 @@ export interface RootRouteChildren {
   SignUpRoute: typeof SignUpRoute
   ArticleIdRoute: typeof ArticleIdRoute
   TopicAllRoute: typeof TopicAllRoute
+  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -122,6 +146,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -131,17 +162,8 @@ const rootRouteChildren: RootRouteChildren = {
   SignUpRoute: SignUpRoute,
   ArticleIdRoute: ArticleIdRoute,
   TopicAllRoute: TopicAllRoute,
+  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
