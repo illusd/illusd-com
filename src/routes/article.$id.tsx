@@ -49,13 +49,31 @@ function ArticleDetail() {
       supabase.from("articles").select("*").eq("id", id).maybeSingle(),
       supabase
         .from("comments")
-        .select("id, user_id, content, created_at, profiles(display_name, creator_id)")
+        .select("id, user_id, content, created_at")
         .eq("article_id", id)
         .order("created_at", { ascending: false }),
       supabase.from("likes").select("user_id").eq("article_id", id),
     ]);
     setArticle((a as Article) ?? null);
-    setComments((c as Comment[]) ?? []);
+
+    // Fetch commenter profiles in a separate query (no FK link between comments<->profiles)
+    const userIds = Array.from(new Set((c ?? []).map((x: { user_id: string }) => x.user_id)));
+    let profileMap = new Map<string, { display_name: string | null; creator_id: string | null }>();
+    if (userIds.length) {
+      const { data: profs } = await supabase
+        .from("profiles")
+        .select("id, display_name, creator_id")
+        .in("id", userIds);
+      (profs ?? []).forEach((p: { id: string; display_name: string | null; creator_id: string | null }) =>
+        profileMap.set(p.id, { display_name: p.display_name, creator_id: p.creator_id })
+      );
+    }
+    setComments(
+      (c ?? []).map((row: { id: string; user_id: string; content: string; created_at: string }) => ({
+        ...row,
+        profiles: profileMap.get(row.user_id) ?? null,
+      }))
+    );
     setLikeCount(likes?.length ?? 0);
     setLiked(!!user && !!likes?.some((l: { user_id: string }) => l.user_id === user.id));
     if (a) {
