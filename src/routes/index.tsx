@@ -4,12 +4,25 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "illusd — 從10歲開始做起" },
-      { name: "description", content: "從0開始 Vibe Coding——10歲也能寫出屬於自己的作品。" },
-    ],
-  }),
+  head: () => {
+    const title = "illusd — 從10歲開始，做出屬於自己的作品";
+    const description =
+      "illusd 是 Vibe Coding 文章平台：從0開始學寫程式、做產品、寫文章。10歲也能踏出第一步——我可以，你也可以。";
+    const url = "https://illusd.com/";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "website" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: Index,
 });
 
