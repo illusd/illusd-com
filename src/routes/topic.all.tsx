@@ -4,12 +4,24 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 
 export const Route = createFileRoute("/topic/all")({
-  head: () => ({
-    meta: [
-      { title: "所有文章 — illusd" },
-      { name: "description", content: "瀏覽所有話題與集數。" },
-    ],
-  }),
+  head: () => {
+    const title = "所有文章 — illusd";
+    const description = "瀏覽 illusd 上所有 Vibe Coding 話題與集數，依主題或集數篩選你想看的文章。";
+    const url = "https://illusd.com/topic/all";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "website" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: AllArticles,
 });
 

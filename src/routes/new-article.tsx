@@ -7,7 +7,21 @@ import { parseTitle } from "@/lib/titleParser";
 import { X } from "lucide-react";
 
 export const Route = createFileRoute("/new-article")({
-  head: () => ({ meta: [{ title: "撰寫文章 — illusd" }] }),
+  head: () => {
+    const title = "撰寫文章 — illusd";
+    const description = "創作者專用：在 illusd 上發表新的 Vibe Coding 文章。";
+    const url = "https://illusd.com/new-article";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "robots", content: "noindex" },
+        { property: "og:title", content: title },
+        { property: "og:url", content: url },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: NewArticle,
 });
 

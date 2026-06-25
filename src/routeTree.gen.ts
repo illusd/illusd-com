@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as IndexRouteImport } from './routes/index'
@@ -18,6 +19,11 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/new-article': typeof NewArticleRoute
   '/sign-up': typeof SignUpRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/new-article': typeof NewArticleRoute
   '/sign-up': typeof SignUpRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/new-article': typeof NewArticleRoute
   '/sign-up': typeof SignUpRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/new-article'
     | '/sign-up'
+    | '/sitemap.xml'
     | '/article/$id'
     | '/topic/all'
     | '/lovable/email/auth/preview'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/'
     | '/new-article'
     | '/sign-up'
+    | '/sitemap.xml'
     | '/article/$id'
     | '/topic/all'
     | '/lovable/email/auth/preview'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/'
     | '/new-article'
     | '/sign-up'
+    | '/sitemap.xml'
     | '/article/$id'
     | '/topic/all'
     | '/lovable/email/auth/preview'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   NewArticleRoute: typeof NewArticleRoute
   SignUpRoute: typeof SignUpRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ArticleIdRoute: typeof ArticleIdRoute
   TopicAllRoute: typeof TopicAllRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -137,6 +150,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sign-up': {
       id: '/sign-up'
       path: '/sign-up'
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NewArticleRoute: NewArticleRoute,
   SignUpRoute: SignUpRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ArticleIdRoute: ArticleIdRoute,
   TopicAllRoute: TopicAllRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,

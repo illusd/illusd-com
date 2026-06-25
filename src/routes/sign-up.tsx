@@ -6,12 +6,23 @@ import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/sign-up")({
-  head: () => ({
-    meta: [
-      { title: "註冊 / 登入 — illusd" },
-      { name: "description", content: "註冊或登入 illusd 以留言與按讚。" },
-    ],
-  }),
+  head: () => {
+    const title = "註冊 / 登入 — illusd";
+    const description = "註冊或登入 illusd，留言、按讚並追蹤你喜歡的創作者與系列。";
+    const url = "https://illusd.com/sign-up";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
+  },
   component: SignUpPage,
 });
 

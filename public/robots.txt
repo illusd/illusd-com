@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /new-article
+Disallow: /sign-up
+
+Sitemap: https://illusd.com/sitemap.xml

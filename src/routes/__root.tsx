@@ -63,16 +63,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "illusd — 從10歲開始做起" },
-      { name: "description", content: "從0開始 Vibe Coding，10歲也能寫出屬於自己的作品。" },
-      { property: "og:title", content: "illusd — 從10歲開始做起" },
-      { property: "og:description", content: "從0開始 Vibe Coding，10歲也能寫出屬於自己的作品。" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "illusd — 從10歲開始做起" },
-      { name: "twitter:description", content: "從0開始 Vibe Coding，10歲也能寫出屬於自己的作品。" },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e35dc76c-2d26-4769-aa4c-25b68b8c4407/id-preview-de4c24fa--88205b60-d011-4945-89db-9feb853e5f7d.lovable.app-1782393825974.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e35dc76c-2d26-4769-aa4c-25b68b8c4407/id-preview-de4c24fa--88205b60-d011-4945-89db-9feb853e5f7d.lovable.app-1782393825974.png" },
+      { property: "og:site_name", content: "illusd" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -81,6 +74,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "illusd",
+          url: "https://illusd.com",
+          inLanguage: "zh-Hant",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "illusd",
+          url: "https://illusd.com",
+        }),
       },
     ],
   }),
