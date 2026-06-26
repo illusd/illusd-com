@@ -39,6 +39,7 @@ function ShortUrlPage() {
 
   // link form
   const [target, setTarget] = useState("");
+  useDraftPersist("short-url:target", target, setTarget);
   const [linkBusy, setLinkBusy] = useState(false);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
 
