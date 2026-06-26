@@ -19,13 +19,6 @@ interface Article {
   created_at: string;
 }
 
-interface Comment {
-  id: string;
-  user_id: string;
-  content: string;
-  created_at: string;
-  profiles?: { display_name: string | null; creator_id: string | null } | null;
-}
 
 export const Route = createFileRoute("/article/$id")({
   loader: async ({ params }) => {
