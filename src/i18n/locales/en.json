@@ -1,0 +1,90 @@
+{
+  "nav": {
+    "home": "Home",
+    "all_articles": "All Articles",
+    "short_url": "illurl Short Links",
+    "write": "+ New Article",
+    "sign_in": "Sign in / Sign up",
+    "sign_out": "Sign out",
+    "creator": "Creator",
+    "language": "Language"
+  },
+  "home": {
+    "tagline_a": "Started at age 10 —",
+    "tagline_b": "if I can, you can too.",
+    "subline": "—— Vibe Coding from scratch.",
+    "featured": "Featured Articles",
+    "all": "All",
+    "empty": "No articles yet. Creators can add the first one with the + button.",
+    "loading": "Loading…"
+  },
+  "article": {
+    "comments": "Comments",
+    "donate": "Donate to Creator",
+    "reply": "Reply",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Post",
+    "from_series": "From “{{topic}}”",
+    "creator_tag": "CREATOR",
+    "no_comments": "No comments yet. Be the first to share.",
+    "placeholder": "Share your thoughts…",
+    "sign_in_prompt": "Sign up or sign in to comment and like.",
+    "edited": "edited",
+    "reader": "Reader"
+  },
+  "editor": {
+    "title": "Write Article",
+    "format_input": "Quick title (optional)",
+    "format_hint": "Use this format and we'll auto-split episode / title / topic.",
+    "episode_num": "Episode #",
+    "episode_title": "Episode Title",
+    "topic_title": "Topic / Series",
+    "topic_hint": "Pick an existing series or create a new one.",
+    "cover": "Cover Image",
+    "content": "Content (Markdown supported)",
+    "preview": "Preview",
+    "syntax_help": "Markdown syntax help",
+    "warnings": "Markdown warnings",
+    "publish": "Publish",
+    "publishing": "Publishing…",
+    "cancel": "Cancel",
+    "draft_restored": "Restored your previous draft"
+  },
+  "push": {
+    "subscribe": "Subscribe to new articles",
+    "subscribed": "Subscribed",
+    "unsupported": "Web Push not supported in this browser",
+    "denied": "Notifications were denied — enable them in browser settings",
+    "subscribed_toast": "New-article notifications enabled",
+    "unsubscribed_toast": "Notifications disabled",
+    "new_article": "New article"
+  },
+  "auth": {
+    "create_account": "Create account",
+    "welcome_back": "Welcome back",
+    "create_desc": "Sign up to comment and like.",
+    "signin_desc": "Sign in to continue.",
+    "google": "Continue with Google",
+    "or": "or",
+    "email": "Email",
+    "password": "Password",
+    "agree": "I agree to the Terms of Service and Privacy Policy of illusd.com.",
+    "agree_required": "Please agree to the Terms and Privacy Policy first",
+    "captcha_wait": "Please wait for the captcha to finish",
+    "sign_up": "Sign up",
+    "sign_in": "Sign in",
+    "have_account": "Already have an account?",
+    "no_account": "Don't have an account?",
+    "signup_success": "Sign-up succeeded — check your inbox for verification.",
+    "signin_success": "Signed in",
+    "back_home": "← Back home"
+  },
+  "common": {
+    "loading": "Loading…",
+    "back_home": "Back home",
+    "not_found": "Article not found."
+  }
+}
