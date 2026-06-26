@@ -1,12 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
 import { X } from "lucide-react";
 import { CoverUploader } from "@/components/CoverUploader";
-
+import { MarkdownEditor } from "@/components/MarkdownEditor";
+import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/new-article")({
   head: () => {
@@ -30,6 +32,7 @@ export const Route = createFileRoute("/new-article")({
 function NewArticle() {
   const { user, isCreator, loading } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [rawTitle, setRawTitle] = useState("");
   const [topicTitle, setTopicTitle] = useState("");
@@ -39,6 +42,14 @@ function NewArticle() {
   const [content, setContent] = useState("");
   const [existingTopics, setExistingTopics] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+
+  // Persist drafts across tab visibility / navigation
+  useDraftPersist("new-article:rawTitle", rawTitle, setRawTitle);
+  useDraftPersist("new-article:topicTitle", topicTitle, setTopicTitle);
+  useDraftPersist("new-article:episodeNum", episodeNum, setEpisodeNum);
+  useDraftPersist("new-article:episodeTitle", episodeTitle, setEpisodeTitle);
+  useDraftPersist("new-article:coverUrl", coverUrl, setCoverUrl);
+  useDraftPersist("new-article:content", content, setContent);
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/sign-up" });
@@ -56,7 +67,6 @@ function NewArticle() {
     });
   }, []);
 
-  // Auto-parse raw title if format matches
   useEffect(() => {
     if (!rawTitle) return;
     const p = parseTitle(rawTitle);
@@ -67,10 +77,16 @@ function NewArticle() {
     }
   }, [rawTitle]);
 
+  const clearAllDrafts = () => {
+    ["rawTitle", "topicTitle", "episodeNum", "episodeTitle", "coverUrl", "content"].forEach((k) =>
+      clearDraft(`new-article:${k}`),
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    if (!topicTitle.trim()) { toast.error("請填寫話題標題"); return; }
+    if (!topicTitle.trim()) { toast.error("請填寫話題標題 / Topic required"); return; }
 
     const finalRaw = rawTitle.trim() ||
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
@@ -87,33 +103,31 @@ function NewArticle() {
     }).select("id").single();
     setSubmitting(false);
 
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    toast.success("文章已發布");
+    if (error) { toast.error(error.message); return; }
+    clearAllDrafts();
+    toast.success("已發布 / Published");
     navigate({ to: "/article/$id", params: { id: data!.id } });
   };
 
   if (loading || !user || !isCreator) {
-    return <div className="p-10 text-sm text-muted-foreground">載入中…</div>;
+    return <div className="p-10 text-sm text-muted-foreground">{t("common.loading")}</div>;
   }
 
   return (
     <div className="fixed inset-0 z-50 bg-background overflow-y-auto">
       <div className="sticky top-0 bg-background/90 backdrop-blur border-b hairline">
-        <div className="mx-auto max-w-3xl px-5 h-14 flex items-center justify-between">
-          <div className="font-serif text-lg">撰寫文章</div>
-          <Link to="/" aria-label="關閉" className="p-2 -mr-2">
+        <div className="mx-auto max-w-5xl px-5 h-14 flex items-center justify-between">
+          <div className="font-serif text-lg">{t("editor.title")}</div>
+          <Link to="/" aria-label="close" className="p-2 -mr-2">
             <X size={20} strokeWidth={1.25} />
           </Link>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="mx-auto max-w-3xl px-5 py-10 space-y-8">
+      <form onSubmit={handleSubmit} className="mx-auto max-w-5xl px-5 py-10 space-y-8">
         <section>
           <label className="block text-xs tracking-widest text-muted-foreground mb-2">
-            格式輸入（選用）
+            {t("editor.format_input")}
           </label>
           <input
             value={rawTitle}
@@ -121,14 +135,14 @@ function NewArticle() {
             placeholder="#1 (平台選擇)-VIBE人人都可實現"
             className="w-full bg-transparent border-b hairline py-2 text-base focus:outline-none focus:border-foreground"
           />
-          <p className="text-[11px] text-muted-foreground mt-1">
-            輸入此格式會自動拆解為集數／集名／話題；也可手動填下方欄位。
-          </p>
+          <p className="text-[11px] text-muted-foreground mt-1">{t("editor.format_hint")}</p>
         </section>
 
         <div className="grid grid-cols-3 gap-4">
           <section className="col-span-1">
-            <label className="block text-xs tracking-widest text-muted-foreground mb-2">集數</label>
+            <label className="block text-xs tracking-widest text-muted-foreground mb-2">
+              {t("editor.episode_num")}
+            </label>
             <input
               type="number"
               min={1}
@@ -139,7 +153,9 @@ function NewArticle() {
             />
           </section>
           <section className="col-span-2">
-            <label className="block text-xs tracking-widest text-muted-foreground mb-2">本集標題</label>
+            <label className="block text-xs tracking-widest text-muted-foreground mb-2">
+              {t("editor.episode_title")}
+            </label>
             <input
               value={episodeTitle}
               onChange={(e) => setEpisodeTitle(e.target.value)}
@@ -150,7 +166,9 @@ function NewArticle() {
         </div>
 
         <section>
-          <label className="block text-xs tracking-widest text-muted-foreground mb-2">話題標題</label>
+          <label className="block text-xs tracking-widest text-muted-foreground mb-2">
+            {t("editor.topic_title")}
+          </label>
           <input
             value={topicTitle}
             onChange={(e) => setTopicTitle(e.target.value)}
@@ -160,40 +178,39 @@ function NewArticle() {
             className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
           />
           <datalist id="topic-options">
-            {existingTopics.map((t) => <option key={t} value={t} />)}
+            {existingTopics.map((t2) => <option key={t2} value={t2} />)}
           </datalist>
-          <p className="text-[11px] text-muted-foreground mt-1">
-            可直接從現有話題中選擇，或新增新話題。
-          </p>
+          <p className="text-[11px] text-muted-foreground mt-1">{t("editor.topic_hint")}</p>
         </section>
 
         <section>
-          <label className="block text-xs tracking-widest text-muted-foreground mb-2">封面圖片</label>
+          <label className="block text-xs tracking-widest text-muted-foreground mb-2">
+            {t("editor.cover")}
+          </label>
           <CoverUploader value={coverUrl} onChange={setCoverUrl} userId={user!.id} />
         </section>
 
-
         <section>
-          <label className="block text-xs tracking-widest text-muted-foreground mb-2">內文</label>
-          <textarea
+          <label className="block text-xs tracking-widest text-muted-foreground mb-2">
+            {t("editor.content")}
+          </label>
+          <MarkdownEditor
             value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={14}
-            placeholder="開始寫吧……"
-            className="w-full bg-transparent border hairline p-3 text-base leading-relaxed focus:outline-none focus:border-foreground resize-y"
+            onChange={setContent}
+            placeholder="# Hello illusd ..."
           />
         </section>
 
         <div className="flex justify-end gap-3 pt-4 border-t hairline">
           <Link to="/" className="px-5 py-2 border hairline text-sm hover:bg-accent transition">
-            取消
+            {t("editor.cancel")}
           </Link>
           <button
             type="submit"
             disabled={submitting}
             className="px-6 py-2 bg-foreground text-background text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50"
           >
-            {submitting ? "發布中…" : "發布"}
+            {submitting ? t("editor.publishing") : t("editor.publish")}
           </button>
         </div>
       </form>
