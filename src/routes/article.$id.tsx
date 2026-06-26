@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Heart, Trash2, Coffee } from "lucide-react";
-import { toast } from "sonner";
+import { Heart, Coffee } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { parseTitle, formatDisplay } from "@/lib/titleParser";
+import { formatDisplay } from "@/lib/titleParser";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { CommentSection } from "@/components/CommentSection";
 
 interface Article {
   id: string;
@@ -18,13 +19,6 @@ interface Article {
   created_at: string;
 }
 
-interface Comment {
-  id: string;
-  user_id: string;
-  content: string;
-  created_at: string;
-  profiles?: { display_name: string | null; creator_id: string | null } | null;
-}
 
 export const Route = createFileRoute("/article/$id")({
   loader: async ({ params }) => {
@@ -94,57 +88,34 @@ function ArticleDetail() {
   const navigate = useNavigate();
 
   const [article, setArticle] = useState<Article | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
   const [likeCount, setLikeCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [newComment, setNewComment] = useState("");
   const [authorName, setAuthorName] = useState<string>("");
 
-  const loadAll = async () => {
-    const [{ data: a }, { data: c }, { data: likes }] = await Promise.all([
-      supabase.from("articles").select("*").eq("id", id).maybeSingle(),
-      supabase
-        .from("comments")
-        .select("id, user_id, content, created_at")
-        .eq("article_id", id)
-        .order("created_at", { ascending: false }),
-      supabase.from("likes").select("user_id").eq("article_id", id),
-    ]);
-    setArticle((a as Article) ?? null);
-
-    // Fetch commenter profiles in a separate query (no FK link between comments<->profiles)
-    const userIds = Array.from(new Set((c ?? []).map((x: { user_id: string }) => x.user_id)));
-    let profileMap = new Map<string, { display_name: string | null; creator_id: string | null }>();
-    if (userIds.length) {
-      const { data: profs } = await supabase
-        .from("profiles")
-        .select("id, display_name, creator_id")
-        .in("id", userIds);
-      (profs ?? []).forEach((p: { id: string; display_name: string | null; creator_id: string | null }) =>
-        profileMap.set(p.id, { display_name: p.display_name, creator_id: p.creator_id })
-      );
-    }
-    setComments(
-      (c ?? []).map((row: { id: string; user_id: string; content: string; created_at: string }) => ({
-        ...row,
-        profiles: profileMap.get(row.user_id) ?? null,
-      }))
-    );
-    setLikeCount(likes?.length ?? 0);
-    setLiked(!!user && !!likes?.some((l: { user_id: string }) => l.user_id === user.id));
-    if (a) {
-      const { data: p } = await supabase
-        .from("profiles")
-        .select("display_name, creator_id")
-        .eq("id", (a as Article).author_id)
-        .maybeSingle();
-      setAuthorName(p?.display_name ?? "");
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => { loadAll(); /* eslint-disable-next-line */ }, [id, user?.id]);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const [{ data: a }, { data: likes }] = await Promise.all([
+        supabase.from("articles").select("*").eq("id", id).maybeSingle(),
+        supabase.from("likes").select("user_id").eq("article_id", id),
+      ]);
+      if (cancelled) return;
+      setArticle((a as Article) ?? null);
+      setLikeCount(likes?.length ?? 0);
+      setLiked(!!user && !!likes?.some((l: { user_id: string }) => l.user_id === user.id));
+      if (a) {
+        const { data: p } = await supabase
+          .from("profiles")
+          .select("display_name, creator_id")
+          .eq("id", (a as Article).author_id)
+          .maybeSingle();
+        if (!cancelled) setAuthorName(p?.display_name ?? "");
+      }
+      if (!cancelled) setLoading(false);
+    })();
+    return () => { cancelled = true; };
+  }, [id, user?.id]);
 
   const toggleLike = async () => {
     if (!user) { navigate({ to: "/sign-up" }); return; }
@@ -156,23 +127,6 @@ function ArticleDetail() {
       const { error } = await supabase.from("likes").insert({ article_id: id, user_id: user.id });
       if (!error) { setLikeCount((n) => n + 1); setLiked(true); }
     }
-  };
-
-  const submitComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) { navigate({ to: "/sign-up" }); return; }
-    if (!newComment.trim()) return;
-    const { error } = await supabase
-      .from("comments")
-      .insert({ article_id: id, user_id: user.id, content: newComment.trim() });
-    if (error) { toast.error(error.message); return; }
-    setNewComment("");
-    loadAll();
-  };
-
-  const deleteComment = async (cid: string) => {
-    await supabase.from("comments").delete().eq("id", cid);
-    setComments((cs) => cs.filter((c) => c.id !== cid));
   };
 
   if (loading) return <div className="p-10 text-sm text-muted-foreground">載入中…</div>;
@@ -203,8 +157,10 @@ function ArticleDetail() {
           </div>
         )}
 
-        <div className="mt-10 prose-sm font-sans whitespace-pre-wrap leading-loose text-foreground">
-          {article.content || <span className="text-muted-foreground">（無內文）</span>}
+        <div className="mt-10">
+          {article.content
+            ? <MarkdownRenderer content={article.content} />
+            : <span className="text-muted-foreground">（無內文）</span>}
         </div>
 
         <div className="mt-12 flex flex-wrap items-center gap-3 pt-6 border-t hairline">
@@ -228,61 +184,12 @@ function ArticleDetail() {
           </a>
           <span className="text-xs text-muted-foreground ml-auto">{formatDisplay(parsed)}</span>
         </div>
-
       </article>
 
-      {/* Comments */}
       <section className="mx-auto max-w-2xl px-5 pb-24">
-        <h2 className="font-serif text-xl border-b hairline pb-3 mb-6">留言 · {comments.length}</h2>
-
-        {user ? (
-          <form onSubmit={submitComment} className="mb-8">
-            <textarea
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              rows={3}
-              placeholder="留下你的想法…"
-              className="w-full border hairline p-3 bg-transparent text-sm focus:outline-none focus:border-foreground resize-y"
-            />
-            <div className="flex justify-end mt-2">
-              <button className="px-5 py-2 bg-foreground text-background text-sm hover:opacity-90 transition">
-                送出
-              </button>
-            </div>
-          </form>
-        ) : (
-          <p className="text-sm text-muted-foreground mb-8">
-            <Link to="/sign-up" className="underline">註冊或登入</Link> 後即可留言與按讚。
-          </p>
-        )}
-
-        <ul className="space-y-6">
-          {comments.map((c) => (
-            <li key={c.id} className="border-b hairline pb-5">
-              <div className="flex items-baseline justify-between">
-                <div className="text-sm">
-                  <span className="font-medium">{c.profiles?.display_name ?? "讀者"}</span>
-                  {c.profiles?.creator_id && (
-                    <span className="ml-2 text-[10px] tracking-widest text-muted-foreground">CREATOR</span>
-                  )}
-                </div>
-                <div className="text-xs text-muted-foreground flex items-center gap-3">
-                  {new Date(c.created_at).toLocaleString("zh-TW")}
-                  {user?.id === c.user_id && (
-                    <button onClick={() => deleteComment(c.id)} aria-label="刪除">
-                      <Trash2 size={14} />
-                    </button>
-                  )}
-                </div>
-              </div>
-              <p className="mt-2 text-sm whitespace-pre-wrap leading-relaxed">{c.content}</p>
-            </li>
-          ))}
-          {comments.length === 0 && (
-            <li className="text-sm text-muted-foreground">還沒有留言，第一個分享想法吧。</li>
-          )}
-        </ul>
+        <CommentSection articleId={id} />
       </section>
     </main>
   );
 }
+

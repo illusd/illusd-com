@@ -1,0 +1,90 @@
+{
+  "nav": {
+    "home": "首頁",
+    "all_articles": "所有文章",
+    "short_url": "illurl 短網址",
+    "write": "+ 撰寫文章",
+    "sign_in": "註冊 / 登入",
+    "sign_out": "登出",
+    "creator": "創作者",
+    "language": "語言"
+  },
+  "home": {
+    "tagline_a": "從10歲開始做起，",
+    "tagline_b": "我可以你也可以。",
+    "subline": "——從0開始 Vibe Coding！",
+    "featured": "精選文章",
+    "all": "全部",
+    "empty": "還沒有文章。創作者登入後可從右下角的＋按鈕新增第一篇。",
+    "loading": "載入中…"
+  },
+  "article": {
+    "comments": "留言",
+    "donate": "贊助創作者",
+    "reply": "回覆",
+    "edit": "編輯",
+    "delete": "刪除",
+    "save": "儲存",
+    "cancel": "取消",
+    "submit": "送出",
+    "from_series": "自「{{topic}}」",
+    "creator_tag": "創作者",
+    "no_comments": "還沒有留言，第一個分享想法吧。",
+    "placeholder": "留下你的想法…",
+    "sign_in_prompt": "註冊或登入後即可留言與按讚。",
+    "edited": "已編輯",
+    "reader": "讀者"
+  },
+  "editor": {
+    "title": "撰寫文章",
+    "format_input": "格式輸入（選用）",
+    "format_hint": "輸入此格式會自動拆解為集數／集名／話題；也可手動填下方欄位。",
+    "episode_num": "集數",
+    "episode_title": "本集標題",
+    "topic_title": "話題標題",
+    "topic_hint": "可直接從現有話題中選擇，或新增新話題。",
+    "cover": "封面圖片",
+    "content": "內文（支援 Markdown）",
+    "preview": "預覽",
+    "syntax_help": "Markdown 語法說明",
+    "warnings": "Markdown 警告",
+    "publish": "發布",
+    "publishing": "發布中…",
+    "cancel": "取消",
+    "draft_restored": "已恢復先前的草稿"
+  },
+  "push": {
+    "subscribe": "訂閱新文章",
+    "subscribed": "已訂閱",
+    "unsupported": "瀏覽器不支援 Web Push",
+    "denied": "通知權限已被拒絕，請至瀏覽器設定開啟",
+    "subscribed_toast": "已開啟新文章通知",
+    "unsubscribed_toast": "已關閉新文章通知",
+    "new_article": "新文章"
+  },
+  "auth": {
+    "create_account": "建立帳號",
+    "welcome_back": "歡迎回來",
+    "create_desc": "註冊後即可留言與按讚。",
+    "signin_desc": "登入以繼續閱讀與互動。",
+    "google": "使用 Google 繼續",
+    "or": "或",
+    "email": "電子郵件",
+    "password": "密碼",
+    "agree": "我已同意 illusd.com 及 illusd.com 服務的服務條款與隱私權政策。",
+    "agree_required": "請先勾選同意服務條款與隱私權政策",
+    "captcha_wait": "請等待人機驗證完成",
+    "sign_up": "註冊",
+    "sign_in": "登入",
+    "have_account": "已有帳號？",
+    "no_account": "還沒有帳號？",
+    "signup_success": "註冊成功！請至信箱確認驗證信。",
+    "signin_success": "登入成功",
+    "back_home": "← 回首頁"
+  },
+  "common": {
+    "loading": "載入中…",
+    "back_home": "回首頁",
+    "not_found": "找不到文章。"
+  }
+}

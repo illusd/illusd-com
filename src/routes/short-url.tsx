@@ -7,6 +7,7 @@ import { CapCaptcha } from "@/components/CapCaptcha";
 import { FullscreenStateOverlay } from "@/components/animations/AppleStateAnimation";
 import { supabase } from "@/integrations/supabase/client";
 import { createShortLink, prepareShortFile } from "@/lib/illurl.functions";
+import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/short-url")({
   head: () => {
@@ -38,6 +39,7 @@ function ShortUrlPage() {
 
   // link form
   const [target, setTarget] = useState("");
+  useDraftPersist("short-url:target", target, setTarget);
   const [linkBusy, setLinkBusy] = useState(false);
   const [resultUrl, setResultUrl] = useState<string | null>(null);
 
@@ -66,6 +68,7 @@ function ShortUrlPage() {
     try {
       const r = await createLinkFn({ data: { capToken, targetUrl: target.trim() } });
       setResultUrl(r.url);
+      clearDraft("short-url:target");
       showOverlay({ kind: "success", title: "上傳完成！", subtitle: "短網址已成功建立並可立即使用" });
     } catch (err) {
       showOverlay({

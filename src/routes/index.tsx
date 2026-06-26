@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 
@@ -27,6 +28,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { t } = useTranslation();
   const [articles, setArticles] = useState<ArticleCardData[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,34 +46,28 @@ function Index() {
 
   return (
     <main className="min-h-[calc(100vh-3.5rem)]">
-      {/* Hero */}
       <section className="mx-auto max-w-3xl px-5 pt-20 pb-24 md:pt-28 md:pb-32">
         <p className="text-xs tracking-[0.4em] text-muted-foreground mb-6">ILLUSD · ESTD 2025</p>
         <h1 className="font-serif text-3xl md:text-5xl leading-[1.35] tracking-wide">
-          從10歲開始做起，<br className="hidden md:block" />
-          我可以你也可以。
+          {t("home.tagline_a")}<br className="hidden md:block" />
+          {t("home.tagline_b")}
         </h1>
-        <p className="mt-6 text-sm text-muted-foreground">
-          ——從0開始 Vibe Coding！
-        </p>
+        <p className="mt-6 text-sm text-muted-foreground">{t("home.subline")}</p>
         <div className="mt-10 h-px w-16 bg-foreground/40" />
       </section>
 
-      {/* Featured */}
       <section className="mx-auto max-w-5xl px-5 pb-24">
         <div className="flex items-baseline justify-between border-b hairline pb-3 mb-8">
-          <h2 className="font-serif text-xl">精選文章</h2>
+          <h2 className="font-serif text-xl">{t("home.featured")}</h2>
           <a href="/topic/all" className="text-xs tracking-widest text-muted-foreground hover:text-foreground">
-            ALL →
+            {t("home.all")} →
           </a>
         </div>
 
         {loading ? (
-          <p className="text-sm text-muted-foreground">載入中…</p>
+          <p className="text-sm text-muted-foreground">{t("home.loading")}</p>
         ) : articles.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            還沒有文章。創作者登入後可從右下角的＋按鈕新增第一篇。
-          </p>
+          <p className="text-sm text-muted-foreground">{t("home.empty")}</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-8 gap-y-12">
             {articles.map((a) => (

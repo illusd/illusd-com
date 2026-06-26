@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 import { CapCaptcha } from "@/components/CapCaptcha";
 import { verifyCapToken } from "@/lib/cap";
+import { useDraftPersist } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/sign-up")({
   head: () => {
@@ -35,6 +36,7 @@ function SignUpPage() {
   const { user, loading } = useAuth();
   const [mode, setMode] = useState<Mode>("signup");
   const [email, setEmail] = useState("");
+  useDraftPersist("sign-up:email", email, setEmail);
   const [password, setPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [capToken, setCapToken] = useState<string | null>(null);
