@@ -24,6 +24,7 @@ import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
+import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
 
 const ThanksRoute = ThanksRouteImport.update({
   id: '/thanks',
@@ -101,6 +102,12 @@ const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   path: '/lovable/email/auth/preview',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicHooksNotifyNewArticleRoute =
+  ApiPublicHooksNotifyNewArticleRouteImport.update({
+    id: '/api/public/hooks/notify-new-article',
+    path: '/api/public/hooks/notify-new-article',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/article/$id': typeof ArticleIdRoute
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -132,6 +140,7 @@ export interface FileRoutesByTo {
   '/article/$id': typeof ArticleIdRoute
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -150,6 +159,7 @@ export interface FileRoutesById {
   '/article/$id': typeof ArticleIdRoute
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/api/public/hooks/notify-new-article'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -186,6 +197,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/api/public/hooks/notify-new-article'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -203,6 +215,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/api/public/hooks/notify-new-article'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -221,6 +234,7 @@ export interface RootRouteChildren {
   ArticleIdRoute: typeof ArticleIdRoute
   FCodeRoute: typeof FCodeRoute
   TopicAllRoute: typeof TopicAllRoute
+  ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -333,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailAuthPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/notify-new-article': {
+      id: '/api/public/hooks/notify-new-article'
+      path: '/api/public/hooks/notify-new-article'
+      fullPath: '/api/public/hooks/notify-new-article'
+      preLoaderRoute: typeof ApiPublicHooksNotifyNewArticleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -349,6 +370,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticleIdRoute: ArticleIdRoute,
   FCodeRoute: FCodeRoute,
   TopicAllRoute: TopicAllRoute,
+  ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
