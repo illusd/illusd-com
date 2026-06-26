@@ -36,6 +36,7 @@ function SignUpPage() {
   const { user, loading } = useAuth();
   const [mode, setMode] = useState<Mode>("signup");
   const [email, setEmail] = useState("");
+  useDraftPersist("sign-up:email", email, setEmail);
   const [password, setPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [capToken, setCapToken] = useState<string | null>(null);
