@@ -159,7 +159,7 @@ function ArticleDetail() {
 
         <div className="mt-10">
           {article.content
-            ? <MarkdownRenderer source={article.content} />
+            ? <MarkdownRenderer content={article.content} />
             : <span className="text-muted-foreground">（無內文）</span>}
         </div>
 
