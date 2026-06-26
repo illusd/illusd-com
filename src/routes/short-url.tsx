@@ -68,6 +68,7 @@ function ShortUrlPage() {
     try {
       const r = await createLinkFn({ data: { capToken, targetUrl: target.trim() } });
       setResultUrl(r.url);
+      clearDraft("short-url:target");
       showOverlay({ kind: "success", title: "上傳完成！", subtitle: "短網址已成功建立並可立即使用" });
     } catch (err) {
       showOverlay({
