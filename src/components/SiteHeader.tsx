@@ -32,6 +32,8 @@ export function SiteHeader() {
           <nav className="mx-auto max-w-5xl px-5 py-10 flex flex-col gap-6 text-xl font-serif">
             <Link to="/" onClick={close} className="border-b hairline pb-3">首頁</Link>
             <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">所有文章</Link>
+            <Link to="/short-url" onClick={close} className="border-b hairline pb-3">illurl 短網址</Link>
+
             {user ? (
               <>
                 <div className="border-b hairline pb-3 text-base text-muted-foreground">

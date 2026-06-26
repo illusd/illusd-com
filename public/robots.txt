@@ -2,5 +2,8 @@ User-agent: *
 Allow: /
 Disallow: /new-article
 Disallow: /sign-up
+Disallow: /short-url
+Disallow: /thanks
+Disallow: /f/
 
 Sitemap: https://illusd.com/sitemap.xml
