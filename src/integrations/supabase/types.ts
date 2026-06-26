@@ -53,12 +53,40 @@ export type Database = {
         }
         Relationships: []
       }
+      comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comments: {
         Row: {
           article_id: string
           content: string
           created_at: string
           id: string
+          parent_id: string | null
+          updated_at: string
           user_id: string
         }
         Insert: {
@@ -66,6 +94,8 @@ export type Database = {
           content: string
           created_at?: string
           id?: string
+          parent_id?: string | null
+          updated_at?: string
           user_id: string
         }
         Update: {
@@ -73,6 +103,8 @@ export type Database = {
           content?: string
           created_at?: string
           id?: string
+          parent_id?: string | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: [
@@ -81,6 +113,13 @@ export type Database = {
             columns: ["article_id"]
             isOneToOne: false
             referencedRelation: "articles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "comments"
             referencedColumns: ["id"]
           },
         ]
@@ -243,6 +282,36 @@ export type Database = {
           display_name?: string | null
           id?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
