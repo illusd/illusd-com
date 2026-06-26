@@ -18,7 +18,10 @@ export const Route = createFileRoute("/sitemap.xml")({
         const entries: SitemapEntry[] = [
           { path: "/", changefreq: "weekly", priority: "1.0" },
           { path: "/topic/all", changefreq: "weekly", priority: "0.8" },
+          { path: "/terms-of-service", changefreq: "yearly", priority: "0.3" },
+          { path: "/privacy", changefreq: "yearly", priority: "0.3" },
         ];
+
 
         const { data: articles } = await supabase
           .from("articles")
