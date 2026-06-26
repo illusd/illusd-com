@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
+import { CapCaptcha } from "@/components/CapCaptcha";
+import { verifyCapToken } from "@/lib/cap";
 
 export const Route = createFileRoute("/sign-up")({
   head: () => {
@@ -34,6 +36,8 @@ function SignUpPage() {
   const [mode, setMode] = useState<Mode>("signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [agreed, setAgreed] = useState(false);
+  const [capToken, setCapToken] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -42,7 +46,26 @@ function SignUpPage() {
     }
   }, [user, loading, navigate]);
 
+  const guardConsent = () => {
+    if (!agreed) {
+      toast.error("請先勾選同意服務條款與隱私權政策");
+      return false;
+    }
+    return true;
+  };
+
+  const guardCaptcha = async () => {
+    const ok = await verifyCapToken(capToken);
+    if (!ok) {
+      toast.error("請等待人機驗證完成");
+      return false;
+    }
+    return true;
+  };
+
   const handleGoogle = async () => {
+    if (!guardConsent()) return;
+    if (!(await guardCaptcha())) return;
     setBusy(true);
     const res = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.origin,
@@ -61,6 +84,8 @@ function SignUpPage() {
   const handleEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) return;
+    if (!guardConsent()) return;
+    if (!(await guardCaptcha())) return;
     setBusy(true);
     try {
       if (mode === "signup") {
@@ -97,8 +122,8 @@ function SignUpPage() {
 
         <button
           onClick={handleGoogle}
-          disabled={busy}
-          className="mt-8 w-full border hairline py-3 text-sm hover:bg-accent transition flex items-center justify-center gap-2 disabled:opacity-50"
+          disabled={busy || !agreed}
+          className="mt-8 w-full border hairline py-3 text-sm hover:bg-accent transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <GoogleIcon />
           使用 Google 繼續
@@ -133,18 +158,29 @@ function SignUpPage() {
             />
           </div>
 
-          {/* Cloudflare Turnstile placeholder — drop in widget once site key is available */}
-          <div
-            id="cf-turnstile-slot"
-            className="text-[11px] text-muted-foreground border hairline border-dashed p-3 mt-2"
-          >
-            Cloudflare 機器人驗證將於此顯示（待提供 Turnstile site key 後啟用）
+          <div className="pt-2">
+            <CapCaptcha onVerified={setCapToken} />
           </div>
+
+          <label className="flex items-start gap-2 text-xs leading-relaxed pt-2 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+              className="mt-0.5 accent-foreground"
+            />
+            <span>
+              我已同意 illusd.com 及 illusd.com 服務的{" "}
+              <Link to="/terms-of-service" className="underline">服務條款</Link>{" "}
+              與{" "}
+              <Link to="/privacy" className="underline">隱私權政策</Link>。
+            </span>
+          </label>
 
           <button
             type="submit"
-            disabled={busy}
-            className="w-full bg-foreground text-background py-3 text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50"
+            disabled={busy || !agreed}
+            className="w-full bg-foreground text-background py-3 text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {mode === "signup" ? "註冊" : "登入"}
           </button>

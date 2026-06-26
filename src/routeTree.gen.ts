@@ -9,16 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as ShortUrlRouteImport } from './routes/short-url'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NewArticleRouteImport } from './routes/new-article'
+import { Route as CodeRouteImport } from './routes/$code'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
+import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 
+const ThanksRoute = ThanksRouteImport.update({
+  id: '/thanks',
+  path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -29,9 +45,24 @@ const SignUpRoute = SignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShortUrlRoute = ShortUrlRouteImport.update({
+  id: '/short-url',
+  path: '/short-url',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewArticleRoute = NewArticleRouteImport.update({
   id: '/new-article',
   path: '/new-article',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CodeRoute = CodeRouteImport.update({
+  id: '/$code',
+  path: '/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -42,6 +73,11 @@ const IndexRoute = IndexRouteImport.update({
 const TopicAllRoute = TopicAllRouteImport.update({
   id: '/topic/all',
   path: '/topic/all',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FCodeRoute = FCodeRouteImport.update({
+  id: '/f/$code',
+  path: '/f/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArticleIdRoute = ArticleIdRouteImport.update({
@@ -68,10 +104,16 @@ const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/$code': typeof CodeRoute
   '/new-article': typeof NewArticleRoute
+  '/privacy': typeof PrivacyRoute
+  '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/thanks': typeof ThanksRoute
   '/article/$id': typeof ArticleIdRoute
+  '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -79,10 +121,16 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$code': typeof CodeRoute
   '/new-article': typeof NewArticleRoute
+  '/privacy': typeof PrivacyRoute
+  '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/thanks': typeof ThanksRoute
   '/article/$id': typeof ArticleIdRoute
+  '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -91,10 +139,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/$code': typeof CodeRoute
   '/new-article': typeof NewArticleRoute
+  '/privacy': typeof PrivacyRoute
+  '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/thanks': typeof ThanksRoute
   '/article/$id': typeof ArticleIdRoute
+  '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -104,10 +158,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/$code'
     | '/new-article'
+    | '/privacy'
+    | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
+    | '/terms-of-service'
+    | '/thanks'
     | '/article/$id'
+    | '/f/$code'
     | '/topic/all'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -115,10 +175,16 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$code'
     | '/new-article'
+    | '/privacy'
+    | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
+    | '/terms-of-service'
+    | '/thanks'
     | '/article/$id'
+    | '/f/$code'
     | '/topic/all'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -126,10 +192,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/$code'
     | '/new-article'
+    | '/privacy'
+    | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
+    | '/terms-of-service'
+    | '/thanks'
     | '/article/$id'
+    | '/f/$code'
     | '/topic/all'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -138,10 +210,16 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CodeRoute: typeof CodeRoute
   NewArticleRoute: typeof NewArticleRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ShortUrlRoute: typeof ShortUrlRoute
   SignUpRoute: typeof SignUpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
+  ThanksRoute: typeof ThanksRoute
   ArticleIdRoute: typeof ArticleIdRoute
+  FCodeRoute: typeof FCodeRoute
   TopicAllRoute: typeof TopicAllRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -150,6 +228,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/thanks': {
+      id: '/thanks'
+      path: '/thanks'
+      fullPath: '/thanks'
+      preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -164,11 +256,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignUpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/short-url': {
+      id: '/short-url'
+      path: '/short-url'
+      fullPath: '/short-url'
+      preLoaderRoute: typeof ShortUrlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/new-article': {
       id: '/new-article'
       path: '/new-article'
       fullPath: '/new-article'
       preLoaderRoute: typeof NewArticleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$code': {
+      id: '/$code'
+      path: '/$code'
+      fullPath: '/$code'
+      preLoaderRoute: typeof CodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -183,6 +296,13 @@ declare module '@tanstack/react-router' {
       path: '/topic/all'
       fullPath: '/topic/all'
       preLoaderRoute: typeof TopicAllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/f/$code': {
+      id: '/f/$code'
+      path: '/f/$code'
+      fullPath: '/f/$code'
+      preLoaderRoute: typeof FCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/article/$id': {
@@ -218,10 +338,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CodeRoute: CodeRoute,
   NewArticleRoute: NewArticleRoute,
+  PrivacyRoute: PrivacyRoute,
+  ShortUrlRoute: ShortUrlRoute,
   SignUpRoute: SignUpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
+  ThanksRoute: ThanksRoute,
   ArticleIdRoute: ArticleIdRoute,
+  FCodeRoute: FCodeRoute,
   TopicAllRoute: TopicAllRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
