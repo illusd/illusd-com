@@ -246,6 +246,57 @@ export type Database = {
         }
         Relationships: []
       }
+      short_files: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          filename: string
+          mime: string
+          size: number
+          storage_path: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          filename: string
+          mime: string
+          size: number
+          storage_path: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          filename?: string
+          mime?: string
+          size?: number
+          storage_path?: string
+        }
+        Relationships: []
+      }
+      short_links: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          target_url: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          created_by?: string | null
+          target_url: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          target_url?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
