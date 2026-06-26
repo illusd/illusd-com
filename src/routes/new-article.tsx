@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
 import { X } from "lucide-react";
+import { CoverUploader } from "@/components/CoverUploader";
+
 
 export const Route = createFileRoute("/new-article")({
   head: () => {
