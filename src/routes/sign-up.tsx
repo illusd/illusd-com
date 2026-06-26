@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 import { CapCaptcha } from "@/components/CapCaptcha";
 import { verifyCapToken } from "@/lib/cap";
+import { useDraftPersist } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/sign-up")({
   head: () => {
