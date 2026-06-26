@@ -7,6 +7,7 @@ import { CapCaptcha } from "@/components/CapCaptcha";
 import { FullscreenStateOverlay } from "@/components/animations/AppleStateAnimation";
 import { supabase } from "@/integrations/supabase/client";
 import { createShortLink, prepareShortFile } from "@/lib/illurl.functions";
+import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/short-url")({
   head: () => {
