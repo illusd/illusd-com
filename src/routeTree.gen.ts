@@ -9,8 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ThanksRouteImport } from './routes/thanks'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
@@ -19,6 +22,16 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 
+const ThanksRoute = ThanksRouteImport.update({
+  id: '/thanks',
+  path: '/thanks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -27,6 +40,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SignUpRoute = SignUpRouteImport.update({
   id: '/sign-up',
   path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewArticleRoute = NewArticleRouteImport.update({
@@ -69,8 +87,11 @@ const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/new-article': typeof NewArticleRoute
+  '/privacy': typeof PrivacyRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/thanks': typeof ThanksRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -80,8 +101,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/new-article': typeof NewArticleRoute
+  '/privacy': typeof PrivacyRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/thanks': typeof ThanksRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -92,8 +116,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/new-article': typeof NewArticleRoute
+  '/privacy': typeof PrivacyRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/thanks': typeof ThanksRoute
   '/article/$id': typeof ArticleIdRoute
   '/topic/all': typeof TopicAllRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -105,8 +132,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/new-article'
+    | '/privacy'
     | '/sign-up'
     | '/sitemap.xml'
+    | '/terms-of-service'
+    | '/thanks'
     | '/article/$id'
     | '/topic/all'
     | '/lovable/email/auth/preview'
@@ -116,8 +146,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/new-article'
+    | '/privacy'
     | '/sign-up'
     | '/sitemap.xml'
+    | '/terms-of-service'
+    | '/thanks'
     | '/article/$id'
     | '/topic/all'
     | '/lovable/email/auth/preview'
@@ -127,8 +160,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/new-article'
+    | '/privacy'
     | '/sign-up'
     | '/sitemap.xml'
+    | '/terms-of-service'
+    | '/thanks'
     | '/article/$id'
     | '/topic/all'
     | '/lovable/email/auth/preview'
@@ -139,8 +175,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   NewArticleRoute: typeof NewArticleRoute
+  PrivacyRoute: typeof PrivacyRoute
   SignUpRoute: typeof SignUpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
+  ThanksRoute: typeof ThanksRoute
   ArticleIdRoute: typeof ArticleIdRoute
   TopicAllRoute: typeof TopicAllRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -150,6 +189,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/thanks': {
+      id: '/thanks'
+      path: '/thanks'
+      fullPath: '/thanks'
+      preLoaderRoute: typeof ThanksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -162,6 +215,13 @@ declare module '@tanstack/react-router' {
       path: '/sign-up'
       fullPath: '/sign-up'
       preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/new-article': {
@@ -219,8 +279,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   NewArticleRoute: NewArticleRoute,
+  PrivacyRoute: PrivacyRoute,
   SignUpRoute: SignUpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
+  ThanksRoute: ThanksRoute,
   ArticleIdRoute: ArticleIdRoute,
   TopicAllRoute: TopicAllRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,

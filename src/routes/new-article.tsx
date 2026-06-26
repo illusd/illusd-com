@@ -166,20 +166,10 @@ function NewArticle() {
         </section>
 
         <section>
-          <label className="block text-xs tracking-widest text-muted-foreground mb-2">封面圖片 URL</label>
-          <input
-            type="url"
-            value={coverUrl}
-            onChange={(e) => setCoverUrl(e.target.value)}
-            placeholder="https://..."
-            className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
-          />
-          {coverUrl && (
-            <div className="mt-3 aspect-[3/2] border hairline overflow-hidden bg-muted">
-              <img src={coverUrl} alt="預覽" className="w-full h-full object-cover" />
-            </div>
-          )}
+          <label className="block text-xs tracking-widest text-muted-foreground mb-2">封面圖片</label>
+          <CoverUploader value={coverUrl} onChange={setCoverUrl} userId={user!.id} />
         </section>
+
 
         <section>
           <label className="block text-xs tracking-widest text-muted-foreground mb-2">內文</label>
