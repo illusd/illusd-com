@@ -14,25 +14,22 @@ interface ShortFile {
 const lookupShortFile = createServerFn({ method: "GET" })
   .inputValidator((data: { code: string }) => data)
   .handler(async ({ data }): Promise<ShortFile | null> => {
-    const { createClient } = await import("@supabase/supabase-js");
-    const sb = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_PUBLISHABLE_KEY!,
-      { auth: { storage: undefined, persistSession: false, autoRefreshToken: false } },
-    );
-    const { data: row } = await sb
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin
       .from("short_files")
       .select("code, filename, mime, size, storage_path, created_at")
       .eq("code", data.code)
       .maybeSingle();
     if (!row) return null;
-    const { data: pub } = sb.storage.from("illurl-files").getPublicUrl(row.storage_path);
+    const { data: signed } = await supabaseAdmin.storage
+      .from("illurl-files")
+      .createSignedUrl(row.storage_path, 60 * 60 * 24);
     return {
       code: row.code,
       filename: row.filename,
       mime: row.mime,
       size: row.size,
-      public_url: pub.publicUrl,
+      public_url: signed?.signedUrl ?? "",
       created_at: row.created_at,
     };
   });
