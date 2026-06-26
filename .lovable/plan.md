@@ -1,52 +1,66 @@
-# 全套升級計畫
+# 一次到位升級計畫
 
-分四批執行，每批結束會顯示進度。
+## 1. Lighthouse 報告
+- 用 Playwright + `lighthouse` CLI 跑最新已 publish 的 `https://illusd.com`
+- 產出 Performance / Accessibility / Best Practices / SEO 四個分數
+- 重點看 LCP、CLS、TBT、TTFB，附上具體可改善項目清單
+- 輸出到 `/mnt/documents/lighthouse-report.html` 並在訊息中摘要
+
+## 2. 輸入內容消失問題
+**原因**：React 元件 state 只活在記憶體；切分頁時瀏覽器可能凍結或重新掛載，state 就沒了。新文章與留言輸入都受影響。
+
+**修法**：建立 `useDraftPersist(key, value, setValue)` hook，自動把表單內容寫進 `localStorage`，每 500ms debounce，發布／送出成功後清除。套用到：
+- `/new-article`：rawTitle / topicTitle / episodeNum / episodeTitle / content / coverUrl
+- 文章內的留言輸入框（per article id）
+- `/short-url`：文字內容輸入
+
+## 3. Web Push 通知
+- 後端：用 `web-push` 套件 + 自動產生 VAPID 金鑰（存到 secrets）
+- DB：`push_subscriptions` 資料表（endpoint, p256dh, auth, user_id 可空）
+- Service Worker：`public/sw.js` 註冊 push 監聽，點擊跳轉到文章
+- UI：站台 header 旁加「🔔 訂閱新文章」按鈕（首次點擊申請權限）
+- 觸發：`articles` insert trigger → 呼叫 `/api/public/hooks/notify-new-article` → 廣播給所有訂閱者
+- 通知格式：標題「新文章」、內文「Ep.{n} {episode_title} — {topic_title}」
+
+## 4. 完整留言系統
+擴充現有 `comments`：
+- 加 `parent_id`（巢狀回覆，最多一層）
+- 加 `updated_at` + 編輯功能
+- 留言按讚：新增 `comment_likes` 資料表
+- UI：回覆 / 編輯 / 刪除 / 按讚 + 即時更新（Supabase Realtime）
+- 已登入才能操作，未登入引導 /sign-up
+
+## 5. Markdown 編輯器
+- 安裝 `react-markdown` + `remark-gfm` + `rehype-highlight`
+- `/new-article` 內文改成左右分欄（上下分欄於手機）：左邊輸入、右邊即時預覽
+- 上方折疊面板：完整 Markdown 語法說明與範例（標題 / 列表 / 表格 / 程式碼 / 圖片 / 連結 / 引用）
+- 文章詳情頁渲染 Markdown（原有純文字相容）
+- "Auto-debug"：偵測未閉合的 \`\`\`、未配對的 [] ()、表格欄數不一致等，於預覽上方顯示警告
+
+## 6. i18n（中 / 英 / 日）
+- 安裝 `i18next` + `react-i18next` + `i18next-browser-languagedetector`
+- 翻譯檔：`src/i18n/locales/{zh,en,ja}.json`
+- 涵蓋所有現有 UI 文字（Header / 首頁標語 / 註冊登入 / 新文章 / 留言 / 法務 / illurl / 動畫提示）
+- Header 加語言切換選單（🌐）；偏好寫入 `localStorage`
+- `<html lang>` 動態切換（影響 SEO）
+- 文章內容本身**不翻譯**（使用者產生內容），只翻譯 UI chrome
+
+## 7. 中文 Email 模板
+重寫 `src/lib/email-templates/*.tsx`（signup / recovery / magic-link / invite / email-change / reauthentication）：
+- 主旨、內文、按鈕全改繁體中文
+- 保留 illusd 品牌排版與 mails.illusd.com 寄件設定
 
 ---
 
-## 第 1 批：SEO 驗證 + Google Search Console
-- 用 curl 驗證 https://illusd.com/sitemap.xml 與 /robots.txt 內容（檢查 canonical 都指向 illusd.com）。
-- 透過 Google Search Console 連接器：取得 META verification token → 寫入 `__root.tsx` → 呼叫 verify → PUT 加站。
-- 觸發 SEO/Lighthouse scan，回報結果。
+## 執行順序（盡量並行）
+1. 安裝套件：`web-push`、`react-markdown`、`remark-gfm`、`rehype-highlight`、`i18next`、`react-i18next`、`i18next-browser-languagedetector`、`lighthouse`
+2. DB migration：`push_subscriptions`、`comments.parent_id` + `updated_at`、`comment_likes`
+3. 程式碼變更全部並行寫入
+4. 跑 Lighthouse 並輸出報告
 
-## 第 2 批：法務頁 + Cap captcha + 同意勾選 + 文章封面真實上傳
-- 新增 `/terms-of-service` 與 `/privacy` 頁（繁中、極簡日系版式）。
-- 註冊/登入頁：加入「□ 我已同意 illusd.com 的服務條款與隱私權政策」勾選框（未勾選 disabled）。
-- 整合 [@cap.js/widget](https://github.com/tiagozip/cap) — 採其公開的免費 standalone challenge endpoint（無需自架）。註冊與登入皆需通過。
-- `/new-article`：封面欄位改成 `<input type="file">`，上傳到 Supabase Storage `article-images` bucket，回填 public URL 到 `cover_url`（保留現有 URL 輸入做 fallback）。
+## 需要你確認的 3 件事
+1. **Lighthouse**：要 mobile 還是 desktop 模擬？（預設 mobile，比較嚴格）
+2. **Web Push 圖示**：用 illusd logo？若有檔案請告知，否則我用文字 logo 自動生成 192/512 PNG
+3. **留言巢狀層數**：1 層回覆（Threads 風格）還是無限層？預設 1 層較乾淨
 
-## 第 3 批：Donate to Creator（Shopify 嵌入）+ 感謝動畫
-- 文章頁加上「Donate to Creator」按鈕。
-- 採 Shopify Buy Button / Storefront 直接導向 `https://pay.illusd.com/products/vibecoding`，並在 redirect 回站時帶 `?donated=1`（Shopify thank you page 設定外連回 `https://illusd.com/thanks`）。
-- 新增 `/thanks` 路由，嵌入提供的「謝謝您的贊助」純黑動畫（轉成 React 元件 + Tailwind / styled），3 秒後自動 `navigate('/')`。
-
-備註：因 Shopify checkout 在 pay.illusd.com 不能直接呼叫本站 JS，無法做即時付款偵測；改用 thank-you redirect 觸發動畫（最務實做法）。若要 webhook 寫入贊助紀錄，可第 5 批再做。
-
-## 第 4 批：illurl 短網址 / 檔案服務
-- DB 新增兩張表：
-  - `short_links(code PK, target_url, created_by NULL, created_at)`
-  - `short_files(code PK, storage_path, mime, size, created_by NULL, created_at)`
-  - 加上 RLS：anon 可讀（用於跳轉/下載查詢）、insert 走 server fn（含 captcha + 速率限制）。
-- Storage bucket `illurl-files`（私有，透過簽名 URL 對外）。檔案上限 200 MB。
-- `/short-url` 頁：兩個 tab（短網址 / 檔案上傳），均強制 Cap captcha。
-- 短碼演算法：先嘗試純數字 5 碼，若空間用盡再升級為「數字 + 大寫英文」5 碼（每次 insert 衝突自動重抽，最多 10 次後升級）。
-- 路由：
-  - `/$code`（splat route，僅 5 碼匹配）→ server loader 查 `short_links` → 302 到 `target_url`，未命中回 404。
-  - `/f/$code` → 顯示檔案（圖片/影片預覽 + 下載按鈕）。
-- 上傳完成 / 失敗動畫：將提供的兩段純 HTML 轉成 React 元件，嵌入 `/short-url` 流程（不顯示原始程式碼）。
-- 防濫用：server fn 內以 IP + 24h 計數簡易速率限制（用一張 `upload_quota` 表），超限回失敗動畫。
-
----
-
-## 技術細節
-- Cap captcha：使用 `@cap.js/widget` script + 公開 verify endpoint；server fn 驗證 token 後才允許 signup/login/upload。
-- 真實上傳統一走 `supabase.storage.from(bucket).upload(path, file)`，路徑 `${userId ?? 'anon'}/${uuid}-${filename}`。
-- 既有 `article-images` bucket 已有 storage policy，沿用即可。
-- 動畫元件放 `src/components/animations/`，純 React + inline `<style>` 或 styled component，不污染全站 CSS。
-- 法務頁、thanks 頁、short-url 頁、/f/$code 頁都會加上 `head()` SEO metadata。
-- Robots：disallow `/short-url`, `/f/`, `/$code` 等動態跳轉。
-
-## 不在這次範圍
-- Shopify 訂單 webhook 入庫（如需可後續加）。
-- 多語系。
-- illurl 後台管理頁。
+如果都採預設，直接回「OK 開動」我就一次做完。
