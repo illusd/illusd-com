@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Heart, Trash2, Coffee } from "lucide-react";
-import { toast } from "sonner";
+import { Heart, Coffee } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { parseTitle, formatDisplay } from "@/lib/titleParser";
+import { formatDisplay } from "@/lib/titleParser";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { CommentSection } from "@/components/CommentSection";
 
 interface Article {
   id: string;
