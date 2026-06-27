@@ -62,7 +62,7 @@ function ShortUrlPage() {
   const handleCreateLink = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!capToken) {
-      const message = captchaError || "請先完成 reCAPTCHA 人機驗證";
+      const message = captchaError || t("short.captcha_wait");
       toast.error(message);
       return;
     }
@@ -73,15 +73,11 @@ function ShortUrlPage() {
       const r = await createLinkFn({ data: { capToken, targetUrl: target.trim() } });
       setResultUrl(r.url);
       clearDraft("short-url:target");
-      showOverlay({ kind: "success", title: "上傳完成！", subtitle: "短網址已成功建立並可立即使用" });
+      showOverlay({ kind: "success", title: t("short.create"), subtitle: t("short.result") });
     } catch (err) {
-      const message = (err as Error).message || "偵測到異常流量或已達速率限制上限，請稍後再試";
+      const message = (err as Error).message || t("short.captcha_wait");
       toast.error(message);
-      showOverlay({
-        kind: "error",
-        title: "上傳失敗！",
-        subtitle: message,
-      });
+      showOverlay({ kind: "error", title: t("short.create"), subtitle: message });
     } finally {
       setLinkBusy(false);
     }
@@ -90,7 +86,7 @@ function ShortUrlPage() {
   const handleUploadFile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!capToken) {
-      const message = captchaError || "請先完成 reCAPTCHA 人機驗證";
+      const message = captchaError || t("short.captcha_wait");
       toast.error(message);
       return;
     }
@@ -107,7 +103,6 @@ function ShortUrlPage() {
           size: file.size,
         },
       });
-      // Direct upload to Supabase storage via signed upload URL
       const { error: upErr } = await supabase.storage
         .from("illurl-files")
         .uploadToSignedUrl(prep.path, prep.token, file, {
@@ -116,15 +111,11 @@ function ShortUrlPage() {
       if (upErr) throw upErr;
       setFileProgress(100);
       setResultUrl(prep.url);
-      showOverlay({ kind: "success", title: "上傳完成！", subtitle: "您的檔案已成功處理並安全儲存" });
+      showOverlay({ kind: "success", title: t("short.upload"), subtitle: t("short.result") });
     } catch (err) {
-      const message = (err as Error).message || "偵測到異常流量或已達速率限制上限，請稍後再試";
+      const message = (err as Error).message || t("short.captcha_wait");
       toast.error(message);
-      showOverlay({
-        kind: "error",
-        title: "上傳失敗！",
-        subtitle: message,
-      });
+      showOverlay({ kind: "error", title: t("short.upload"), subtitle: message });
     } finally {
       setFileBusy(false);
     }
@@ -133,18 +124,12 @@ function ShortUrlPage() {
   return (
     <main className="mx-auto max-w-xl px-5 py-14">
       {overlay && (
-        <FullscreenStateOverlay
-          variant={overlay.kind}
-          title={overlay.title}
-          subtitle={overlay.subtitle}
-        />
+        <FullscreenStateOverlay variant={overlay.kind} title={overlay.title} subtitle={overlay.subtitle} />
       )}
 
-      <Link to="/" className="text-xs tracking-widest text-muted-foreground">← 回首頁</Link>
-      <h1 className="font-serif text-3xl mt-6">illurl</h1>
-      <p className="text-sm text-muted-foreground mt-2">
-        免費生成 illusd.com 短網址或檔案分享連結。每組短碼五位數，全站永久有效。
-      </p>
+      <Link to="/" className="text-xs tracking-widest text-muted-foreground">{t("common.back_home")}</Link>
+      <h1 className="font-serif text-3xl mt-6">{t("short.title")}</h1>
+      <p className="text-sm text-muted-foreground mt-2">{t("short.desc")}</p>
 
       <div className="mt-8 flex border hairline text-sm">
         <button
@@ -153,7 +138,7 @@ function ShortUrlPage() {
             tab === "link" ? "bg-foreground text-background" : "hover:bg-accent"
           }`}
         >
-          <LinkIcon size={14} /> 短網址
+          <LinkIcon size={14} /> {t("short.tab_link")}
         </button>
         <button
           onClick={() => { setTab("file"); setResultUrl(null); }}
@@ -161,14 +146,14 @@ function ShortUrlPage() {
             tab === "file" ? "bg-foreground text-background" : "hover:bg-accent"
           }`}
         >
-          <FileUp size={14} /> 檔案上傳
+          <FileUp size={14} /> {t("short.tab_file")}
         </button>
       </div>
 
       {tab === "link" ? (
         <form onSubmit={handleCreateLink} className="mt-8 space-y-4">
           <div>
-            <label className="block text-xs tracking-widest text-muted-foreground mb-2">目標網址</label>
+            <label className="block text-xs tracking-widest text-muted-foreground mb-2">{t("short.target")}</label>
             <input
               type="url"
               required
@@ -179,10 +164,7 @@ function ShortUrlPage() {
             />
           </div>
           <Recaptcha
-            onVerified={(token) => {
-              setCapToken(token);
-              if (token) setCaptchaError(null);
-            }}
+            onVerified={(token) => { setCapToken(token); if (token) setCaptchaError(null); }}
             onError={setCaptchaError}
           />
           {captchaError && <p role="alert" className="text-xs text-destructive">{captchaError}</p>}
@@ -191,15 +173,13 @@ function ShortUrlPage() {
             disabled={linkBusy || !capToken}
             className="w-full bg-foreground text-background py-3 text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50"
           >
-            {linkBusy ? "建立中…" : "建立短網址"}
+            {linkBusy ? t("short.creating") : t("short.create")}
           </button>
         </form>
       ) : (
         <form onSubmit={handleUploadFile} className="mt-8 space-y-4">
           <div>
-            <label className="block text-xs tracking-widest text-muted-foreground mb-2">
-              選擇檔案（最大 200 MB）
-            </label>
+            <label className="block text-xs tracking-widest text-muted-foreground mb-2">{t("short.choose_file")}</label>
             <input
               type="file"
               required
@@ -213,16 +193,13 @@ function ShortUrlPage() {
             )}
           </div>
           <Recaptcha
-            onVerified={(token) => {
-              setCapToken(token);
-              if (token) setCaptchaError(null);
-            }}
+            onVerified={(token) => { setCapToken(token); if (token) setCaptchaError(null); }}
             onError={setCaptchaError}
           />
           {captchaError && <p role="alert" className="text-xs text-destructive">{captchaError}</p>}
           {fileBusy && (
             <div className="text-xs text-muted-foreground">
-              上傳中… {fileProgress > 0 ? `${fileProgress}%` : ""}
+              {t("short.uploading")} {fileProgress > 0 ? `${fileProgress}%` : ""}
             </div>
           )}
           <button
@@ -230,23 +207,20 @@ function ShortUrlPage() {
             disabled={fileBusy || !capToken || !file}
             className="w-full bg-foreground text-background py-3 text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50"
           >
-            {fileBusy ? "上傳中…" : "上傳並建立連結"}
+            {fileBusy ? t("short.uploading") : t("short.upload")}
           </button>
         </form>
       )}
 
       {resultUrl && (
         <div className="mt-8 border hairline p-4">
-          <div className="text-xs tracking-widest text-muted-foreground mb-2">永久連結</div>
+          <div className="text-xs tracking-widest text-muted-foreground mb-2">{t("short.result")}</div>
           <div className="flex items-center gap-2">
             <code className="flex-1 text-sm break-all">{resultUrl}</code>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(resultUrl);
-                toast.success("已複製連結");
-              }}
+              onClick={() => { navigator.clipboard.writeText(resultUrl); toast.success(t("short.copied")); }}
               className="border hairline p-2 hover:bg-accent"
-              aria-label="複製"
+              aria-label="copy"
             >
               <Copy size={14} />
             </button>
@@ -254,10 +228,7 @@ function ShortUrlPage() {
         </div>
       )}
 
-      <p className="text-[11px] text-muted-foreground mt-10 leading-relaxed">
-        使用 illurl 即表示同意 <Link to="/terms-of-service" className="underline">服務條款</Link> 與{" "}
-        <Link to="/privacy" className="underline">隱私權政策</Link>。我們會記錄建立來源以防範濫用。
-      </p>
+      <p className="text-[11px] text-muted-foreground mt-10 leading-relaxed">{t("short.agree_note")}</p>
     </main>
   );
 }
