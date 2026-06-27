@@ -54,6 +54,13 @@ function Index() {
         </h1>
         <p className="mt-6 text-sm text-muted-foreground">{t("home.subline")}</p>
         <div className="mt-10 h-px w-16 bg-foreground/40" />
+
+        <aside
+          aria-label="Google 登入隱私說明"
+          className="mt-12 border hairline p-5 text-sm leading-relaxed text-foreground/80 font-sans"
+        >
+          歡迎來到我的個人網站！本站提供留言功能。您可以透過 Google 帳戶安全地登入，我們僅會使用您的基本公開資料（Email 與姓名）來建立會員檔案，絕不會將資料用於其他用途。
+        </aside>
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-24">

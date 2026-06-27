@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { CommentSuccessOverlay } from "@/components/CommentSuccessOverlay";
-import { ARTICLE_DONATE_URL } from "@/lib/donate";
+import { DONATE_PATH } from "@/lib/donate";
 
 type ProfileLite = { display_name: string | null; creator_id: string | null };
 
@@ -131,14 +131,12 @@ export function CommentSection({ articleId }: { articleId: string }) {
       <CommentSuccessOverlay open={successOpen} onClose={() => setSuccessOpen(false)} />
       <h2 className="font-serif text-xl border-b hairline pb-3 mb-4 flex items-center justify-between gap-3">
         <span>{t("article.comments")} · {total}</span>
-        <a
-          href={ARTICLE_DONATE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to={DONATE_PATH}
           className="text-xs font-sans font-normal flex items-center gap-1 border hairline px-3 py-1 hover:bg-accent transition"
         >
           <Coffee size={12} strokeWidth={1.5} /> {t("article.donate_article")}
-        </a>
+        </Link>
       </h2>
 
       {user ? (
