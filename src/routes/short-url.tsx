@@ -169,7 +169,7 @@ function ShortUrlPage() {
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </div>
-          <CapCaptcha onVerified={setCapToken} />
+          <Recaptcha onVerified={setCapToken} />
           <button
             type="submit"
             disabled={linkBusy || !capToken}
@@ -196,7 +196,7 @@ function ShortUrlPage() {
               </p>
             )}
           </div>
-          <CapCaptcha onVerified={setCapToken} />
+          <Recaptcha onVerified={setCapToken} />
           {fileBusy && (
             <div className="text-xs text-muted-foreground">
               上傳中… {fileProgress > 0 ? `${fileProgress}%` : ""}

@@ -64,7 +64,7 @@ interface CreateShortLinkInput {
 export const createShortLink = createServerFn({ method: "POST" })
   .inputValidator((data: CreateShortLinkInput) => data)
   .handler(async ({ data }) => {
-    if (!(await verifyCapToken(data.capToken))) {
+    if (!(await verifyRecaptchaServer(data.capToken))) {
       throw new Error("人機驗證失敗，請重試");
     }
     const target = safeUrl(data.targetUrl);
@@ -94,7 +94,7 @@ interface PrepareShortFileInput {
 export const prepareShortFile = createServerFn({ method: "POST" })
   .inputValidator((data: PrepareShortFileInput) => data)
   .handler(async ({ data }) => {
-    if (!(await verifyCapToken(data.capToken))) {
+    if (!(await verifyRecaptchaServer(data.capToken))) {
       throw new Error("人機驗證失敗，請重試");
     }
     if (!data.filename || data.filename.length > 255) {
