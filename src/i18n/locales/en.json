@@ -9,16 +9,39 @@
     "creator": "Creator",
     "language": "Language",
     "message": "Chat Room",
-    "donate": "Support Creator"
+    "donate": "Support Creator",
+    "new_article": "New Article",
+    "new_announcement": "Post Announcement"
   },
   "home": {
+    "site_title": "illusd.com",
     "tagline_a": "Started at age 10 —",
     "tagline_b": "if I can, you can too.",
     "subline": "—— Vibe Coding from scratch.",
+    "about_title": "About illusd",
+    "about_body": "illusd is a Vibe Coding article platform for people starting from zero. We document the process of learning to code, building products and writing articles so anyone — at any age — can follow along and ship their first work. Read articles, comment, subscribe to new-article notifications, or sign in to chat with the creators directly.",
+    "google_notice": "Welcome to my personal site! illusd offers a comment feature. You can sign in securely with your Google account; we only use your basic public profile (email and name) to create a member record and will never use it for anything else.",
     "featured": "Featured Articles",
     "all": "All",
     "empty": "No articles yet. Creators can add the first one with the + button.",
     "loading": "Loading…"
+  },
+  "footer": {
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copy": "© {{year}} illusd"
+  },
+  "announcement": {
+    "title": "Announcement",
+    "compose": "Post Announcement",
+    "placeholder": "Write an announcement (it will scroll across the top of the home page)",
+    "submit": "Publish",
+    "submitting": "Publishing…",
+    "active": "Visible",
+    "hidden": "Hidden",
+    "manage": "Manage Announcements",
+    "delete_confirm": "Delete this announcement?",
+    "empty": "No announcements yet."
   },
   "article": {
     "comments": "Comments",
@@ -93,9 +116,35 @@
     "signin_success": "Signed in",
     "back_home": "← Back home"
   },
+  "donate_page": {
+    "title": "Support Creator",
+    "desc": "Pay securely via Ko-fi. After a successful donation you'll be returned to /thanks. We never collect any card or payment information.",
+    "fallback": "Can't see the window?",
+    "open_kofi": "Open Ko-fi in a new tab"
+  },
+  "thanks": {
+    "title": "Thank you for your support!",
+    "subtitle": "Your support means the world — we'll keep going"
+  },
+  "short": {
+    "title": "illurl",
+    "desc": "Free illusd.com short links and file-sharing links. Five-character codes, permanent across the whole site.",
+    "tab_link": "Short Link",
+    "tab_file": "File Upload",
+    "target": "Target URL",
+    "captcha_wait": "Please complete the reCAPTCHA first",
+    "create": "Create short link",
+    "creating": "Creating…",
+    "choose_file": "Pick a file (up to 200 MB)",
+    "upload": "Upload & create link",
+    "uploading": "Uploading…",
+    "result": "Permanent link",
+    "copied": "Link copied",
+    "agree_note": "Using illurl means you agree to the Terms of Service and Privacy Policy. We log the source to prevent abuse."
+  },
   "common": {
     "loading": "Loading…",
-    "back_home": "Back home",
+    "back_home": "← Back home",
     "not_found": "Article not found."
   }
 }

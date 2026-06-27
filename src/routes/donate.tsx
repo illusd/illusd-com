@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { KOFI_EMBED_URL, KOFI_URL, KOFI_USERNAME } from "@/lib/donate";
 
 export const Route = createFileRoute("/donate")({
@@ -25,19 +26,15 @@ export const Route = createFileRoute("/donate")({
 
 function DonatePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    // 偵測 Ko-fi 透過 postMessage 發出的贊助完成事件。
-    // 我們不解析任何信用卡或付款人個資，只看「事件類型」。
     const onMessage = (e: MessageEvent) => {
       try {
         const origin = e.origin || "";
         if (!/ko-?fi\.com$/.test(new URL(origin).hostname)) return;
         const data = e.data;
-        const text =
-          typeof data === "string" ? data : JSON.stringify(data ?? "");
-        // Ko-fi 在贊助流程結束時會送出包含 "thank" / "donation" / "tip" 等
-        // 字樣的訊息事件。命中即視為成功。
+        const text = typeof data === "string" ? data : JSON.stringify(data ?? "");
         if (/thank|donation|tip[_ -]?received|payment[_ -]?success/i.test(text)) {
           navigate({ to: "/thanks" });
         }
@@ -52,12 +49,9 @@ function DonatePage() {
   return (
     <main className="min-h-[calc(100vh-3.5rem)]">
       <section className="mx-auto max-w-3xl px-5 pt-12 pb-10">
-        <Link to="/" className="text-xs tracking-widest text-muted-foreground">← 回首頁</Link>
-        <h1 className="font-serif text-3xl md:text-4xl mt-6">贊助創作者</h1>
-        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-          透過 Ko-fi 安全支付，贊助成功會自動回到 <span className="text-foreground">/thanks</span>。
-          我們不會收集任何信用卡或付款資料。
-        </p>
+        <Link to="/" className="text-xs tracking-widest text-muted-foreground">{t("common.back_home")}</Link>
+        <h1 className="font-serif text-3xl md:text-4xl mt-6">{t("donate_page.title")}</h1>
+        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{t("donate_page.desc")}</p>
       </section>
 
       <section className="mx-auto max-w-3xl px-5 pb-24">
@@ -71,9 +65,9 @@ function DonatePage() {
           />
         </div>
         <p className="mt-4 text-xs text-muted-foreground text-center">
-          無法看到視窗？
+          {t("donate_page.fallback")}
           <a href={KOFI_URL} target="_blank" rel="noopener noreferrer" className="underline ml-1">
-            在新分頁開啟 Ko-fi
+            {t("donate_page.open_kofi")}
           </a>
         </p>
       </section>

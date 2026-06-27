@@ -9,16 +9,39 @@
     "creator": "クリエイター",
     "language": "言語",
     "message": "チャットルーム",
-    "donate": "クリエイターを応援"
+    "donate": "クリエイターを応援",
+    "new_article": "新規記事",
+    "new_announcement": "お知らせを投稿"
   },
   "home": {
+    "site_title": "illusd.com",
     "tagline_a": "10歳から始めた——",
     "tagline_b": "私にできた、あなたにもできる。",
     "subline": "——ゼロから Vibe Coding！",
+    "about_title": "illusd について",
+    "about_body": "illusd はゼロから始める人のための Vibe Coding 記事プラットフォームです。プログラミング、プロダクト制作、文章の書き方の過程を記録し、どんな年齢の人でも最初の作品を作れるようにします。記事を読み、コメントし、新着通知を購読したり、ログインしてクリエイターと直接チャットすることができます。",
+    "google_notice": "ようこそ！本サイトはコメント機能を提供しています。Google アカウントで安全にサインインでき、メールアドレスと名前のみを会員登録に使用します。それ以外の用途には使用しません。",
     "featured": "おすすめ記事",
     "all": "すべて",
     "empty": "まだ記事はありません。クリエイターは右下の＋から投稿できます。",
     "loading": "読み込み中…"
+  },
+  "footer": {
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約",
+    "copy": "© {{year}} illusd"
+  },
+  "announcement": {
+    "title": "お知らせ",
+    "compose": "お知らせを投稿",
+    "placeholder": "お知らせ内容を入力（ホーム上部にスクロール表示されます）",
+    "submit": "公開",
+    "submitting": "公開中…",
+    "active": "表示中",
+    "hidden": "非表示",
+    "manage": "お知らせ管理",
+    "delete_confirm": "このお知らせを削除しますか？",
+    "empty": "お知らせはまだありません。"
   },
   "article": {
     "comments": "コメント",
@@ -93,9 +116,35 @@
     "signin_success": "ログインしました",
     "back_home": "← ホームへ"
   },
+  "donate_page": {
+    "title": "クリエイターを応援",
+    "desc": "Ko-fi で安全に決済できます。成功すると /thanks に自動で戻ります。カード情報などは一切収集しません。",
+    "fallback": "ウィンドウが表示されない場合は",
+    "open_kofi": "新しいタブで Ko-fi を開く"
+  },
+  "thanks": {
+    "title": "ご支援ありがとうございます！",
+    "subtitle": "応援の気持ちに感謝します。これからも頑張ります"
+  },
+  "short": {
+    "title": "illurl",
+    "desc": "illusd.com の短縮URLとファイル共有リンクを無料で作成。5桁のコード、永続的に有効です。",
+    "tab_link": "短縮URL",
+    "tab_file": "ファイルアップロード",
+    "target": "リダイレクト先URL",
+    "captcha_wait": "先に reCAPTCHA を完了してください",
+    "create": "短縮URLを作成",
+    "creating": "作成中…",
+    "choose_file": "ファイルを選択（最大 200 MB）",
+    "upload": "アップロードしてリンクを作成",
+    "uploading": "アップロード中…",
+    "result": "永続リンク",
+    "copied": "リンクをコピーしました",
+    "agree_note": "illurl の利用は利用規約とプライバシーポリシーへの同意とみなされます。悪用防止のため作成元を記録します。"
+  },
   "common": {
     "loading": "読み込み中…",
-    "back_home": "ホームへ",
+    "back_home": "← ホームへ",
     "not_found": "記事が見つかりません。"
   }
 }
