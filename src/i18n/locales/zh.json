@@ -77,6 +77,7 @@
     "episode": "集數",
     "all": "全部",
     "count": "共 {{count}} 篇",
+    "count_plural": "共 {{count}} 篇",
     "empty": "尚無符合條件的文章。"
   },
   "message": {

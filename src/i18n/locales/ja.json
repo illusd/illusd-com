@@ -77,6 +77,7 @@
     "episode": "話数",
     "all": "すべて",
     "count": "全 {{count}} 件",
+    "count_plural": "全 {{count}} 件",
     "empty": "条件に合う記事はありません。"
   },
   "message": {
