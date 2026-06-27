@@ -11,7 +11,8 @@
     "message": "Chat Room",
     "donate": "Support Creator",
     "new_article": "New Article",
-    "new_announcement": "Post Announcement"
+    "new_announcement": "Post Announcement",
+    "menu": "Menu"
   },
   "home": {
     "site_title": "illusd.com",
@@ -41,7 +42,8 @@
     "hidden": "Hidden",
     "manage": "Manage Announcements",
     "delete_confirm": "Delete this announcement?",
-    "empty": "No announcements yet."
+    "empty": "No announcements yet.",
+    "creator_only": "Only creators can post announcements"
   },
   "article": {
     "comments": "Comments",
@@ -62,7 +64,20 @@
     "sign_in_prompt": "Sign up or sign in to comment and like.",
     "edited": "edited",
     "reader": "Reader",
-    "delete_confirm": "Delete this comment?"
+    "delete_confirm": "Delete this comment?",
+    "no_cover": "No cover",
+    "no_content": "(No content)",
+    "article_label": "Article"
+  },
+  "topic": {
+    "title": "All Articles",
+    "subtitle": "Browse by topic and episode",
+    "topic": "Topic",
+    "episode": "Episode",
+    "all": "All",
+    "count": "{{count}} article",
+    "count_plural": "{{count}} articles",
+    "empty": "No articles match these filters."
   },
   "message": {
     "subtitle": "Signed-in chat room. Creators are tagged next to their name.",
@@ -85,7 +100,36 @@
     "publish": "Publish",
     "publishing": "Publishing…",
     "cancel": "Cancel",
-    "draft_restored": "Restored your previous draft"
+    "draft_restored": "Restored your previous draft",
+    "edit_title": "Edit Article",
+    "save_changes": "Save Changes",
+    "saving": "Saving…",
+    "updated": "Updated",
+    "published": "Published",
+    "topic_required": "Please enter a topic",
+    "creator_only_edit": "Only creators can edit articles",
+    "creator_only_publish": "Only creators can publish articles",
+    "help_markdown": "===== Headings =====\n# H1 (use once per article)\n## H2 for sections\n### H3 for subsections\n\n===== Inline =====\n**bold**  __also bold__\n*italic*  _also italic_\n~~strikethrough~~\n`inline code`\n\n===== Blockquote =====\n> Single-line quote\n>\n> Second paragraph\n>> Nested quote\n\n===== Lists =====\n- Unordered item A\n- Unordered item B\n  - Child item\n\n1. Ordered item one\n2. Ordered item two\n   1. Nested ordered item\n\n- [ ] Todo\n- [x] Done\n\n===== Links & Images =====\nThis is a [link](https://illusd.com \"hover title\")\nAutolink: <https://illusd.com>\nReference link: see [docs][doc]\n\n[doc]: https://illusd.com/terms-of-service\n\nImage:\n![Alt text](https://example.com/cover.jpg)\n\nClickable image:\n[![Alt text](https://example.com/thumb.jpg)](https://illusd.com)\n\n===== Tables =====\n| Field | Center | Right |\n| :--- | :---: | ---: |\n| A | C | 1 |\n| B | C | 22 |\n\n===== Code Blocks =====\n```js\nfunction greet(name) {\n  console.log(`hello ${name}`);\n}\n```\n\n```python\ndef add(a, b):\n    return a + b\n```\n\n===== Horizontal Rule =====\n---\n\n===== Escape / Line Break =====\nShow literal stars: \\*not italic\\*\nLeave a blank line between paragraphs; add two spaces at line end for a line break."
+  },
+  "upload": {
+    "select_image": "Please choose an image file",
+    "too_large": "Image must be 10MB or smaller",
+    "failed": "Upload failed: {{message}}",
+    "uploaded": "Cover uploaded",
+    "preview_alt": "Cover preview",
+    "remove_cover": "Remove cover",
+    "uploading": "Uploading…",
+    "cta": "Upload cover (jpg / png, max 10MB)"
+  },
+  "markdown": {
+    "unclosed_fence": "Unclosed ``` code fence",
+    "unbalanced_brackets": "Unbalanced [ ]",
+    "parentheses_mismatch": "Parentheses count looks mismatched",
+    "table_mismatch": "Table row {{line}} column count does not match the header"
+  },
+  "comment_success": {
+    "title": "Comment posted!",
+    "subtitle": "Your comment is now live"
   },
   "push": {
     "subscribe": "Subscribe to new articles",
@@ -114,7 +158,23 @@
     "no_account": "Don't have an account?",
     "signup_success": "Sign-up succeeded — check your inbox for verification.",
     "signin_success": "Signed in",
-    "back_home": "← Back home"
+    "back_home": "← Back home",
+    "agree_prefix": "I agree to the",
+    "agree_and": "and",
+    "agree_suffix": " of illusd.com.",
+    "captcha_failed": "Captcha failed — please try again",
+    "captcha_unavailable": "reCAPTCHA verification is temporarily unavailable. Please try again later.",
+    "google_failed": "Google sign-in failed. Please try again later."
+  },
+  "recaptcha": {
+    "missing_site_key": "reCAPTCHA Site Key (captcha_html) is not configured",
+    "expired": "reCAPTCHA expired — please check it again",
+    "error": "reCAPTCHA error — please check it again or refresh the page",
+    "timeout": "reCAPTCHA timed out — check your network or refresh",
+    "script_failed": "reCAPTCHA script failed to load — check network or browser blocking",
+    "init_failed": "reCAPTCHA failed to initialize",
+    "load_failed": "reCAPTCHA failed to load",
+    "loading": "Loading reCAPTCHA…"
   },
   "donate_page": {
     "title": "Support Creator",
@@ -145,6 +205,14 @@
   "common": {
     "loading": "Loading…",
     "back_home": "← Back home",
-    "not_found": "Article not found."
+    "not_found": "Article not found.",
+    "page_not_found_title": "Page not found",
+    "page_not_found_body": "The page you are looking for was removed or does not exist.",
+    "page_load_failed_title": "Page failed to load",
+    "page_load_failed_body": "Please try again later or go back home.",
+    "retry": "Retry",
+    "close": "Close",
+    "open": "Open",
+    "error": "Something went wrong"
   }
 }
