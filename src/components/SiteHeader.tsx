@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Coffee } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { PushSubscribeButton } from "./PushSubscribeButton";
+
+const DONATE_URL = "https://pay.illusd.com/products/vibecoding";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);

@@ -7,7 +7,9 @@
     "sign_in": "註冊 / 登入",
     "sign_out": "登出",
     "creator": "創作者",
-    "language": "語言"
+    "language": "語言",
+    "message": "聊天室",
+    "donate": "贊助創作者"
   },
   "home": {
     "tagline_a": "從10歲開始做起，",
@@ -21,6 +23,7 @@
   "article": {
     "comments": "留言",
     "donate": "贊助創作者",
+    "donate_article": "贊助這篇文章",
     "reply": "回覆",
     "edit": "編輯",
     "delete": "刪除",
@@ -37,6 +40,11 @@
     "edited": "已編輯",
     "reader": "讀者",
     "delete_confirm": "確定要刪除這則留言嗎？"
+  },
+  "message": {
+    "subtitle": "登入後的即時聊天室，創作者發言會帶上標記。",
+    "placeholder": "輸入訊息…",
+    "empty": "還沒有訊息，第一個打招呼吧。"
   },
   "editor": {
     "title": "撰寫文章",

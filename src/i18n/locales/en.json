@@ -7,7 +7,9 @@
     "sign_in": "Sign in / Sign up",
     "sign_out": "Sign out",
     "creator": "Creator",
-    "language": "Language"
+    "language": "Language",
+    "message": "Chat Room",
+    "donate": "Donate to Creator"
   },
   "home": {
     "tagline_a": "Started at age 10 —",
@@ -21,6 +23,7 @@
   "article": {
     "comments": "Comments",
     "donate": "Donate to Creator",
+    "donate_article": "Donate to this article",
     "reply": "Reply",
     "edit": "Edit",
     "delete": "Delete",
@@ -37,6 +40,11 @@
     "edited": "edited",
     "reader": "Reader",
     "delete_confirm": "Delete this comment?"
+  },
+  "message": {
+    "subtitle": "Signed-in chat room. Creators are tagged next to their name.",
+    "placeholder": "Type a message…",
+    "empty": "No messages yet. Say hi!"
   },
   "editor": {
     "title": "Write Article",
