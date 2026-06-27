@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Coffee } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { PushSubscribeButton } from "./PushSubscribeButton";
+
+const DONATE_URL = "https://pay.illusd.com/products/vibecoding";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -42,6 +44,18 @@ export function SiteHeader() {
             <Link to="/" onClick={close} className="border-b hairline pb-3">{t("nav.home")}</Link>
             <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">{t("nav.all_articles")}</Link>
             <Link to="/short-url" onClick={close} className="border-b hairline pb-3">{t("nav.short_url")}</Link>
+            {user && (
+              <Link to="/message" onClick={close} className="border-b hairline pb-3">{t("nav.message")}</Link>
+            )}
+            <a
+              href={DONATE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={close}
+              className="border-b hairline pb-3 flex items-center gap-2"
+            >
+              <Coffee size={18} strokeWidth={1.25} /> {t("nav.donate")}
+            </a>
 
             <div className="border-b hairline pb-3 flex items-center justify-between text-sm font-sans">
               <LanguageSwitcher />

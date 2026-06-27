@@ -7,7 +7,9 @@
     "sign_in": "登録 / ログイン",
     "sign_out": "ログアウト",
     "creator": "クリエイター",
-    "language": "言語"
+    "language": "言語",
+    "message": "チャットルーム",
+    "donate": "クリエイターを応援"
   },
   "home": {
     "tagline_a": "10歳から始めた——",
@@ -21,6 +23,7 @@
   "article": {
     "comments": "コメント",
     "donate": "クリエイターを応援",
+    "donate_article": "この記事を応援する",
     "reply": "返信",
     "edit": "編集",
     "delete": "削除",
@@ -37,6 +40,11 @@
     "edited": "編集済み",
     "reader": "読者",
     "delete_confirm": "このコメントを削除しますか？"
+  },
+  "message": {
+    "subtitle": "ログイン後のチャットルーム。クリエイターには名前の横に印が付きます。",
+    "placeholder": "メッセージを入力…",
+    "empty": "まだメッセージはありません。最初の一言を。"
   },
   "editor": {
     "title": "記事を書く",

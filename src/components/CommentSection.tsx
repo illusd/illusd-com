@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
-import { Heart, Trash2, Edit2, MessageSquare, Check, X } from "lucide-react";
+import { Heart, Trash2, Edit2, MessageSquare, Check, X, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+
+const ARTICLE_DONATE_URL = "https://pay.illusd.com/products/article-donate";
 
 type ProfileLite = { display_name: string | null; creator_id: string | null };
 
@@ -124,8 +126,16 @@ export function CommentSection({ articleId }: { articleId: string }) {
 
   return (
     <section className="mx-auto max-w-2xl px-5 pb-24">
-      <h2 className="font-serif text-xl border-b hairline pb-3 mb-6">
-        {t("article.comments")} · {total}
+      <h2 className="font-serif text-xl border-b hairline pb-3 mb-4 flex items-center justify-between gap-3">
+        <span>{t("article.comments")} · {total}</span>
+        <a
+          href={ARTICLE_DONATE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs font-sans font-normal flex items-center gap-1 border hairline px-3 py-1 hover:bg-accent transition"
+        >
+          <Coffee size={12} strokeWidth={1.5} /> {t("article.donate_article")}
+        </a>
       </h2>
 
       {user ? (
