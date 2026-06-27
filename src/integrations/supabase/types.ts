@@ -405,6 +405,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           expires_at: string | null
+          expiry_reminder_sent_at: string | null
           filename: string
           mime: string
           size: number
@@ -415,6 +416,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           expires_at?: string | null
+          expiry_reminder_sent_at?: string | null
           filename: string
           mime: string
           size: number
@@ -425,6 +427,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           expires_at?: string | null
+          expiry_reminder_sent_at?: string | null
           filename?: string
           mime?: string
           size?: number
@@ -438,6 +441,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           expires_at: string | null
+          expiry_reminder_sent_at: string | null
           target_url: string
         }
         Insert: {
@@ -445,6 +449,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           expires_at?: string | null
+          expiry_reminder_sent_at?: string | null
           target_url: string
         }
         Update: {
@@ -452,6 +457,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           expires_at?: string | null
+          expiry_reminder_sent_at?: string | null
           target_url?: string
         }
         Relationships: []
@@ -501,6 +507,51 @@ export type Database = {
         }
         Relationships: []
       }
+      webhook_events: {
+        Row: {
+          created_at: string
+          email: string | null
+          event_type: string | null
+          files_upgraded: number | null
+          http_status: number
+          id: string
+          links_upgraded: number | null
+          message_id: string | null
+          raw: Json | null
+          reason: string | null
+          source: string
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          event_type?: string | null
+          files_upgraded?: number | null
+          http_status: number
+          id?: string
+          links_upgraded?: number | null
+          message_id?: string | null
+          raw?: Json | null
+          reason?: string | null
+          source: string
+          status: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          event_type?: string | null
+          files_upgraded?: number | null
+          http_status?: number
+          id?: string
+          links_upgraded?: number | null
+          message_id?: string | null
+          raw?: Json | null
+          reason?: string | null
+          source?: string
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -522,6 +573,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_creator_by_email: { Args: { _email: string }; Returns: boolean }
       is_current_user_creator: { Args: never; Returns: boolean }
       is_current_user_kofi_member: { Args: never; Returns: boolean }
       move_to_dlq: {
