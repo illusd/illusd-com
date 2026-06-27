@@ -167,12 +167,42 @@ function ArticleDetail() {
         )}
 
         <div className="mt-10">
-          {article.content
-            ? <MarkdownRenderer content={article.content} />
-            : <span className="text-muted-foreground">{t("article.no_content")}</span>}
+          {!article.content ? (
+            <span className="text-muted-foreground">{t("article.no_content")}</span>
+          ) : showSource ? (
+            <pre className="border hairline p-4 text-xs leading-relaxed font-mono whitespace-pre-wrap bg-accent/30 overflow-auto">
+              {article.content}
+            </pre>
+          ) : (
+            <MarkdownRenderer content={article.content} />
+          )}
         </div>
 
-        <div className="mt-12 flex flex-wrap items-center gap-3 pt-6 border-t hairline">
+        <div className="mt-6 flex items-center gap-2">
+          <button
+            onClick={() => setShowSource((v) => !v)}
+            className="flex items-center gap-1.5 text-xs border hairline px-3 py-1.5 hover:bg-accent transition"
+          >
+            <Code2 size={12} strokeWidth={1.5} />
+            {showSource ? "顯示渲染" : "檢視 Markdown 原始碼"}
+          </button>
+          {showSource && article.content && (
+            <button
+              onClick={async () => {
+                await navigator.clipboard.writeText(article.content);
+                setCopiedSrc(true);
+                setTimeout(() => setCopiedSrc(false), 1500);
+              }}
+              className="flex items-center gap-1.5 text-xs border hairline px-3 py-1.5 hover:bg-accent transition"
+            >
+              {copiedSrc ? <Check size={12} strokeWidth={1.5} /> : <Copy size={12} strokeWidth={1.5} />}
+              {copiedSrc ? "已複製" : "複製原始碼"}
+            </button>
+          )}
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center gap-3 pt-6 border-t hairline">
+
           <button
             onClick={toggleLike}
             className={`flex items-center gap-2 text-sm border hairline px-4 py-2 transition ${
