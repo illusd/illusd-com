@@ -9,16 +9,39 @@
     "creator": "創作者",
     "language": "語言",
     "message": "聊天室",
-    "donate": "贊助創作者"
+    "donate": "贊助創作者",
+    "new_article": "新增文章",
+    "new_announcement": "張貼公告"
   },
   "home": {
+    "site_title": "illusd.com",
     "tagline_a": "從10歲開始做起，",
     "tagline_b": "我可以你也可以。",
     "subline": "——從0開始 Vibe Coding！",
+    "about_title": "關於 illusd",
+    "about_body": "illusd 是一個寫給「從零開始的人」的 Vibe Coding 文章平台。我們把學寫程式、做產品、寫文章的過程記錄下來，讓任何年齡的人都能跟著做出自己的第一個作品。你可以在這裡閱讀文章、留言互動、訂閱新文章通知，或是登入後與創作者即時聊天。",
+    "google_notice": "歡迎來到我的個人網站！本站提供留言功能。您可以透過 Google 帳戶安全地登入，我們僅會使用您的基本公開資料（Email 與姓名）來建立會員檔案，絕不會將資料用於其他用途。",
     "featured": "精選文章",
     "all": "全部",
     "empty": "還沒有文章。創作者登入後可從右下角的＋按鈕新增第一篇。",
     "loading": "載入中…"
+  },
+  "footer": {
+    "privacy": "隱私權政策",
+    "terms": "服務條款",
+    "copy": "© {{year}} illusd"
+  },
+  "announcement": {
+    "title": "公告",
+    "compose": "張貼公告",
+    "placeholder": "輸入公告內容（會在首頁頂端以跑馬燈方式顯示）",
+    "submit": "發布公告",
+    "submitting": "發布中…",
+    "active": "顯示中",
+    "hidden": "已隱藏",
+    "manage": "公告管理",
+    "delete_confirm": "確定要刪除這則公告嗎？",
+    "empty": "尚未張貼任何公告。"
   },
   "article": {
     "comments": "留言",
@@ -93,9 +116,35 @@
     "signin_success": "登入成功",
     "back_home": "← 回首頁"
   },
+  "donate_page": {
+    "title": "贊助創作者",
+    "desc": "透過 Ko-fi 安全支付，贊助成功會自動回到 /thanks。我們不會收集任何信用卡或付款資料。",
+    "fallback": "無法看到視窗？",
+    "open_kofi": "在新分頁開啟 Ko-fi"
+  },
+  "thanks": {
+    "title": "謝謝您的贊助！",
+    "subtitle": "感謝您的支持，我們會繼續努力"
+  },
+  "short": {
+    "title": "illurl",
+    "desc": "免費生成 illusd.com 短網址或檔案分享連結。每組短碼五位數，全站永久有效。",
+    "tab_link": "短網址",
+    "tab_file": "檔案上傳",
+    "target": "目標網址",
+    "captcha_wait": "請先完成 reCAPTCHA 人機驗證",
+    "create": "建立短網址",
+    "creating": "建立中…",
+    "choose_file": "選擇檔案（最大 200 MB）",
+    "upload": "上傳並建立連結",
+    "uploading": "上傳中…",
+    "result": "永久連結",
+    "copied": "已複製連結",
+    "agree_note": "使用 illurl 即表示同意服務條款與隱私權政策。我們會記錄建立來源以防範濫用。"
+  },
   "common": {
     "loading": "載入中…",
-    "back_home": "回首頁",
+    "back_home": "← 回首頁",
     "not_found": "找不到文章。"
   }
 }
