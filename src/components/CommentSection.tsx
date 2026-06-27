@@ -26,7 +26,7 @@ interface CommentRow {
 
 export function CommentSection({ articleId }: { articleId: string }) {
   const { user } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [comments, setComments] = useState<CommentRow[]>([]);
   const [newText, setNewText] = useState("");
   const draftKey = `comment:${articleId}`;
@@ -176,7 +176,7 @@ function CommentItem({
   isReply?: boolean;
 }) {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(c.content);
   const [replying, setReplying] = useState(false);
