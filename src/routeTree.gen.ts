@@ -23,6 +23,7 @@ import { Route as TopicAllRouteImport } from './routes/topic.all'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
+import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -98,6 +99,11 @@ const AuthenticatedMessageRoute = AuthenticatedMessageRouteImport.update({
   path: '/message',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ArticleIdEditRoute = ArticleIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => ArticleIdRoute,
+} as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -137,9 +143,10 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/thanks': typeof ThanksRoute
   '/message': typeof AuthenticatedMessageRoute
-  '/article/$id': typeof ArticleIdRoute
+  '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/article/$id/edit': typeof ArticleIdEditRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -157,9 +164,10 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/thanks': typeof ThanksRoute
   '/message': typeof AuthenticatedMessageRoute
-  '/article/$id': typeof ArticleIdRoute
+  '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/article/$id/edit': typeof ArticleIdEditRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -179,9 +187,10 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/thanks': typeof ThanksRoute
   '/_authenticated/message': typeof AuthenticatedMessageRoute
-  '/article/$id': typeof ArticleIdRoute
+  '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/article/$id/edit': typeof ArticleIdEditRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -204,6 +213,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/article/$id/edit'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
@@ -224,6 +234,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/article/$id/edit'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/article/$id/edit'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
@@ -263,7 +275,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   ThanksRoute: typeof ThanksRoute
-  ArticleIdRoute: typeof ArticleIdRoute
+  ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
   TopicAllRoute: typeof TopicAllRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
@@ -373,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMessageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/article/$id/edit': {
+      id: '/article/$id/edit'
+      path: '/edit'
+      fullPath: '/article/$id/edit'
+      preLoaderRoute: typeof ArticleIdEditRouteImport
+      parentRoute: typeof ArticleIdRoute
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -422,6 +441,18 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface ArticleIdRouteChildren {
+  ArticleIdEditRoute: typeof ArticleIdEditRoute
+}
+
+const ArticleIdRouteChildren: ArticleIdRouteChildren = {
+  ArticleIdEditRoute: ArticleIdEditRoute,
+}
+
+const ArticleIdRouteWithChildren = ArticleIdRoute._addFileChildren(
+  ArticleIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
@@ -433,7 +464,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   ThanksRoute: ThanksRoute,
-  ArticleIdRoute: ArticleIdRoute,
+  ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
   TopicAllRoute: TopicAllRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
