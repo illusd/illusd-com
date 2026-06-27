@@ -18,7 +18,7 @@ const EMAIL_TEMPLATES: Record<string, React.ComponentType<any>> = {
 }
 
 // Configuration
-const SITE_NAME = "storyflow-garden"
+const SITE_NAME = "illusd.com"
 const ROOT_DOMAIN = "illusd.com"
 
 // Sample data for preview mode ONLY (not used in actual email sending).

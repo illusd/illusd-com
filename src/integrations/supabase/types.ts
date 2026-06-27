@@ -280,6 +280,42 @@ export type Database = {
         }
         Relationships: []
       }
+      kofi_supporters: {
+        Row: {
+          created_at: string
+          email: string
+          is_subscription: boolean | null
+          kofi_transaction_id: string | null
+          last_donation_at: string
+          raw: Json | null
+          tier_name: string | null
+          total_amount: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          is_subscription?: boolean | null
+          kofi_transaction_id?: string | null
+          last_donation_at?: string
+          raw?: Json | null
+          tier_name?: string | null
+          total_amount?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          is_subscription?: boolean | null
+          kofi_transaction_id?: string | null
+          last_donation_at?: string
+          raw?: Json | null
+          tier_name?: string | null
+          total_amount?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       likes: {
         Row: {
           article_id: string
@@ -368,6 +404,7 @@ export type Database = {
           code: string
           created_at: string
           created_by: string | null
+          expires_at: string | null
           filename: string
           mime: string
           size: number
@@ -377,6 +414,7 @@ export type Database = {
           code: string
           created_at?: string
           created_by?: string | null
+          expires_at?: string | null
           filename: string
           mime: string
           size: number
@@ -386,6 +424,7 @@ export type Database = {
           code?: string
           created_at?: string
           created_by?: string | null
+          expires_at?: string | null
           filename?: string
           mime?: string
           size?: number
@@ -398,18 +437,21 @@ export type Database = {
           code: string
           created_at: string
           created_by: string | null
+          expires_at: string | null
           target_url: string
         }
         Insert: {
           code: string
           created_at?: string
           created_by?: string | null
+          expires_at?: string | null
           target_url: string
         }
         Update: {
           code?: string
           created_at?: string
           created_by?: string | null
+          expires_at?: string | null
           target_url?: string
         }
         Relationships: []
@@ -464,6 +506,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_expired_short: { Args: never; Returns: undefined }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
@@ -480,6 +523,7 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_creator: { Args: never; Returns: boolean }
+      is_current_user_kofi_member: { Args: never; Returns: boolean }
       move_to_dlq: {
         Args: {
           dlq_name: string
