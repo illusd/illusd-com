@@ -97,6 +97,8 @@ function ArticleDetail() {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [authorName, setAuthorName] = useState<string>("");
+  const [showSource, setShowSource] = useState(false);
+  const [copiedSrc, setCopiedSrc] = useState(false);
   const coverUrl = useArticleCoverUrl(article?.cover_url);
 
   useEffect(() => {
