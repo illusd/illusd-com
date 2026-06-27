@@ -1,12 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "@tanstack/react-router";
-import { Heart, Trash2, Edit2, MessageSquare, Check, X } from "lucide-react";
+import { Heart, Trash2, Edit2, MessageSquare, Check, X, Coffee } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+
+const ARTICLE_DONATE_URL = "https://pay.illusd.com/products/article-donate";
 
 type ProfileLite = { display_name: string | null; creator_id: string | null };
 
