@@ -27,14 +27,14 @@ export function useAuth(): AuthState {
     let mounted = true;
 
     const loadProfile = async (uid: string) => {
-      await (supabase as any).rpc("sync_current_user_creator_profile");
+      const { data: syncedCreator } = await (supabase as any).rpc("sync_current_user_creator_profile");
       const [{ data: p }, { data: roles }] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", uid),
       ]);
       if (!mounted) return;
       setProfile((p as Profile) ?? null);
-      setIsCreator((roles ?? []).some((r: { role: string }) => r.role === "creator"));
+      setIsCreator(Boolean(syncedCreator) || (roles ?? []).some((r: { role: string }) => r.role === "creator") || Boolean((p as Profile | null)?.creator_id));
     };
 
     const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {

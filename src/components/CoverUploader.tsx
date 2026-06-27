@@ -79,6 +79,14 @@ export function CoverUploader({
           >
             <X size={14} />
           </button>
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            disabled={uploading}
+            className="absolute left-2 bottom-2 bg-background/85 backdrop-blur border hairline px-3 py-1.5 text-xs hover:bg-accent transition disabled:opacity-50"
+          >
+            {uploading ? t("upload.uploading") : t("upload.replace_cover")}
+          </button>
         </div>
       ) : (
         <button
