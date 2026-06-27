@@ -61,6 +61,41 @@ function WebhookEventsPage() {
     })();
   }, [isCreator, loading]);
 
+  const csvEscape = (v: unknown) => {
+    const s = v == null ? "" : String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const buildCsv = (data: Row[]) => {
+    const headers = ["created_at","status","http_status","event_type","email","message_id","links_upgraded","files_upgraded","reason"];
+    const lines = [headers.join(",")];
+    for (const r of data) {
+      lines.push([
+        r.created_at, r.status, r.http_status, r.event_type ?? "",
+        r.email ?? "", r.message_id ?? "",
+        r.links_upgraded ?? 0, r.files_upgraded ?? 0, r.reason ?? "",
+      ].map(csvEscape).join(","));
+    }
+    return lines.join("\n");
+  };
+  const downloadCsv = () => {
+    if (!rows) return;
+    const csv = "\uFEFF" + buildCsv(rows);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `webhook_events_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  const [copied, setCopied] = useState(false);
+  const copyCsv = async () => {
+    if (!rows) return;
+    await navigator.clipboard.writeText(buildCsv(rows));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <>
       <SiteHeader />
@@ -68,6 +103,15 @@ function WebhookEventsPage() {
         <Link to="/" className="text-xs tracking-widest text-muted-foreground">← 回首頁</Link>
         <h1 className="font-serif text-3xl mt-4">Webhook 事件</h1>
         <p className="text-sm text-muted-foreground mt-2">最近 100 筆 Ko-fi webhook 處理紀錄。</p>
+
+        {rows && rows.length > 0 && (
+          <div className="mt-4 flex gap-2">
+            <button onClick={downloadCsv} className="text-xs border hairline px-3 py-1.5 hover:bg-accent">下載 CSV</button>
+            <button onClick={copyCsv} className="text-xs border hairline px-3 py-1.5 hover:bg-accent">
+              {copied ? "已複製 ✓" : "複製 CSV"}
+            </button>
+          </div>
+        )}
 
         {err && <p className="mt-6 text-sm text-destructive">{err}</p>}
 
