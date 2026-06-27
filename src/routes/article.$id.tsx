@@ -87,6 +87,7 @@ export const Route = createFileRoute("/article/$id")({
 function ArticleDetail() {
   const { id } = Route.useParams();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [article, setArticle] = useState<Article | null>(null);
@@ -182,7 +183,7 @@ function ArticleDetail() {
             className="flex items-center gap-2 text-sm border hairline px-4 py-2 hover:bg-accent transition"
           >
             <Coffee size={16} strokeWidth={1.5} />
-            {t_donate()}
+            {t("article.donate")}
           </a>
           {user?.id === article.author_id && (
             <Link
