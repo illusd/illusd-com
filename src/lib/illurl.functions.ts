@@ -1,5 +1,18 @@
 import { createServerFn } from "@tanstack/react-start";
-import { verifyCapToken } from "@/lib/cap";
+
+async function verifyRecaptchaServer(token: string | null | undefined): Promise<boolean> {
+  if (!token) return false;
+  const secret = process.env.captcha_api;
+  if (!secret) return false;
+  const body = new URLSearchParams({ secret, response: token });
+  const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
+  });
+  const json = (await res.json()) as { success?: boolean };
+  return !!json.success;
+}
 
 const DIGITS = "0123456789";
 const ALPHANUM = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -51,7 +64,7 @@ interface CreateShortLinkInput {
 export const createShortLink = createServerFn({ method: "POST" })
   .inputValidator((data: CreateShortLinkInput) => data)
   .handler(async ({ data }) => {
-    if (!(await verifyCapToken(data.capToken))) {
+    if (!(await verifyRecaptchaServer(data.capToken))) {
       throw new Error("人機驗證失敗，請重試");
     }
     const target = safeUrl(data.targetUrl);
@@ -81,7 +94,7 @@ interface PrepareShortFileInput {
 export const prepareShortFile = createServerFn({ method: "POST" })
   .inputValidator((data: PrepareShortFileInput) => data)
   .handler(async ({ data }) => {
-    if (!(await verifyCapToken(data.capToken))) {
+    if (!(await verifyRecaptchaServer(data.capToken))) {
       throw new Error("人機驗證失敗，請重試");
     }
     if (!data.filename || data.filename.length > 255) {

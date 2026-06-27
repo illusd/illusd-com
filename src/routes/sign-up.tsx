@@ -4,8 +4,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
-import { CapCaptcha } from "@/components/CapCaptcha";
-import { verifyCapToken } from "@/lib/cap";
+import { Recaptcha } from "@/components/Recaptcha";
+import { verifyRecaptcha } from "@/lib/recaptcha.functions";
+import { useServerFn } from "@tanstack/react-start";
 import { useDraftPersist } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/sign-up")({
@@ -41,6 +42,7 @@ function SignUpPage() {
   const [agreed, setAgreed] = useState(false);
   const [capToken, setCapToken] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const verifyToken = useServerFn(verifyRecaptcha);
 
   useEffect(() => {
     if (!loading && user) {
@@ -57,9 +59,13 @@ function SignUpPage() {
   };
 
   const guardCaptcha = async () => {
-    const ok = await verifyCapToken(capToken);
-    if (!ok) {
-      toast.error("請等待人機驗證完成");
+    if (!capToken) {
+      toast.error("請先完成 reCAPTCHA 人機驗證");
+      return false;
+    }
+    const res = await verifyToken({ data: { token: capToken } });
+    if (!res.ok) {
+      toast.error("人機驗證失敗，請重試");
       return false;
     }
     return true;
@@ -161,7 +167,7 @@ function SignUpPage() {
           </div>
 
           <div className="pt-2">
-            <CapCaptcha onVerified={setCapToken} />
+            <Recaptcha onVerified={setCapToken} />
           </div>
 
           <label className="flex items-start gap-2 text-xs leading-relaxed pt-2 cursor-pointer select-none">

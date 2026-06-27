@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { Link as LinkIcon, FileUp, Copy } from "lucide-react";
-import { CapCaptcha } from "@/components/CapCaptcha";
+import { Recaptcha } from "@/components/Recaptcha";
 import { FullscreenStateOverlay } from "@/components/animations/AppleStateAnimation";
 import { supabase } from "@/integrations/supabase/client";
 import { createShortLink, prepareShortFile } from "@/lib/illurl.functions";
@@ -169,7 +169,7 @@ function ShortUrlPage() {
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </div>
-          <CapCaptcha onVerified={setCapToken} />
+          <Recaptcha onVerified={setCapToken} />
           <button
             type="submit"
             disabled={linkBusy || !capToken}
@@ -196,7 +196,7 @@ function ShortUrlPage() {
               </p>
             )}
           </div>
-          <CapCaptcha onVerified={setCapToken} />
+          <Recaptcha onVerified={setCapToken} />
           {fileBusy && (
             <div className="text-xs text-muted-foreground">
               上傳中… {fileProgress > 0 ? `${fileProgress}%` : ""}

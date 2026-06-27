@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 
 type ProfileLite = { display_name: string | null; creator_id: string | null };
 
@@ -277,7 +278,9 @@ function CommentItem({
           </div>
         </div>
       ) : (
-        <p className="mt-2 text-sm whitespace-pre-wrap leading-relaxed">{c.content}</p>
+        <div className="mt-2 text-sm">
+          <MarkdownRenderer content={c.content} />
+        </div>
       )}
 
       <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
