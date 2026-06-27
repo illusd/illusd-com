@@ -53,6 +53,27 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       comment_likes: {
         Row: {
           comment_id: string
