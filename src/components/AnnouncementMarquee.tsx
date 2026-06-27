@@ -51,16 +51,15 @@ export function AnnouncementMarquee() {
           <Megaphone size={12} strokeWidth={1.5} />
           {t("announcement.title")}
         </span>
-        <div className="relative flex-1 overflow-hidden">
+        <div className="marquee-viewport relative flex-1 overflow-hidden" aria-label={text}>
           <div className="marquee-track whitespace-nowrap will-change-transform">
-            <span className="inline-block pr-16">{text}</span>
-            <span className="inline-block pr-16">{text}</span>
+            <span className="inline-block pr-20">{text}</span>
           </div>
         </div>
       </div>
       <style>{`
-        @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .marquee-track { animation: marquee-scroll 60s linear infinite; }
+        @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+        .marquee-track { display: inline-flex; min-width: max-content; padding-left: 100%; animation: marquee-scroll 72s linear infinite; }
         .marquee-track:hover { animation-play-state: paused; }
       `}</style>
     </div>

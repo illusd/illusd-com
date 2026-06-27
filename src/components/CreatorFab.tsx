@@ -42,7 +42,7 @@ export function CreatorFab() {
       )}
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "close" : "open"}
+        aria-label={open ? t("common.close") : t("common.open")}
         className="h-14 w-14 rounded-full bg-foreground text-background flex items-center justify-center shadow-lg hover:opacity-90 transition"
       >
         {open ? <X size={22} strokeWidth={1.5} /> : <Plus size={24} strokeWidth={1.5} />}

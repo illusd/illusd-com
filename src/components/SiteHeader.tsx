@@ -28,7 +28,7 @@ export function SiteHeader() {
               <PushSubscribeButton />
             </div>
             <button
-              aria-label="menu"
+              aria-label={t("nav.menu")}
               onClick={() => setOpen((v) => !v)}
               className="p-2 -mr-2 text-foreground"
             >

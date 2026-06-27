@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
  * 顯示約 2.2 秒後自動關閉；點擊任何位置可立即關閉。
  */
 export function CommentSuccessOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!open) return;
@@ -16,17 +16,8 @@ export function CommentSuccessOverlay({ open, onClose }: { open: boolean; onClos
 
   if (!open) return null;
 
-  const title =
-    i18n.language === "ja" ? "コメント送信完了！"
-    : i18n.language === "en" ? "Comment posted!"
-    : "留言成功！";
-  const subtitle =
-    i18n.language === "ja" ? "コメントが公開されました"
-    : i18n.language === "en" ? "Your comment is now live"
-    : "您的評論已順利發佈並公開顯示";
-
-  // suppress unused warning – t kept for future
-  void t;
+  const title = t("comment_success.title");
+  const subtitle = t("comment_success.subtitle");
 
   return (
     <div

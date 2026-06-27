@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { Upload, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
+import { ARTICLE_IMAGE_BUCKET, toArticleImageRef } from "@/lib/articleCover";
+import { useArticleCoverUrl } from "@/hooks/useArticleCoverUrl";
 
 const MAX_BYTES = 10 * 1024 * 1024; // 10MB cover image
 
@@ -16,33 +19,34 @@ export function CoverUploader({
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
+  const { t } = useTranslation();
+  const previewUrl = useArticleCoverUrl(value);
 
   const handleFile = async (file: File) => {
     if (!file.type.startsWith("image/")) {
-      toast.error("請選擇圖片檔");
+      toast.error(t("upload.select_image"));
       return;
     }
     if (file.size > MAX_BYTES) {
-      toast.error("圖片大小不可超過 10MB");
+      toast.error(t("upload.too_large"));
       return;
     }
     setUploading(true);
     const ext = file.name.split(".").pop()?.toLowerCase() ?? "jpg";
     const path = `${userId}/${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("article-images").upload(path, file, {
+    const { error } = await supabase.storage.from(ARTICLE_IMAGE_BUCKET).upload(path, file, {
       cacheControl: "31536000",
       upsert: false,
       contentType: file.type,
     });
     if (error) {
-      toast.error(`上傳失敗：${error.message}`);
+      toast.error(t("upload.failed", { message: error.message }));
       setUploading(false);
       return;
     }
-    const { data } = supabase.storage.from("article-images").getPublicUrl(path);
-    onChange(data.publicUrl);
+    onChange(toArticleImageRef(path));
     setUploading(false);
-    toast.success("封面已上傳");
+    toast.success(t("upload.uploaded"));
   };
 
   return (
@@ -60,12 +64,18 @@ export function CoverUploader({
       />
       {value ? (
         <div className="mt-1 relative aspect-[3/2] border hairline overflow-hidden bg-muted group">
-          <img src={value} alt="封面預覽" className="w-full h-full object-cover" />
+          {previewUrl ? (
+            <img src={previewUrl} alt={t("upload.preview_alt")} className="w-full h-full object-cover" />
+          ) : (
+            <div className="h-full w-full flex items-center justify-center text-xs text-muted-foreground">
+              {t("common.loading")}
+            </div>
+          )}
           <button
             type="button"
             onClick={() => onChange("")}
             className="absolute top-2 right-2 bg-background/80 backdrop-blur p-1.5 border hairline opacity-0 group-hover:opacity-100 transition"
-            aria-label="移除封面"
+            aria-label={t("upload.remove_cover")}
           >
             <X size={14} />
           </button>
@@ -78,7 +88,7 @@ export function CoverUploader({
           className="w-full aspect-[3/2] border hairline border-dashed flex flex-col items-center justify-center gap-2 hover:bg-accent transition text-sm text-muted-foreground disabled:opacity-50"
         >
           <Upload size={20} strokeWidth={1.25} />
-          {uploading ? "上傳中…" : "點此上傳封面（jpg / png，最大 10MB）"}
+          {uploading ? t("upload.uploading") : t("upload.cta")}
         </button>
       )}
     </div>

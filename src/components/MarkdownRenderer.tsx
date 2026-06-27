@@ -28,17 +28,19 @@ export function MarkdownRenderer({ content }: { content: string }) {
 }
 
 /** Lightweight Markdown linter; returns user-readable Chinese-by-default warnings. */
-export function lintMarkdown(src: string): string[] {
+export function lintMarkdown(src: string, translate?: (key: string, options?: Record<string, unknown>) => string): string[] {
+  const msg = (key: string, fallback: string, options?: Record<string, unknown>) =>
+    translate ? translate(key, { defaultValue: fallback, ...(options ?? {}) }) : fallback;
   const issues: string[] = [];
   const fences = (src.match(/^```/gm) || []).length;
-  if (fences % 2 !== 0) issues.push("有未關閉的 ``` 程式碼區塊 / Unclosed ``` code fence");
+  if (fences % 2 !== 0) issues.push(msg("markdown.unclosed_fence", "有未關閉的 ``` 程式碼區塊"));
   const open = (src.match(/\[/g) || []).length;
   const close = (src.match(/\]/g) || []).length;
-  if (open !== close) issues.push("[ 與 ] 數量不一致 / Unbalanced [ ]");
+  if (open !== close) issues.push(msg("markdown.unbalanced_brackets", "[ 與 ] 數量不一致"));
   const popen = (src.match(/\(/g) || []).length;
   const pclose = (src.match(/\)/g) || []).length;
   if (Math.abs(popen - pclose) > 2)
-    issues.push("( 與 ) 數量明顯不一致 / Parentheses mismatch");
+    issues.push(msg("markdown.parentheses_mismatch", "( 與 ) 數量明顯不一致"));
   const lines = src.split("\n");
   for (let i = 0; i < lines.length - 1; i++) {
     if (/^\s*\|.*\|\s*$/.test(lines[i]) && /^\s*\|?[\s:-]+\|[\s:-|]+$/.test(lines[i + 1])) {
@@ -47,7 +49,7 @@ export function lintMarkdown(src: string): string[] {
       while (j < lines.length && /^\s*\|.*\|\s*$/.test(lines[j])) {
         const cols = lines[j].split("|").filter(Boolean).length;
         if (cols !== headerCols) {
-          issues.push(`表格第 ${j + 1} 行欄數與表頭不符 / Table row ${j + 1} column count mismatch`);
+          issues.push(msg("markdown.table_mismatch", "表格第 {{line}} 行欄數與表頭不符", { line: j + 1 }));
           break;
         }
         j++;

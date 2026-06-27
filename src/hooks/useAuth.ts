@@ -27,6 +27,7 @@ export function useAuth(): AuthState {
     let mounted = true;
 
     const loadProfile = async (uid: string) => {
+      await (supabase as any).rpc("sync_current_user_creator_profile");
       const [{ data: p }, { data: roles }] = await Promise.all([
         supabase.from("profiles").select("*").eq("id", uid).maybeSingle(),
         supabase.from("user_roles").select("role").eq("user_id", uid),
