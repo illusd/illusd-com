@@ -131,6 +131,10 @@ function ShortUrlPage() {
       <Link to="/" className="text-xs tracking-widest text-muted-foreground">{t("common.back_home")}</Link>
       <h1 className="font-serif text-3xl mt-6">{t("short.title")}</h1>
       <p className="text-sm text-muted-foreground mt-2">{t("short.desc")}</p>
+      <p className="text-xs text-muted-foreground mt-3 leading-relaxed border-l-2 border-foreground/40 pl-3">
+        {t("short.membership_note")} <Link to="/my/illurl" className="underline">{t("nav.my_illurl")}</Link>
+      </p>
+
 
       <div className="mt-8 flex border hairline text-sm">
         <button
