@@ -35,6 +35,7 @@ type Overlay = null | { kind: "success" | "error"; title: string; subtitle: stri
 function ShortUrlPage() {
   const [tab, setTab] = useState<Tab>("link");
   const [capToken, setCapToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
   const [overlay, setOverlay] = useState<Overlay>(null);
 
   // link form
@@ -59,7 +60,8 @@ function ShortUrlPage() {
   const handleCreateLink = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!capToken) {
-      toast.error("請等待人機驗證完成");
+      const message = captchaError || "請先完成 reCAPTCHA 人機驗證";
+      toast.error(message);
       return;
     }
     if (!target.trim()) return;
@@ -71,10 +73,12 @@ function ShortUrlPage() {
       clearDraft("short-url:target");
       showOverlay({ kind: "success", title: "上傳完成！", subtitle: "短網址已成功建立並可立即使用" });
     } catch (err) {
+      const message = (err as Error).message || "偵測到異常流量或已達速率限制上限，請稍後再試";
+      toast.error(message);
       showOverlay({
         kind: "error",
         title: "上傳失敗！",
-        subtitle: (err as Error).message || "偵測到異常流量或已達速率限制上限，請稍後再試",
+        subtitle: message,
       });
     } finally {
       setLinkBusy(false);
@@ -84,7 +88,8 @@ function ShortUrlPage() {
   const handleUploadFile = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!capToken) {
-      toast.error("請等待人機驗證完成");
+      const message = captchaError || "請先完成 reCAPTCHA 人機驗證";
+      toast.error(message);
       return;
     }
     if (!file) return;
@@ -111,10 +116,12 @@ function ShortUrlPage() {
       setResultUrl(prep.url);
       showOverlay({ kind: "success", title: "上傳完成！", subtitle: "您的檔案已成功處理並安全儲存" });
     } catch (err) {
+      const message = (err as Error).message || "偵測到異常流量或已達速率限制上限，請稍後再試";
+      toast.error(message);
       showOverlay({
         kind: "error",
         title: "上傳失敗！",
-        subtitle: (err as Error).message || "偵測到異常流量或已達速率限制上限，請稍後再試",
+        subtitle: message,
       });
     } finally {
       setFileBusy(false);
@@ -169,7 +176,14 @@ function ShortUrlPage() {
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </div>
-          <Recaptcha onVerified={setCapToken} />
+          <Recaptcha
+            onVerified={(token) => {
+              setCapToken(token);
+              if (token) setCaptchaError(null);
+            }}
+            onError={setCaptchaError}
+          />
+          {captchaError && <p role="alert" className="text-xs text-destructive">{captchaError}</p>}
           <button
             type="submit"
             disabled={linkBusy || !capToken}
@@ -196,7 +210,14 @@ function ShortUrlPage() {
               </p>
             )}
           </div>
-          <Recaptcha onVerified={setCapToken} />
+          <Recaptcha
+            onVerified={(token) => {
+              setCapToken(token);
+              if (token) setCaptchaError(null);
+            }}
+            onError={setCaptchaError}
+          />
+          {captchaError && <p role="alert" className="text-xs text-destructive">{captchaError}</p>}
           {fileBusy && (
             <div className="text-xs text-muted-foreground">
               上傳中… {fileProgress > 0 ? `${fileProgress}%` : ""}

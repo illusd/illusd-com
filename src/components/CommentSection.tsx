@@ -176,7 +176,7 @@ function CommentItem({
   isReply?: boolean;
 }) {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(c.content);
   const [replying, setReplying] = useState(false);
@@ -216,10 +216,12 @@ function CommentItem({
   };
 
   const remove = async () => {
-    if (!confirm("Delete?")) return;
+    if (!confirm(t("article.delete_confirm"))) return;
     await supabase.from("comments").delete().eq("id", c.id);
     onChanged();
   };
+
+  const locale = i18n.language === "zh" ? "zh-TW" : i18n.language === "ja" ? "ja-JP" : "en-US";
 
   const sendReply = async () => {
     if (!user) return;
@@ -249,7 +251,7 @@ function CommentItem({
           )}
         </div>
         <div className="text-xs text-muted-foreground flex items-center gap-3">
-          {new Date(c.created_at).toLocaleString()}
+          {new Date(c.created_at).toLocaleString(locale)}
           {wasEdited && <span>· {t("article.edited")}</span>}
         </div>
       </div>
@@ -322,9 +324,10 @@ function CommentItem({
             value={replyText}
             onChange={(e) => setReplyText(e.target.value)}
             rows={2}
-            placeholder={t("article.placeholder")}
+            placeholder={t("article.reply_placeholder")}
             className="w-full border hairline p-2 bg-transparent text-sm focus:outline-none focus:border-foreground"
           />
+          <p className="mt-1 text-[11px] text-muted-foreground">{t("article.markdown_supported")}</p>
           <div className="flex justify-end gap-2 mt-1">
             <button
               onClick={() => setReplying(false)}

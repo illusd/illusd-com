@@ -31,9 +31,12 @@
     "creator_tag": "CREATOR",
     "no_comments": "No comments yet. Be the first to share.",
     "placeholder": "Share your thoughts…",
+    "reply_placeholder": "Reply with Markdown…",
+    "markdown_supported": "Markdown supported: **bold**, links, lists, code, and tables.",
     "sign_in_prompt": "Sign up or sign in to comment and like.",
     "edited": "edited",
-    "reader": "Reader"
+    "reader": "Reader",
+    "delete_confirm": "Delete this comment?"
   },
   "editor": {
     "title": "Write Article",
