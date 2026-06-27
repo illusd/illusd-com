@@ -7,8 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
-
-const ARTICLE_DONATE_URL = "https://pay.illusd.com/products/article-donate";
+import { CommentSuccessOverlay } from "@/components/CommentSuccessOverlay";
+import { ARTICLE_DONATE_URL } from "@/lib/donate";
 
 type ProfileLite = { display_name: string | null; creator_id: string | null };
 

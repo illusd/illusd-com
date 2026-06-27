@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { PushSubscribeButton } from "./PushSubscribeButton";
 
-const DONATE_URL = "https://pay.illusd.com/products/vibecoding";
+import { DONATE_URL } from "@/lib/donate";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
