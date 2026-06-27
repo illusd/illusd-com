@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { FullscreenStateOverlay } from "@/components/animations/AppleStateAnimation";
 
 export const Route = createFileRoute("/thanks")({
@@ -14,15 +15,16 @@ export const Route = createFileRoute("/thanks")({
 
 function ThanksPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   useEffect(() => {
-    const t = setTimeout(() => navigate({ to: "/" }), 3000);
-    return () => clearTimeout(t);
+    const tm = setTimeout(() => navigate({ to: "/" }), 3000);
+    return () => clearTimeout(tm);
   }, [navigate]);
   return (
     <FullscreenStateOverlay
       variant="success"
-      title="謝謝您的贊助！"
-      subtitle="感謝您的支持，我們會繼續努力"
+      title={t("thanks.title")}
+      subtitle={t("thanks.subtitle")}
     />
   );
 }

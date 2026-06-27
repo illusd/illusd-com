@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { useServerFn } from "@tanstack/react-start";
 import { Link as LinkIcon, FileUp, Copy } from "lucide-react";
 import { Recaptcha } from "@/components/Recaptcha";
@@ -33,6 +34,7 @@ type Tab = "link" | "file";
 type Overlay = null | { kind: "success" | "error"; title: string; subtitle: string };
 
 function ShortUrlPage() {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>("link");
   const [capToken, setCapToken] = useState<string | null>(null);
   const [captchaError, setCaptchaError] = useState<string | null>(null);
