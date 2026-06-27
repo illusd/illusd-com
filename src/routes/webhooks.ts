@@ -5,7 +5,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 interface KofiPayload {
-  verification_token: string;
+  verification_token?: string;
   message_id?: string;
   type?: string; // Donation | Subscription | Shop Order | Commission
   is_subscription_payment?: boolean;
@@ -17,61 +17,134 @@ interface KofiPayload {
   timestamp?: string;
 }
 
+const ALLOWED_EVENT_TYPES = new Set([
+  "Donation",
+  "Subscription",
+  "Shop Order",
+  "Commission",
+]);
+
+async function logEvent(args: {
+  status: string;
+  httpStatus: number;
+  eventType?: string | null;
+  email?: string | null;
+  messageId?: string | null;
+  reason?: string | null;
+  linksUpgraded?: number;
+  filesUpgraded?: number;
+  raw?: unknown;
+}) {
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin.from("webhook_events" as any).insert({
+      source: "ko-fi",
+      status: args.status,
+      http_status: args.httpStatus,
+      event_type: args.eventType ?? null,
+      email: args.email ?? null,
+      message_id: args.messageId ?? null,
+      reason: args.reason ?? null,
+      links_upgraded: args.linksUpgraded ?? 0,
+      files_upgraded: args.filesUpgraded ?? 0,
+      raw: args.raw ?? null,
+    } as any);
+  } catch (e) {
+    console.warn("webhook_events log failed", e);
+  }
+}
+
 export const Route = createFileRoute("/webhooks")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         const expected = process.env.kofi_token;
         if (!expected) {
-          console.error("kofi_token secret not configured");
+          await logEvent({ status: "error", httpStatus: 500, reason: "kofi_token secret not configured" });
           return new Response("Server not configured", { status: 500 });
         }
 
+        // --- Parse payload ---
         let payload: KofiPayload;
+        let rawData: string | null = null;
         try {
           const ctype = request.headers.get("content-type") || "";
-          let raw: string | null = null;
           if (ctype.includes("application/x-www-form-urlencoded") || ctype.includes("multipart/form-data")) {
             const fd = await request.formData();
-            raw = (fd.get("data") as string | null) ?? null;
+            rawData = (fd.get("data") as string | null) ?? null;
           } else {
             const text = await request.text();
             try {
               const j = JSON.parse(text);
-              raw = typeof j?.data === "string" ? j.data : text;
+              rawData = typeof j?.data === "string" ? j.data : text;
             } catch {
-              raw = text;
+              rawData = text;
             }
           }
-          if (!raw) return new Response("Missing data", { status: 400 });
-          payload = JSON.parse(raw) as KofiPayload;
+          if (!rawData) {
+            await logEvent({ status: "invalid_payload", httpStatus: 400, reason: "Missing `data` field" });
+            return new Response("Missing data", { status: 400 });
+          }
+          payload = JSON.parse(rawData) as KofiPayload;
         } catch (err) {
-          console.error("Bad ko-fi payload", err);
+          await logEvent({ status: "invalid_payload", httpStatus: 400, reason: `Parse error: ${(err as Error).message}` });
           return new Response("Invalid payload", { status: 400 });
         }
 
-        if (payload.verification_token !== expected) {
+        // --- Verify token (timing-safe-ish: constant-length compare) ---
+        const got = payload.verification_token ?? "";
+        if (got.length !== expected.length || got !== expected) {
+          await logEvent({
+            status: "invalid_token",
+            httpStatus: 401,
+            eventType: payload.type ?? null,
+            email: payload.email?.toLowerCase() ?? null,
+            messageId: payload.message_id ?? null,
+            reason: "verification_token mismatch",
+          });
           return new Response("Invalid token", { status: 401 });
         }
 
-        if (!payload.email) {
-          return new Response("ok", { status: 200 });
+        // --- Validate event shape ---
+        if (payload.type && !ALLOWED_EVENT_TYPES.has(payload.type)) {
+          await logEvent({
+            status: "invalid_payload",
+            httpStatus: 422,
+            eventType: payload.type,
+            messageId: payload.message_id ?? null,
+            reason: `Unsupported event type: ${payload.type}`,
+            raw: payload,
+          });
+          return new Response("Unsupported event type", { status: 422 });
+        }
+
+        if (!payload.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+          await logEvent({
+            status: "invalid_payload",
+            httpStatus: 422,
+            eventType: payload.type ?? null,
+            messageId: payload.message_id ?? null,
+            reason: "Missing or invalid email",
+            raw: payload,
+          });
+          return new Response("Missing or invalid email", { status: 422 });
         }
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const email = payload.email.toLowerCase();
         const amount = Number(payload.amount ?? 0) || 0;
 
         const { data: existing } = await supabaseAdmin
           .from("kofi_supporters" as any)
           .select("total_amount")
-          .eq("email", payload.email.toLowerCase())
+          .eq("email", email)
           .maybeSingle();
 
         const prevTotal = Number(((existing as any)?.total_amount) ?? 0);
 
-        const { error } = await supabaseAdmin.from("kofi_supporters" as any).upsert(
+        const { error: upsertErr } = await supabaseAdmin.from("kofi_supporters" as any).upsert(
           {
-            email: payload.email.toLowerCase(),
+            email,
             kofi_transaction_id: payload.message_id ?? null,
             tier_name: payload.tier_name ?? null,
             is_subscription: Boolean(payload.is_subscription_payment),
@@ -83,26 +156,56 @@ export const Route = createFileRoute("/webhooks")({
           { onConflict: "email" },
         );
 
-        if (error) {
-          console.error("kofi upsert failed", error);
+        if (upsertErr) {
+          await logEvent({
+            status: "error",
+            httpStatus: 500,
+            eventType: payload.type ?? null,
+            email,
+            messageId: payload.message_id ?? null,
+            reason: `kofi_supporters upsert failed: ${upsertErr.message}`,
+            raw: payload,
+          });
           return new Response("DB error", { status: 500 });
         }
 
-        // Upgrade matched short links / files to permanent (NULL expiry)
-        await supabaseAdmin.rpc("noop" as any).then(() => {}, () => {});
-        // Best-effort: clear expiry for any rows whose owner email matches
+        // --- Upgrade matched short links / files to permanent ---
+        let linksUpgraded = 0;
+        let filesUpgraded = 0;
         try {
           const { data: users } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
-          const match = users?.users?.find((u) => (u.email || "").toLowerCase() === payload.email!.toLowerCase());
+          const match = users?.users?.find((u) => (u.email || "").toLowerCase() === email);
           if (match) {
-            await supabaseAdmin.from("short_links").update({ expires_at: null }).eq("created_by", match.id);
-            await supabaseAdmin.from("short_files").update({ expires_at: null }).eq("created_by", match.id);
+            const { count: lc } = await supabaseAdmin
+              .from("short_links")
+              .update({ expires_at: null, expiry_reminder_sent_at: null } as any, { count: "exact" })
+              .eq("created_by", match.id)
+              .not("expires_at", "is", null);
+            const { count: fc } = await supabaseAdmin
+              .from("short_files")
+              .update({ expires_at: null, expiry_reminder_sent_at: null } as any, { count: "exact" })
+              .eq("created_by", match.id)
+              .not("expires_at", "is", null);
+            linksUpgraded = lc ?? 0;
+            filesUpgraded = fc ?? 0;
           }
         } catch (e) {
           console.warn("kofi upgrade lookup failed", e);
         }
 
-        return Response.json({ ok: true });
+        await logEvent({
+          status: "ok",
+          httpStatus: 200,
+          eventType: payload.type ?? null,
+          email,
+          messageId: payload.message_id ?? null,
+          reason: `+${amount} ${payload.currency ?? ""}`.trim(),
+          linksUpgraded,
+          filesUpgraded,
+          raw: payload,
+        });
+
+        return Response.json({ ok: true, linksUpgraded, filesUpgraded });
       },
 
       GET: async () => Response.json({ ok: true, hint: "POST endpoint for Ko-fi webhooks" }),

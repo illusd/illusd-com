@@ -45,7 +45,13 @@ export function SiteHeader() {
             <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">{t("nav.all_articles")}</Link>
             <Link to="/short-url" onClick={close} className="border-b hairline pb-3">{t("nav.short_url")}</Link>
             {user && (
+              <Link to="/my/illurl" onClick={close} className="border-b hairline pb-3">{t("nav.my_illurl")}</Link>
+            )}
+            {user && (
               <Link to="/message" onClick={close} className="border-b hairline pb-3">{t("nav.message")}</Link>
+            )}
+            {isCreator && (
+              <Link to="/admin/webhooks" onClick={close} className="border-b hairline pb-3 text-sm text-muted-foreground">{t("nav.webhook_events")}</Link>
             )}
             <Link
               to={DONATE_PATH}

@@ -12,6 +12,8 @@
     "donate": "Support Creator",
     "new_article": "New Article",
     "new_announcement": "Post Announcement",
+    "my_illurl": "My illurl",
+    "webhook_events": "Webhook Events",
     "menu": "Menu"
   },
   "home": {
@@ -197,7 +199,8 @@
   },
   "short": {
     "title": "illurl",
-    "desc": "Free illusd.com short links and file-sharing links. Five-character codes, permanent across the whole site.",
+    "desc": "Free illusd.com short links and file-sharing links. Five-character codes.",
+    "membership_note": "Creators and Ko-fi members get permanent links; links from other signed-in users auto-delete after 1 year (a reminder email is sent 7 days before expiry).",
     "tab_link": "Short Link",
     "tab_file": "File Upload",
     "target": "Target URL",

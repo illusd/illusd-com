@@ -72,30 +72,48 @@ function safeUrl(input: string): string {
 }
 
 /**
- * 判斷呼叫者是否為 illusd 會員：
- * - 未登入 → 直接視為訪客，不查 Ko-fi。
- * - 已登入 → 用 access token 取出 email，比對 kofi_supporters。
- * 回傳 { isMember, userId }（userId 若可取得）。
+ * 判斷呼叫者的權限：
+ * - 創作者（allowlist）→ 永久連結
+ * - Ko-fi 會員 → 永久連結
+ * - 一般登入者 / 未登入 → 1 年有效期
  */
-async function resolveCallerMembership(): Promise<{ isMember: boolean; userId: string | null }> {
+async function resolveCaller(): Promise<{ isPermanent: boolean; userId: string | null }> {
   const auth = getRequest().headers.get("authorization");
-  if (!auth || !/^Bearer\s+/i.test(auth)) return { isMember: false, userId: null };
+  if (!auth || !/^Bearer\s+/i.test(auth)) return { isPermanent: false, userId: null };
   const token = auth.replace(/^Bearer\s+/i, "").trim();
-  if (!token) return { isMember: false, userId: null };
+  if (!token) return { isPermanent: false, userId: null };
   try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data, error } = await supabaseAdmin.auth.getUser(token);
-    if (error || !data?.user?.email) return { isMember: false, userId: data?.user?.id ?? null };
-    const email = data.user.email.toLowerCase();
-    const { data: row } = await supabaseAdmin
-      .from("kofi_supporters" as any)
-      .select("email")
-      .eq("email", email)
-      .maybeSingle();
-    return { isMember: !!row, userId: data.user.id };
+    if (error || !data?.user) return { isPermanent: false, userId: null };
+    const userId = data.user.id;
+    const email = (data.user.email ?? "").toLowerCase();
+
+    // Creator allowlist → unlimited permanent
+    if (email) {
+      const { data: isCreator } = await supabaseAdmin.rpc("is_creator_by_email" as any, { _email: email });
+      if (isCreator) return { isPermanent: true, userId };
+      const { data: kofi } = await supabaseAdmin
+        .from("kofi_supporters" as any)
+        .select("email")
+        .eq("email", email)
+        .maybeSingle();
+      if (kofi) return { isPermanent: true, userId };
+    }
+    return { isPermanent: false, userId };
   } catch {
-    return { isMember: false, userId: null };
+    return { isPermanent: false, userId: null };
   }
+}
+
+async function requireUserId(): Promise<string> {
+  const auth = getRequest().headers.get("authorization");
+  if (!auth || !/^Bearer\s+/i.test(auth)) throw new Error("請先登入");
+  const token = auth.replace(/^Bearer\s+/i, "").trim();
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !data?.user?.id) throw new Error("請先登入");
+  return data.user.id;
 }
 
 interface CreateShortLinkInput {
@@ -109,8 +127,8 @@ export const createShortLink = createServerFn({ method: "POST" })
     const captcha = await verifyRecaptchaServer(data.capToken);
     if (!captcha.ok) throw new Error(captcha.error || "人機驗證失敗，請重試");
     const target = safeUrl(data.targetUrl);
-    const { isMember, userId } = await resolveCallerMembership();
-    const expiresAt = isMember ? null : new Date(Date.now() + ONE_YEAR_MS).toISOString();
+    const { isPermanent, userId } = await resolveCaller();
+    const expiresAt = isPermanent ? null : new Date(Date.now() + ONE_YEAR_MS).toISOString();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const code = await reserveCode(async (c) => {
       const { data: row } = await supabaseAdmin.from("short_links").select("code").eq("code", c).maybeSingle();
@@ -120,7 +138,7 @@ export const createShortLink = createServerFn({ method: "POST" })
       .from("short_links")
       .insert({ code, target_url: target, created_by: userId, expires_at: expiresAt } as any);
     if (error) throw new Error(error.message);
-    return { code, url: `https://illusd.com/${code}`, expiresAt, isMember };
+    return { code, url: `https://illusd.com/${code}`, expiresAt, isMember: isPermanent };
   });
 
 interface PrepareShortFileInput {
@@ -139,8 +157,8 @@ export const prepareShortFile = createServerFn({ method: "POST" })
     if (!Number.isFinite(data.size) || data.size <= 0 || data.size > MAX_FILE_BYTES) {
       throw new Error(`檔案大小須在 1 byte 到 ${MAX_FILE_BYTES / (1024 * 1024)} MB 之間`);
     }
-    const { isMember, userId } = await resolveCallerMembership();
-    const expiresAt = isMember ? null : new Date(Date.now() + ONE_YEAR_MS).toISOString();
+    const { isPermanent, userId } = await resolveCaller();
+    const expiresAt = isPermanent ? null : new Date(Date.now() + ONE_YEAR_MS).toISOString();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const code = await reserveCode(async (c) => {
       const { data: row } = await supabaseAdmin.from("short_files").select("code").eq("code", c).maybeSingle();
@@ -171,6 +189,90 @@ export const prepareShortFile = createServerFn({ method: "POST" })
       token: signed.token,
       path: storagePath,
       expiresAt,
-      isMember,
+      isMember: isPermanent,
     };
+  });
+
+// --- My illurl: list & delete ---
+
+export interface MyShortLinkRow {
+  kind: "link" | "file";
+  code: string;
+  target: string; // target url or filename
+  url: string;
+  createdAt: string;
+  expiresAt: string | null;
+}
+
+export const listMyShortLinks = createServerFn({ method: "POST" })
+  .handler(async (): Promise<MyShortLinkRow[]> => {
+    const userId = await requireUserId();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const [{ data: links }, { data: files }] = await Promise.all([
+      supabaseAdmin
+        .from("short_links")
+        .select("code, target_url, created_at, expires_at")
+        .eq("created_by", userId)
+        .order("created_at", { ascending: false }),
+      supabaseAdmin
+        .from("short_files")
+        .select("code, filename, created_at, expires_at")
+        .eq("created_by", userId)
+        .order("created_at", { ascending: false }),
+    ]);
+    const rows: MyShortLinkRow[] = [];
+    for (const r of (links ?? []) as any[]) {
+      rows.push({
+        kind: "link",
+        code: r.code,
+        target: r.target_url,
+        url: `https://illusd.com/${r.code}`,
+        createdAt: r.created_at,
+        expiresAt: r.expires_at,
+      });
+    }
+    for (const r of (files ?? []) as any[]) {
+      rows.push({
+        kind: "file",
+        code: r.code,
+        target: r.filename,
+        url: `https://illusd.com/f/${r.code}`,
+        createdAt: r.created_at,
+        expiresAt: r.expires_at,
+      });
+    }
+    rows.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+    return rows;
+  });
+
+export const deleteMyShort = createServerFn({ method: "POST" })
+  .inputValidator((d: { kind: "link" | "file"; code: string }) => d)
+  .handler(async ({ data }) => {
+    const userId = await requireUserId();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    if (data.kind === "link") {
+      const { error } = await supabaseAdmin
+        .from("short_links")
+        .delete()
+        .eq("code", data.code)
+        .eq("created_by", userId);
+      if (error) throw new Error(error.message);
+    } else {
+      const { data: row } = await supabaseAdmin
+        .from("short_files")
+        .select("storage_path")
+        .eq("code", data.code)
+        .eq("created_by", userId)
+        .maybeSingle();
+      if (row?.storage_path) {
+        await supabaseAdmin.storage.from("illurl-files").remove([row.storage_path]);
+      }
+      const { error } = await supabaseAdmin
+        .from("short_files")
+        .delete()
+        .eq("code", data.code)
+        .eq("created_by", userId);
+      if (error) throw new Error(error.message);
+    }
+    return { ok: true };
   });

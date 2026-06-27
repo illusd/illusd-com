@@ -27,11 +27,14 @@ import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
+import { Route as AuthenticatedMyIllurlRouteImport } from './routes/_authenticated/my.illurl'
+import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin.webhooks'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPushLatestRouteImport } from './routes/api/public/push/latest'
 import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
+import { Route as ApiPublicHooksIllurlExpiryRemindersRouteImport } from './routes/api/public/hooks/illurl-expiry-reminders'
 
 const WebhooksRoute = WebhooksRouteImport.update({
   id: '/webhooks',
@@ -122,6 +125,17 @@ const ArticleIdEditRoute = ArticleIdEditRouteImport.update({
   path: '/edit',
   getParentRoute: () => ArticleIdRoute,
 } as any)
+const AuthenticatedMyIllurlRoute = AuthenticatedMyIllurlRouteImport.update({
+  id: '/my/illurl',
+  path: '/my/illurl',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminWebhooksRoute =
+  AuthenticatedAdminWebhooksRouteImport.update({
+    id: '/admin/webhooks',
+    path: '/admin/webhooks',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -149,6 +163,12 @@ const ApiPublicHooksNotifyNewArticleRoute =
     path: '/api/public/hooks/notify-new-article',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksIllurlExpiryRemindersRoute =
+  ApiPublicHooksIllurlExpiryRemindersRouteImport.update({
+    id: '/api/public/hooks/illurl-expiry-reminders',
+    path: '/api/public/hooks/illurl-expiry-reminders',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -167,7 +187,10 @@ export interface FileRoutesByFullPath {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/admin/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
+  '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -191,7 +214,10 @@ export interface FileRoutesByTo {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/admin/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
+  '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -217,7 +243,10 @@ export interface FileRoutesById {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
+  '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -243,7 +272,10 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/admin/webhooks'
+    | '/my/illurl'
     | '/article/$id/edit'
+    | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
@@ -267,7 +299,10 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/admin/webhooks'
+    | '/my/illurl'
     | '/article/$id/edit'
+    | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
@@ -292,7 +327,10 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/_authenticated/admin/webhooks'
+    | '/_authenticated/my/illurl'
     | '/article/$id/edit'
+    | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
@@ -317,6 +355,7 @@ export interface RootRouteChildren {
   ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
   TopicAllRoute: typeof TopicAllRoute
+  ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
   ApiPublicPushLatestRoute: typeof ApiPublicPushLatestRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -452,6 +491,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleIdEditRouteImport
       parentRoute: typeof ArticleIdRoute
     }
+    '/_authenticated/my/illurl': {
+      id: '/_authenticated/my/illurl'
+      path: '/my/illurl'
+      fullPath: '/my/illurl'
+      preLoaderRoute: typeof AuthenticatedMyIllurlRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/webhooks': {
+      id: '/_authenticated/admin/webhooks'
+      path: '/admin/webhooks'
+      fullPath: '/admin/webhooks'
+      preLoaderRoute: typeof AuthenticatedAdminWebhooksRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
       path: '/lovable/email/queue/process'
@@ -487,15 +540,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksNotifyNewArticleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/illurl-expiry-reminders': {
+      id: '/api/public/hooks/illurl-expiry-reminders'
+      path: '/api/public/hooks/illurl-expiry-reminders'
+      fullPath: '/api/public/hooks/illurl-expiry-reminders'
+      preLoaderRoute: typeof ApiPublicHooksIllurlExpiryRemindersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedMessageRoute: typeof AuthenticatedMessageRoute
+  AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRoute
+  AuthenticatedMyIllurlRoute: typeof AuthenticatedMyIllurlRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMessageRoute: AuthenticatedMessageRoute,
+  AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRoute,
+  AuthenticatedMyIllurlRoute: AuthenticatedMyIllurlRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -530,6 +594,8 @@ const rootRouteChildren: RootRouteChildren = {
   ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
   TopicAllRoute: TopicAllRoute,
+  ApiPublicHooksIllurlExpiryRemindersRoute:
+    ApiPublicHooksIllurlExpiryRemindersRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
   ApiPublicPushLatestRoute: ApiPublicPushLatestRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
