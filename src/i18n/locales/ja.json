@@ -111,6 +111,7 @@
     "creator_only_publish": "記事を公開できるのはクリエイターのみです",
     "help_markdown": "===== 見出し Headings =====\n# H1（記事内で1回）\n## H2（章）\n### H3（小節）\n\n===== 文字スタイル Inline =====\n**太字**　__これも太字__\n*斜体*　_これも斜体_\n~~取り消し線~~\n`インラインコード`\n\n===== 引用 Blockquote =====\n> 1行引用\n>\n> 2段落目\n>> 入れ子の引用\n\n===== リスト Lists =====\n- 箇条書き A\n- 箇条書き B\n  - 子項目\n\n1. 番号付き項目 1\n2. 番号付き項目 2\n   1. 子項目\n\n- [ ] 未完了\n- [x] 完了\n\n===== リンクと画像 Links & Images =====\nこれは [リンク](https://illusd.com \"ホバー表示\")\n自動リンク：<https://illusd.com>\n参照リンク：[ドキュメント][doc]\n\n[doc]: https://illusd.com/terms-of-service\n\n画像：\n![代替テキスト](https://example.com/cover.jpg)\n\nクリックできる画像：\n[![代替テキスト](https://example.com/thumb.jpg)](https://illusd.com)\n\n===== 表 Tables =====\n| 項目 | 中央 | 右寄せ |\n| :--- | :---: | ---: |\n| A | 中 | 1 |\n| B | 中 | 22 |\n\n===== コードブロック Code Blocks =====\n```js\nfunction greet(name) {\n  console.log(`hello ${name}`);\n}\n```\n\n```python\ndef add(a, b):\n    return a + b\n```\n\n===== 水平線 Horizontal Rule =====\n---\n\n===== エスケープと改行 Escape / Line Break =====\n星をそのまま表示：\\*斜体にしない\\*\n段落間は空行を入れ、同じ段落で改行する場合は行末に半角スペース2つを入れます。",
     "format_placeholder": "#1 (プラットフォーム選び)-誰でもできるVIBE",
+    "episode_num_placeholder": "1",
     "episode_title_placeholder": "プラットフォーム選び",
     "topic_title_placeholder": "誰でもできるVIBE",
     "content_placeholder": "# Hello illusd ..."

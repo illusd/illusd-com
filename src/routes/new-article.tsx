@@ -150,7 +150,7 @@ function NewArticle() {
               min={1}
               value={episodeNum}
               onChange={(e) => setEpisodeNum(e.target.value)}
-              placeholder="1"
+              placeholder={t("editor.episode_num_placeholder")}
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </section>

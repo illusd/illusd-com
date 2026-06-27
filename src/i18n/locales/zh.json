@@ -111,6 +111,7 @@
     "creator_only_publish": "僅創作者可以發布文章",
     "help_markdown": "===== 標題 Headings =====\n# 一級標題（H1，整篇文章只用一次）\n## 二級標題（H2，章節用）\n### 三級標題（H3，小節用）\n\n===== 文字樣式 Inline =====\n**粗體**　__也是粗體__\n*斜體*　_也是斜體_\n~~刪除線~~\n`行內程式 code`\n\n===== 引用 Blockquote =====\n> 單行引用\n>\n> 第二段引用\n>> 巢狀引用\n\n===== 清單 Lists =====\n- 無序清單項目 A\n- 無序清單項目 B\n  - 子項目\n\n1. 有序清單第一項\n2. 有序清單第二項\n   1. 有序子項\n\n- [ ] 待辦事項\n- [x] 已完成事項\n\n===== 連結與圖片 Links & Images =====\n這是一個 [連結文字](https://illusd.com \"滑鼠停留提示\")\n自動連結：<https://illusd.com>\n參考式連結：請見 [文件][doc]\n\n[doc]: https://illusd.com/terms-of-service\n\n圖片：\n![圖片替代文字](https://example.com/cover.jpg)\n\n可點擊的圖片連結：\n[![替代文字](https://example.com/thumb.jpg)](https://illusd.com)\n\n===== 表格 Tables =====\n| 欄位 | 對齊置中 | 對齊靠右 |\n| :--- | :---: | ---: |\n| A | 中 | 1 |\n| B | 中 | 22 |\n\n===== 程式碼 Code Blocks =====\n```js\nfunction greet(name) {\n  console.log(`hello ${name}`);\n}\n```\n\n```python\ndef add(a, b):\n    return a + b\n```\n\n===== 水平線 Horizontal Rule =====\n---\n\n===== 跳脫與換行 Escape / Line Break =====\n若要顯示星號：\\*不變斜體\\*\n段落之間請空一行；同段換行請在行尾加兩個空格。",
     "format_placeholder": "#1 (平台選擇)-VIBE人人都可實現",
+    "episode_num_placeholder": "1",
     "episode_title_placeholder": "平台選擇",
     "topic_title_placeholder": "VIBE人人都可實現",
     "content_placeholder": "# Hello illusd ..."
