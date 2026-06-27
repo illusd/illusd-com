@@ -54,7 +54,7 @@ function NewArticle() {
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/sign-up" });
     if (!loading && user && !isCreator) {
-      toast.error("僅創作者可以發布文章");
+      toast.error(t("editor.creator_only_publish"));
       navigate({ to: "/" });
     }
   }, [user, isCreator, loading, navigate]);
@@ -86,7 +86,7 @@ function NewArticle() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    if (!topicTitle.trim()) { toast.error("請填寫話題標題 / Topic required"); return; }
+    if (!topicTitle.trim()) { toast.error(t("editor.topic_required")); return; }
 
     const finalRaw = rawTitle.trim() ||
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
@@ -105,7 +105,7 @@ function NewArticle() {
 
     if (error) { toast.error(error.message); return; }
     clearAllDrafts();
-    toast.success("已發布 / Published");
+    toast.success(t("editor.published"));
     navigate({ to: "/article/$id", params: { id: data!.id } });
   };
 
@@ -118,7 +118,7 @@ function NewArticle() {
       <div className="sticky top-0 bg-background/90 backdrop-blur border-b hairline">
         <div className="mx-auto max-w-5xl px-5 h-14 flex items-center justify-between">
           <div className="font-serif text-lg">{t("editor.title")}</div>
-          <Link to="/" aria-label="close" className="p-2 -mr-2">
+          <Link to="/" aria-label={t("common.close")} className="p-2 -mr-2">
             <X size={20} strokeWidth={1.25} />
           </Link>
         </div>

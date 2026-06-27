@@ -8,6 +8,7 @@ import { formatDisplay } from "@/lib/titleParser";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { CommentSection } from "@/components/CommentSection";
 import { DONATE_PATH } from "@/lib/donate";
+import { useArticleCoverUrl } from "@/hooks/useArticleCoverUrl";
 
 interface Article {
   id: string;
@@ -87,7 +88,7 @@ export const Route = createFileRoute("/article/$id")({
 function ArticleDetail() {
   const { id } = Route.useParams();
   const { user, isCreator } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
   const [article, setArticle] = useState<Article | null>(null);
@@ -95,6 +96,7 @@ function ArticleDetail() {
   const [liked, setLiked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [authorName, setAuthorName] = useState<string>("");
+  const coverUrl = useArticleCoverUrl(article?.cover_url);
 
   useEffect(() => {
     let cancelled = false;
@@ -132,38 +134,39 @@ function ArticleDetail() {
     }
   };
 
-  if (loading) return <div className="p-10 text-sm text-muted-foreground">載入中…</div>;
-  if (!article) return <div className="p-10">找不到文章。<Link to="/" className="underline ml-2">回首頁</Link></div>;
+  if (loading) return <div className="p-10 text-sm text-muted-foreground">{t("common.loading")}</div>;
+  if (!article) return <div className="p-10">{t("common.not_found")}<Link to="/" className="underline ml-2">{t("common.back_home")}</Link></div>;
 
   const parsed = {
     episodeNum: article.episode_num,
     episodeTitle: article.episode_title,
     topicTitle: article.topic_title,
   };
+  const locale = i18n.language === "zh" ? "zh-TW" : i18n.language === "ja" ? "ja-JP" : "en-US";
 
   return (
     <main className="min-h-[calc(100vh-3.5rem)]">
       <article className="mx-auto max-w-2xl px-5 pt-12 pb-16">
         <div className="text-[11px] tracking-[0.3em] text-muted-foreground uppercase">
-          {parsed.episodeNum != null ? `EP.${parsed.episodeNum}` : "ARTICLE"}
+          {parsed.episodeNum != null ? `EP.${parsed.episodeNum}` : t("article.article_label")}
         </div>
         <h1 className="font-serif text-3xl md:text-4xl leading-snug mt-3">
           {parsed.episodeTitle ?? parsed.topicTitle}
         </h1>
         <div className="text-sm text-muted-foreground mt-3">
-          自「{parsed.topicTitle}」 · {authorName || "創作者"} · {new Date(article.created_at).toLocaleDateString("zh-TW")}
+          {t("article.from_series", { topic: parsed.topicTitle })} · {authorName || t("article.creator_tag")} · {new Date(article.created_at).toLocaleDateString(locale)}
         </div>
 
-        {article.cover_url && (
+        {coverUrl && (
           <div className="mt-8 border hairline overflow-hidden">
-            <img src={article.cover_url} alt={parsed.episodeTitle ?? parsed.topicTitle} className="w-full" />
+            <img src={coverUrl} alt={parsed.episodeTitle ?? parsed.topicTitle} className="w-full" />
           </div>
         )}
 
         <div className="mt-10">
           {article.content
             ? <MarkdownRenderer content={article.content} />
-            : <span className="text-muted-foreground">（無內文）</span>}
+            : <span className="text-muted-foreground">{t("article.no_content")}</span>}
         </div>
 
         <div className="mt-12 flex flex-wrap items-center gap-3 pt-6 border-t hairline">
@@ -190,7 +193,7 @@ function ArticleDetail() {
               className="flex items-center gap-2 text-sm border hairline px-4 py-2 hover:bg-accent transition"
             >
               <Edit2 size={16} strokeWidth={1.5} />
-              編輯
+              {t("article.edit")}
             </Link>
           )}
           <span className="text-xs text-muted-foreground ml-auto">{formatDisplay(parsed)}</span>
