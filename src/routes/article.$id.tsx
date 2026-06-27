@@ -9,6 +9,7 @@ import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { CommentSection } from "@/components/CommentSection";
 import { DONATE_PATH } from "@/lib/donate";
 import { useArticleCoverUrl } from "@/hooks/useArticleCoverUrl";
+import i18n from "@/i18n";
 
 interface Article {
   id: string;
@@ -38,8 +39,8 @@ export const Route = createFileRoute("/article/$id")({
     if (!a) {
       return {
         meta: [
-          { title: "文章 — illusd" },
-          { name: "description", content: "illusd 上的 Vibe Coding 文章。" },
+          { title: i18n.t("meta.article_fallback_title") },
+          { name: "description", content: i18n.t("meta.article_fallback_description") },
           { property: "og:url", content: url },
         ],
         links: [{ rel: "canonical", href: url }],
@@ -50,7 +51,7 @@ export const Route = createFileRoute("/article/$id")({
       : a.topic_title;
     const title = `${headline} — ${a.topic_title} | illusd`;
     const plain = (a.content || "").replace(/\s+/g, " ").trim();
-    const description = (plain || `《${a.topic_title}》系列文章，由 illusd 創作者發表。`).slice(0, 158);
+    const description = (plain || i18n.t("meta.article_series_description", { topic: a.topic_title })).slice(0, 158);
     return {
       meta: [
         { title },

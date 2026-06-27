@@ -81,6 +81,7 @@ function EditArticle() {
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
 
     setSubmitting(true);
+    await (supabase as any).rpc("sync_current_user_creator_profile");
     const { error } = await supabase
       .from("articles")
       .update({
