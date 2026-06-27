@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { PushSubscribeButton } from "./PushSubscribeButton";
 
-import { DONATE_URL } from "@/lib/donate";
+import { DONATE_PATH } from "@/lib/donate";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -47,15 +47,13 @@ export function SiteHeader() {
             {user && (
               <Link to="/message" onClick={close} className="border-b hairline pb-3">{t("nav.message")}</Link>
             )}
-            <a
-              href={DONATE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to={DONATE_PATH}
               onClick={close}
               className="border-b hairline pb-3 flex items-center gap-2"
             >
               <Coffee size={18} strokeWidth={1.25} /> {t("nav.donate")}
-            </a>
+            </Link>
 
             <div className="border-b hairline pb-3 flex items-center justify-between text-sm font-sans">
               <LanguageSwitcher />

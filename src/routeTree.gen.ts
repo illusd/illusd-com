@@ -16,6 +16,7 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as ShortUrlRouteImport } from './routes/short-url'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NewArticleRouteImport } from './routes/new-article'
+import { Route as DonateRouteImport } from './routes/donate'
 import { Route as CodeRouteImport } from './routes/$code'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -63,6 +64,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const NewArticleRoute = NewArticleRouteImport.update({
   id: '/new-article',
   path: '/new-article',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CodeRoute = CodeRouteImport.update({
@@ -135,6 +141,7 @@ const ApiPublicHooksNotifyNewArticleRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$code': typeof CodeRoute
+  '/donate': typeof DonateRoute
   '/new-article': typeof NewArticleRoute
   '/privacy': typeof PrivacyRoute
   '/short-url': typeof ShortUrlRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$code': typeof CodeRoute
+  '/donate': typeof DonateRoute
   '/new-article': typeof NewArticleRoute
   '/privacy': typeof PrivacyRoute
   '/short-url': typeof ShortUrlRoute
@@ -179,6 +187,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/$code': typeof CodeRoute
+  '/donate': typeof DonateRoute
   '/new-article': typeof NewArticleRoute
   '/privacy': typeof PrivacyRoute
   '/short-url': typeof ShortUrlRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/$code'
+    | '/donate'
     | '/new-article'
     | '/privacy'
     | '/short-url'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$code'
+    | '/donate'
     | '/new-article'
     | '/privacy'
     | '/short-url'
@@ -245,6 +256,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/$code'
+    | '/donate'
     | '/new-article'
     | '/privacy'
     | '/short-url'
@@ -268,6 +280,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CodeRoute: typeof CodeRoute
+  DonateRoute: typeof DonateRoute
   NewArticleRoute: typeof NewArticleRoute
   PrivacyRoute: typeof PrivacyRoute
   ShortUrlRoute: typeof ShortUrlRoute
@@ -334,6 +347,13 @@ declare module '@tanstack/react-router' {
       path: '/new-article'
       fullPath: '/new-article'
       preLoaderRoute: typeof NewArticleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$code': {
@@ -457,6 +477,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CodeRoute: CodeRoute,
+  DonateRoute: DonateRoute,
   NewArticleRoute: NewArticleRoute,
   PrivacyRoute: PrivacyRoute,
   ShortUrlRoute: ShortUrlRoute,

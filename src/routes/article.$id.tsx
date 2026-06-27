@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { formatDisplay } from "@/lib/titleParser";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { CommentSection } from "@/components/CommentSection";
-import { DONATE_URL } from "@/lib/donate";
+import { DONATE_PATH } from "@/lib/donate";
 
 interface Article {
   id: string;
@@ -176,15 +176,13 @@ function ArticleDetail() {
             <Heart size={16} strokeWidth={1.5} fill={liked ? "currentColor" : "none"} />
             {likeCount}
           </button>
-          <a
-            href={DONATE_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to={DONATE_PATH}
             className="flex items-center gap-2 text-sm border hairline px-4 py-2 hover:bg-accent transition"
           >
             <Coffee size={16} strokeWidth={1.5} />
             {t("article.donate")}
-          </a>
+          </Link>
           {user?.id === article.author_id && (
             <Link
               to="/article/$id/edit"
