@@ -70,7 +70,7 @@ function Index() {
         </section>
 
         <aside
-          aria-label="Google sign-in privacy notice"
+          aria-label={t("home.google_notice_label")}
           className="mt-6 border hairline p-5 text-sm leading-relaxed text-foreground/80 font-sans"
         >
           {t("home.google_notice")}

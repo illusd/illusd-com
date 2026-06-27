@@ -22,6 +22,7 @@
     "about_title": "About illusd",
     "about_body": "illusd is a Vibe Coding article platform for people starting from zero. We document the process of learning to code, building products and writing articles so anyone — at any age — can follow along and ship their first work. Read articles, comment, subscribe to new-article notifications, or sign in to chat with the creators directly.",
     "google_notice": "Welcome to my personal site! illusd offers a comment feature. You can sign in securely with your Google account; we only use your basic public profile (email and name) to create a member record and will never use it for anything else.",
+    "google_notice_label": "Google sign-in data usage notice",
     "featured": "Featured Articles",
     "all": "All",
     "empty": "No articles yet. Creators can add the first one with the + button.",

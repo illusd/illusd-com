@@ -43,6 +43,7 @@ export function AnnouncementMarquee() {
   if (items.length === 0) return null;
 
   const text = items.map((a) => a.content).join("　·　");
+  const loopText = Array.from({ length: 6 }, () => text).join("　·　");
 
   return (
     <div className="border-b hairline bg-accent/40 overflow-hidden">
@@ -53,8 +54,8 @@ export function AnnouncementMarquee() {
         </span>
         <div className="illusd-marquee-viewport relative flex-1 overflow-hidden" aria-label={text}>
           <div className="illusd-marquee-track whitespace-nowrap will-change-transform">
-            <span>{text}</span>
-            <span aria-hidden="true">{text}</span>
+            <span>{loopText}</span>
+            <span aria-hidden="true">{loopText}</span>
           </div>
         </div>
       </div>
@@ -64,7 +65,7 @@ export function AnnouncementMarquee() {
           display: inline-flex;
           gap: var(--marquee-gap);
           min-width: max-content;
-          animation: illusd-marquee-scroll 48s linear infinite;
+          animation: illusd-marquee-scroll 36s linear infinite;
         }
         .illusd-marquee-track span { flex: 0 0 auto; }
         .illusd-marquee-track:hover { animation-play-state: paused; }
