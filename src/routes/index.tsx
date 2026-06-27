@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
+import { AnnouncementMarquee } from "@/components/AnnouncementMarquee";
 
 export const Route = createFileRoute("/")({
   head: () => {
-    const title = "illusd — 從10歲開始，做出屬於自己的作品";
+    const title = "illusd.com — 從10歲開始，做出屬於自己的作品";
     const description =
       "illusd 是 Vibe Coding 文章平台：從0開始學寫程式、做產品、寫文章。10歲也能踏出第一步——我可以，你也可以。";
     const url = "https://illusd.com/";
@@ -46,20 +47,33 @@ function Index() {
 
   return (
     <main className="min-h-[calc(100vh-3.5rem)]">
-      <section className="mx-auto max-w-3xl px-5 pt-20 pb-24 md:pt-28 md:pb-32">
+      <AnnouncementMarquee />
+
+      <section className="mx-auto max-w-3xl px-5 pt-16 pb-16 md:pt-20 md:pb-20">
         <p className="text-xs tracking-[0.4em] text-muted-foreground mb-6">ILLUSD · ESTD 2025</p>
-        <h1 className="font-serif text-3xl md:text-5xl leading-[1.35] tracking-wide">
+        <h1 className="font-serif text-4xl md:text-6xl leading-tight tracking-wide">
+          {t("home.site_title")}
+        </h1>
+        <p className="mt-8 font-serif text-xl md:text-2xl leading-[1.5]">
           {t("home.tagline_a")}<br className="hidden md:block" />
           {t("home.tagline_b")}
-        </h1>
-        <p className="mt-6 text-sm text-muted-foreground">{t("home.subline")}</p>
+        </p>
+        <p className="mt-4 text-sm text-muted-foreground">{t("home.subline")}</p>
         <div className="mt-10 h-px w-16 bg-foreground/40" />
 
-        <aside
-          aria-label="Google 登入隱私說明"
-          className="mt-12 border hairline p-5 text-sm leading-relaxed text-foreground/80 font-sans"
+        <section
+          aria-labelledby="about-illusd"
+          className="mt-12 border hairline p-6 text-sm leading-relaxed font-sans"
         >
-          歡迎來到我的個人網站！本站提供留言功能。您可以透過 Google 帳戶安全地登入，我們僅會使用您的基本公開資料（Email 與姓名）來建立會員檔案，絕不會將資料用於其他用途。
+          <h2 id="about-illusd" className="font-serif text-lg mb-3">{t("home.about_title")}</h2>
+          <p className="text-foreground/80">{t("home.about_body")}</p>
+        </section>
+
+        <aside
+          aria-label="Google sign-in privacy notice"
+          className="mt-6 border hairline p-5 text-sm leading-relaxed text-foreground/80 font-sans"
+        >
+          {t("home.google_notice")}
         </aside>
       </section>
 
@@ -83,10 +97,6 @@ function Index() {
           </div>
         )}
       </section>
-
-      <footer className="border-t hairline py-10 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} illusd
-      </footer>
     </main>
   );
 }

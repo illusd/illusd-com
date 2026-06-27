@@ -19,6 +19,7 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
 
 export function PushSubscribeButton({ className = "" }: { className?: string }) {
   const { t } = useTranslation();
+  const [mounted, setMounted] = useState(false);
   const [supported, setSupported] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -26,6 +27,7 @@ export function PushSubscribeButton({ className = "" }: { className?: string }) 
   const unsub = useServerFn(unsubscribePush);
 
   useEffect(() => {
+    setMounted(true);
     if (typeof window === "undefined") return;
     if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
       setSupported(false);
@@ -82,6 +84,20 @@ export function PushSubscribeButton({ className = "" }: { className?: string }) 
       setBusy(false);
     }
   };
+
+  if (!mounted) {
+    // Avoid SSR/client text mismatch — render an inert shell on the server.
+    return (
+      <span
+        suppressHydrationWarning
+        className={`inline-flex items-center gap-2 text-sm border hairline px-3 py-1.5 opacity-0 ${className}`}
+        aria-hidden="true"
+      >
+        <Bell size={14} strokeWidth={1.5} />
+        <span>—</span>
+      </span>
+    );
+  }
 
   if (!supported) return null;
 
