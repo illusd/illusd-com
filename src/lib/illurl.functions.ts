@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequestHeader } from "@tanstack/react-start/server";
+import { getRequest } from "@tanstack/react-start/server";
 
 function describeRecaptchaServerError(errors: string[] = []): string {
   if (errors.includes("missing-input-secret")) return "伺服器尚未設定 reCAPTCHA Secret Key（captcha_api）";
@@ -78,7 +78,7 @@ function safeUrl(input: string): string {
  * 回傳 { isMember, userId }（userId 若可取得）。
  */
 async function resolveCallerMembership(): Promise<{ isMember: boolean; userId: string | null }> {
-  const auth = getRequestHeader("authorization");
+  const auth = getRequest().headers.get("authorization");
   if (!auth || !/^Bearer\s+/i.test(auth)) return { isMember: false, userId: null };
   const token = auth.replace(/^Bearer\s+/i, "").trim();
   if (!token) return { isMember: false, userId: null };
