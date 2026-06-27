@@ -123,7 +123,9 @@
     "preview_alt": "Cover preview",
     "remove_cover": "Remove cover",
     "uploading": "Uploading…",
-    "cta": "Upload cover (jpg / png, max 10MB)"
+    "cta": "Upload cover (jpg / png, max 10MB)",
+    "replace_cover": "Replace cover",
+    "upload_hint": "If the preview does not appear immediately, the uploaded image will still load through a secure link."
   },
   "markdown": {
     "unclosed_fence": "Unclosed ``` code fence",
@@ -184,7 +186,8 @@
     "title": "Support Creator",
     "desc": "Pay securely via Ko-fi. After a successful donation you'll be returned to /thanks. We never collect any card or payment information.",
     "fallback": "Can't see the window?",
-    "open_kofi": "Open Ko-fi in a new tab"
+    "open_kofi": "Open Ko-fi in a new tab",
+    "support_kofi_title": "Support illusd on Ko-fi"
   },
   "thanks": {
     "title": "Thank you for your support!",
@@ -225,7 +228,8 @@
     "download": "Download",
     "original_link": "Original link",
     "copy": "Copy",
-    "back_home_plain": "Home"
+    "back_home_plain": "Home",
+    "delete": "Delete"
   },
   "meta": {
     "topic_title": "All Articles — illusd",

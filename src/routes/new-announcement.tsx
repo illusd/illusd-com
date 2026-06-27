@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { toast } from "sonner";
 import { X, Trash2, Megaphone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/new-announcement")({
   head: () => ({
     meta: [
-      { title: "張貼公告 — illusd" },
+      { title: i18n.t("meta.new_announcement_title") },
       { name: "robots", content: "noindex" },
     ],
   }),

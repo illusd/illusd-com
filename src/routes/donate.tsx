@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { KOFI_EMBED_URL, KOFI_URL, KOFI_USERNAME } from "@/lib/donate";
 
 export const Route = createFileRoute("/donate")({
   head: () => {
-    const title = "贊助創作者 — illusd";
-    const description = "透過 Ko-fi 支持 illusd 的創作者，每一份心意都讓我們走得更遠。";
+    const title = i18n.t("meta.donate_title");
+    const description = i18n.t("meta.donate_description");
     const url = "https://illusd.com/donate";
     return {
       meta: [
@@ -59,7 +60,7 @@ function DonatePage() {
           <iframe
             id="kofiframe"
             src={KOFI_EMBED_URL}
-            title={`Support ${KOFI_USERNAME} on Ko-fi`}
+            title={t("donate_page.support_kofi_title")}
             style={{ border: "none", width: "100%", padding: "4px", background: "#fff" }}
             height={712}
           />

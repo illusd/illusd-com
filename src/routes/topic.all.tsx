@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 
 export const Route = createFileRoute("/topic/all")({
   head: () => {
-    const title = "所有文章 — illusd";
-    const description = "瀏覽 illusd 上所有 Vibe Coding 話題與集數，依主題或集數篩選你想看的文章。";
+    const title = i18n.t("meta.topic_title");
+    const description = i18n.t("meta.topic_description");
     const url = "https://illusd.com/topic/all";
     return {
       meta: [

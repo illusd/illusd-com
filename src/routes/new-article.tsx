@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
@@ -12,8 +13,8 @@ import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/new-article")({
   head: () => {
-    const title = "撰寫文章 — illusd";
-    const description = "創作者專用：在 illusd 上發表新的 Vibe Coding 文章。";
+    const title = i18n.t("meta.new_article_title");
+    const description = i18n.t("meta.new_article_description");
     const url = "https://illusd.com/new-article";
     return {
       meta: [
@@ -132,7 +133,7 @@ function NewArticle() {
           <input
             value={rawTitle}
             onChange={(e) => setRawTitle(e.target.value)}
-            placeholder="#1 (平台選擇)-VIBE人人都可實現"
+            placeholder={t("editor.format_placeholder")}
             className="w-full bg-transparent border-b hairline py-2 text-base focus:outline-none focus:border-foreground"
           />
           <p className="text-[11px] text-muted-foreground mt-1">{t("editor.format_hint")}</p>
@@ -159,7 +160,7 @@ function NewArticle() {
             <input
               value={episodeTitle}
               onChange={(e) => setEpisodeTitle(e.target.value)}
-              placeholder="平台選擇"
+              placeholder={t("editor.episode_title_placeholder")}
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </section>
@@ -174,7 +175,7 @@ function NewArticle() {
             onChange={(e) => setTopicTitle(e.target.value)}
             list="topic-options"
             required
-            placeholder="VIBE人人都可實現"
+            placeholder={t("editor.topic_title_placeholder")}
             className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
           />
           <datalist id="topic-options">
@@ -197,7 +198,7 @@ function NewArticle() {
           <MarkdownEditor
             value={content}
             onChange={setContent}
-            placeholder="# Hello illusd ..."
+            placeholder={t("editor.content_placeholder")}
           />
         </section>
 

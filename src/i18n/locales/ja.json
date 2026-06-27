@@ -122,7 +122,9 @@
     "preview_alt": "カバープレビュー",
     "remove_cover": "カバーを削除",
     "uploading": "アップロード中…",
-    "cta": "カバーをアップロード（jpg / png、最大 10MB）"
+    "cta": "カバーをアップロード（jpg / png、最大 10MB）",
+    "replace_cover": "カバーを変更",
+    "upload_hint": "プレビューがすぐ表示されない場合でも、アップロード済み画像は安全なリンクで読み込まれます。"
   },
   "markdown": {
     "unclosed_fence": "閉じられていない ``` コードブロックがあります",
@@ -183,7 +185,8 @@
     "title": "クリエイターを応援",
     "desc": "Ko-fi で安全に決済できます。成功すると /thanks に自動で戻ります。カード情報などは一切収集しません。",
     "fallback": "ウィンドウが表示されない場合は",
-    "open_kofi": "新しいタブで Ko-fi を開く"
+    "open_kofi": "新しいタブで Ko-fi を開く",
+    "support_kofi_title": "Ko-fi で illusd を支援"
   },
   "thanks": {
     "title": "ご支援ありがとうございます！",
@@ -224,7 +227,8 @@
     "download": "ダウンロード",
     "original_link": "元のリンク",
     "copy": "コピー",
-    "back_home_plain": "ホームへ"
+    "back_home_plain": "ホームへ",
+    "delete": "削除"
   },
   "meta": {
     "topic_title": "すべての記事 — illusd",

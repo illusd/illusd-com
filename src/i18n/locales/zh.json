@@ -122,7 +122,9 @@
     "preview_alt": "封面預覽",
     "remove_cover": "移除封面",
     "uploading": "上傳中…",
-    "cta": "點此上傳封面（jpg / png，最大 10MB）"
+    "cta": "點此上傳封面（jpg / png，最大 10MB）",
+    "replace_cover": "更換封面",
+    "upload_hint": "若預覽未出現，仍會以安全連結載入已上傳圖片。"
   },
   "markdown": {
     "unclosed_fence": "有未關閉的 ``` 程式碼區塊",
@@ -183,7 +185,8 @@
     "title": "贊助創作者",
     "desc": "透過 Ko-fi 安全支付，贊助成功會自動回到 /thanks。我們不會收集任何信用卡或付款資料。",
     "fallback": "無法看到視窗？",
-    "open_kofi": "在新分頁開啟 Ko-fi"
+    "open_kofi": "在新分頁開啟 Ko-fi",
+    "support_kofi_title": "在 Ko-fi 支持 illusd"
   },
   "thanks": {
     "title": "謝謝您的贊助！",
@@ -224,7 +227,8 @@
     "download": "下載",
     "original_link": "原始連結",
     "copy": "複製",
-    "back_home_plain": "回首頁"
+    "back_home_plain": "回首頁",
+    "delete": "刪除"
   },
   "meta": {
     "topic_title": "所有文章 — illusd",

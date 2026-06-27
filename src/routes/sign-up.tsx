@@ -9,11 +9,12 @@ import { verifyRecaptcha } from "@/lib/recaptcha.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { useDraftPersist } from "@/hooks/useDraftPersist";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 
 export const Route = createFileRoute("/sign-up")({
   head: () => {
-    const title = "註冊 / 登入 — illusd";
-    const description = "註冊或登入 illusd，留言、按讚並追蹤你喜歡的創作者與系列。";
+    const title = i18n.t("meta.sign_up_title");
+    const description = i18n.t("meta.sign_up_description");
     const url = "https://illusd.com/sign-up";
     return {
       meta: [

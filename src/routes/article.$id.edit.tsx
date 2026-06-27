@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,7 +13,7 @@ import { MarkdownEditor } from "@/components/MarkdownEditor";
 export const Route = createFileRoute("/article/$id/edit")({
   head: () => ({
     meta: [
-      { title: "編輯文章 — illusd" },
+      { title: i18n.t("meta.edit_article_title") },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -120,7 +121,7 @@ function EditArticle() {
           <input
             value={rawTitle}
             onChange={(e) => setRawTitle(e.target.value)}
-            placeholder="#1 (平台選擇)-VIBE人人都可實現"
+            placeholder={t("editor.format_placeholder")}
             className="w-full bg-transparent border-b hairline py-2 text-base focus:outline-none focus:border-foreground"
           />
         </section>

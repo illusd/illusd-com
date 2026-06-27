@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { toast } from "sonner";
 import { Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,8 +11,8 @@ import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 export const Route = createFileRoute("/_authenticated/message")({
   head: () => ({
     meta: [
-      { title: "聊天室 — illusd" },
-      { name: "description", content: "illusd 登入後聊天室。" },
+      { title: i18n.t("meta.message_title") },
+      { name: "description", content: i18n.t("meta.message_description") },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -114,7 +115,7 @@ function MessagePage() {
                     {new Date(m.created_at).toLocaleString(locale)}
                   </span>
                   {own && (
-                    <button onClick={() => remove(m.id)} aria-label="delete" className="text-muted-foreground hover:text-foreground">
+                    <button onClick={() => remove(m.id)} aria-label={t("common.delete")} className="text-muted-foreground hover:text-foreground">
                       <Trash2 size={12} />
                     </button>
                   )}
