@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getRequestHeader } from "@tanstack/react-start/server";
 
 function describeRecaptchaServerError(errors: string[] = []): string {
   if (errors.includes("missing-input-secret")) return "伺服器尚未設定 reCAPTCHA Secret Key（captcha_api）";
@@ -32,6 +33,7 @@ async function verifyRecaptchaServer(token: string | null | undefined): Promise<
 const DIGITS = "0123456789";
 const ALPHANUM = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const MAX_FILE_BYTES = 200 * 1024 * 1024;
+const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
 function randomCode(charset: string, len = 5): string {
   let out = "";
@@ -41,9 +43,7 @@ function randomCode(charset: string, len = 5): string {
   return out;
 }
 
-async function reserveCode(
-  exists: (code: string) => Promise<boolean>,
-): Promise<string> {
+async function reserveCode(exists: (code: string) => Promise<boolean>): Promise<string> {
   for (let i = 0; i < 8; i++) {
     const code = randomCode(DIGITS);
     if (!(await exists(code))) return code;
@@ -71,6 +71,33 @@ function safeUrl(input: string): string {
   return u.toString();
 }
 
+/**
+ * 判斷呼叫者是否為 illusd 會員：
+ * - 未登入 → 直接視為訪客，不查 Ko-fi。
+ * - 已登入 → 用 access token 取出 email，比對 kofi_supporters。
+ * 回傳 { isMember, userId }（userId 若可取得）。
+ */
+async function resolveCallerMembership(): Promise<{ isMember: boolean; userId: string | null }> {
+  const auth = getRequestHeader("authorization");
+  if (!auth || !/^Bearer\s+/i.test(auth)) return { isMember: false, userId: null };
+  const token = auth.replace(/^Bearer\s+/i, "").trim();
+  if (!token) return { isMember: false, userId: null };
+  try {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.auth.getUser(token);
+    if (error || !data?.user?.email) return { isMember: false, userId: data?.user?.id ?? null };
+    const email = data.user.email.toLowerCase();
+    const { data: row } = await supabaseAdmin
+      .from("kofi_supporters" as any)
+      .select("email")
+      .eq("email", email)
+      .maybeSingle();
+    return { isMember: !!row, userId: data.user.id };
+  } catch {
+    return { isMember: false, userId: null };
+  }
+}
+
 interface CreateShortLinkInput {
   capToken: string;
   targetUrl: string;
@@ -82,20 +109,18 @@ export const createShortLink = createServerFn({ method: "POST" })
     const captcha = await verifyRecaptchaServer(data.capToken);
     if (!captcha.ok) throw new Error(captcha.error || "人機驗證失敗，請重試");
     const target = safeUrl(data.targetUrl);
+    const { isMember, userId } = await resolveCallerMembership();
+    const expiresAt = isMember ? null : new Date(Date.now() + ONE_YEAR_MS).toISOString();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const code = await reserveCode(async (c) => {
-      const { data: row } = await supabaseAdmin
-        .from("short_links")
-        .select("code")
-        .eq("code", c)
-        .maybeSingle();
+      const { data: row } = await supabaseAdmin.from("short_links").select("code").eq("code", c).maybeSingle();
       return !!row;
     });
     const { error } = await supabaseAdmin
       .from("short_links")
-      .insert({ code, target_url: target });
+      .insert({ code, target_url: target, created_by: userId, expires_at: expiresAt } as any);
     if (error) throw new Error(error.message);
-    return { code, url: `https://illusd.com/${code}` };
+    return { code, url: `https://illusd.com/${code}`, expiresAt, isMember };
   });
 
 interface PrepareShortFileInput {
@@ -110,19 +135,15 @@ export const prepareShortFile = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const captcha = await verifyRecaptchaServer(data.capToken);
     if (!captcha.ok) throw new Error(captcha.error || "人機驗證失敗，請重試");
-    if (!data.filename || data.filename.length > 255) {
-      throw new Error("檔名無效");
-    }
+    if (!data.filename || data.filename.length > 255) throw new Error("檔名無效");
     if (!Number.isFinite(data.size) || data.size <= 0 || data.size > MAX_FILE_BYTES) {
       throw new Error(`檔案大小須在 1 byte 到 ${MAX_FILE_BYTES / (1024 * 1024)} MB 之間`);
     }
+    const { isMember, userId } = await resolveCallerMembership();
+    const expiresAt = isMember ? null : new Date(Date.now() + ONE_YEAR_MS).toISOString();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const code = await reserveCode(async (c) => {
-      const { data: row } = await supabaseAdmin
-        .from("short_files")
-        .select("code")
-        .eq("code", c)
-        .maybeSingle();
+      const { data: row } = await supabaseAdmin.from("short_files").select("code").eq("code", c).maybeSingle();
       return !!row;
     });
     const ext = data.filename.includes(".")
@@ -139,7 +160,9 @@ export const prepareShortFile = createServerFn({ method: "POST" })
       filename: data.filename.slice(0, 255),
       mime: data.mime || "application/octet-stream",
       size: data.size,
-    });
+      created_by: userId,
+      expires_at: expiresAt,
+    } as any);
     if (insertErr) throw new Error(insertErr.message);
     return {
       code,
@@ -147,5 +170,7 @@ export const prepareShortFile = createServerFn({ method: "POST" })
       uploadUrl: signed.signedUrl,
       token: signed.token,
       path: storagePath,
+      expiresAt,
+      isMember,
     };
   });
