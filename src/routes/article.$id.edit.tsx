@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
 import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
+import { LegalFooterLinks } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/article/$id/edit")({
   head: () => ({
@@ -189,6 +190,7 @@ function EditArticle() {
           </button>
         </div>
       </form>
+      <LegalFooterLinks className="px-5 pb-8 text-xs text-muted-foreground" />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { parseTitle } from "@/lib/titleParser";
 import { X } from "lucide-react";
 import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
+import { LegalFooterLinks } from "@/components/SiteFooter";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/new-article")({
@@ -216,6 +217,7 @@ function NewArticle() {
           </button>
         </div>
       </form>
+      <LegalFooterLinks className="px-5 pb-8 text-xs text-muted-foreground" />
     </div>
   );
 }

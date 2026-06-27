@@ -1,3 +1,5 @@
+import { LegalFooterLinks } from "@/components/SiteFooter";
+
 type Variant = "success" | "error";
 
 interface Props {
@@ -68,6 +70,9 @@ export function FullscreenStateOverlay(props: Props) {
       }}
     >
       <AppleStateAnimation {...props} />
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 28 }}>
+          <LegalFooterLinks className="text-xs text-white/60" />
+        </div>
     </div>
   );
 }

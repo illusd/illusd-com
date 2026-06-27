@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { X, Trash2, Megaphone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { LegalFooterLinks } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/new-announcement")({
   head: () => ({
@@ -135,6 +136,7 @@ function NewAnnouncement() {
           </ul>
         )}
       </section>
+      <LegalFooterLinks className="px-5 pb-8 text-xs text-muted-foreground" />
     </div>
   );
 }
