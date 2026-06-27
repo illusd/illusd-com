@@ -31,6 +31,7 @@ export function CommentSection({ articleId }: { articleId: string }) {
   const { t } = useTranslation();
   const [comments, setComments] = useState<CommentRow[]>([]);
   const [newText, setNewText] = useState("");
+  const [successOpen, setSuccessOpen] = useState(false);
   const draftKey = `comment:${articleId}`;
   useDraftPersist(draftKey, newText, setNewText);
 
@@ -120,12 +121,14 @@ export function CommentSection({ articleId }: { articleId: string }) {
     if (error) return toast.error(error.message);
     setNewText("");
     clearDraft(draftKey);
+    setSuccessOpen(true);
   };
 
   const total = comments.reduce((s, c) => s + 1 + (c.replies?.length ?? 0), 0);
 
   return (
     <section className="mx-auto max-w-2xl px-5 pb-24">
+      <CommentSuccessOverlay open={successOpen} onClose={() => setSuccessOpen(false)} />
       <h2 className="font-serif text-xl border-b hairline pb-3 mb-4 flex items-center justify-between gap-3">
         <span>{t("article.comments")} · {total}</span>
         <a
