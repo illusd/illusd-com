@@ -86,7 +86,7 @@ export const Route = createFileRoute("/article/$id")({
 
 function ArticleDetail() {
   const { id } = Route.useParams();
-  const { user } = useAuth();
+  const { user, isCreator } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -183,7 +183,7 @@ function ArticleDetail() {
             <Coffee size={16} strokeWidth={1.5} />
             {t("article.donate")}
           </Link>
-          {user?.id === article.author_id && (
+          {isCreator && (
             <Link
               to="/article/$id/edit"
               params={{ id: article.id }}

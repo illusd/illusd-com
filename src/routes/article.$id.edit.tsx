@@ -21,7 +21,7 @@ export const Route = createFileRoute("/article/$id/edit")({
 
 function EditArticle() {
   const { id } = Route.useParams();
-  const { user, loading: authLoading } = useAuth();
+  const { user, isCreator, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -38,6 +38,11 @@ function EditArticle() {
   useEffect(() => {
     if (authLoading) return;
     if (!user) { navigate({ to: "/sign-up" }); return; }
+    if (!isCreator) {
+      toast.error("只有創作者可以編輯文章");
+      navigate({ to: "/article/$id", params: { id } });
+      return;
+    }
     (async () => {
       const { data } = await supabase
         .from("articles")
@@ -45,11 +50,6 @@ function EditArticle() {
         .eq("id", id)
         .maybeSingle();
       if (!data) { toast.error("找不到文章"); navigate({ to: "/" }); return; }
-      if (data.author_id !== user.id) {
-        toast.error("只有作者本人可以編輯這篇文章");
-        navigate({ to: "/article/$id", params: { id } });
-        return;
-      }
       setAuthorId(data.author_id);
       setRawTitle(data.raw_title ?? "");
       setTopicTitle(data.topic_title ?? "");
@@ -59,7 +59,7 @@ function EditArticle() {
       setContent(data.content ?? "");
       setLoading(false);
     })();
-  }, [id, user, authLoading, navigate]);
+  }, [id, user, isCreator, authLoading, navigate]);
 
   useEffect(() => {
     if (!rawTitle) return;
