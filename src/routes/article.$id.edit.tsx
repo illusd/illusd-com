@@ -9,6 +9,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
 import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
+import { LegalFooterLinks } from "@/components/SiteFooter";
 
 export const Route = createFileRoute("/article/$id/edit")({
   head: () => ({
@@ -34,7 +35,6 @@ function EditArticle() {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [authorId, setAuthorId] = useState<string | null>(null);
 
   useEffect(() => {
     if (authLoading) return;
@@ -51,7 +51,6 @@ function EditArticle() {
         .eq("id", id)
         .maybeSingle();
       if (!data) { toast.error(t("common.not_found")); navigate({ to: "/" }); return; }
-      setAuthorId(data.author_id);
       setRawTitle(data.raw_title ?? "");
       setTopicTitle(data.topic_title ?? "");
       setEpisodeNum(data.episode_num != null ? String(data.episode_num) : "");
@@ -74,7 +73,7 @@ function EditArticle() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !authorId) return;
+    if (!user) return;
     if (!topicTitle.trim()) { toast.error(t("editor.topic_required")); return; }
 
     const finalRaw = rawTitle.trim() ||
@@ -191,6 +190,7 @@ function EditArticle() {
           </button>
         </div>
       </form>
+      <LegalFooterLinks className="px-5 pb-8 text-xs text-muted-foreground" />
     </div>
   );
 }

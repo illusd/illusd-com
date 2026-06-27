@@ -9,6 +9,7 @@ import { parseTitle } from "@/lib/titleParser";
 import { X } from "lucide-react";
 import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
+import { LegalFooterLinks } from "@/components/SiteFooter";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/new-article")({
@@ -150,7 +151,7 @@ function NewArticle() {
               min={1}
               value={episodeNum}
               onChange={(e) => setEpisodeNum(e.target.value)}
-              placeholder="1"
+              placeholder={t("editor.episode_num_placeholder")}
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </section>
@@ -216,6 +217,7 @@ function NewArticle() {
           </button>
         </div>
       </form>
+      <LegalFooterLinks className="px-5 pb-8 text-xs text-muted-foreground" />
     </div>
   );
 }

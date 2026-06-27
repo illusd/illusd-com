@@ -19,9 +19,9 @@ export function useArticleCoverUrl(value: string | null | undefined) {
       return;
     }
 
-    // Keep existing public URLs visible while we request a signed URL. This
-    // makes old public cover records and new private-storage records both work.
-    setUrl(/^https?:\/\//i.test(raw) ? raw : "");
+    // Article covers live in protected storage, so even legacy public object
+    // URLs must be converted to fresh signed URLs before rendering.
+    setUrl("");
     supabase.storage
       .from(ARTICLE_IMAGE_BUCKET)
       .createSignedUrl(path, 60 * 60)

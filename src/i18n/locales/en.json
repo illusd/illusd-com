@@ -22,6 +22,7 @@
     "about_title": "About illusd",
     "about_body": "illusd is a Vibe Coding article platform for people starting from zero. We document the process of learning to code, building products and writing articles so anyone — at any age — can follow along and ship their first work. Read articles, comment, subscribe to new-article notifications, or sign in to chat with the creators directly.",
     "google_notice": "Welcome to my personal site! illusd offers a comment feature. You can sign in securely with your Google account; we only use your basic public profile (email and name) to create a member record and will never use it for anything else.",
+    "google_notice_label": "Google sign-in data usage notice",
     "featured": "Featured Articles",
     "all": "All",
     "empty": "No articles yet. Creators can add the first one with the + button.",
@@ -111,6 +112,7 @@
     "creator_only_publish": "Only creators can publish articles",
     "help_markdown": "===== Headings =====\n# H1 (use once per article)\n## H2 for sections\n### H3 for subsections\n\n===== Inline =====\n**bold**  __also bold__\n*italic*  _also italic_\n~~strikethrough~~\n`inline code`\n\n===== Blockquote =====\n> Single-line quote\n>\n> Second paragraph\n>> Nested quote\n\n===== Lists =====\n- Unordered item A\n- Unordered item B\n  - Child item\n\n1. Ordered item one\n2. Ordered item two\n   1. Nested ordered item\n\n- [ ] Todo\n- [x] Done\n\n===== Links & Images =====\nThis is a [link](https://illusd.com \"hover title\")\nAutolink: <https://illusd.com>\nReference link: see [docs][doc]\n\n[doc]: https://illusd.com/terms-of-service\n\nImage:\n![Alt text](https://example.com/cover.jpg)\n\nClickable image:\n[![Alt text](https://example.com/thumb.jpg)](https://illusd.com)\n\n===== Tables =====\n| Field | Center | Right |\n| :--- | :---: | ---: |\n| A | C | 1 |\n| B | C | 22 |\n\n===== Code Blocks =====\n```js\nfunction greet(name) {\n  console.log(`hello ${name}`);\n}\n```\n\n```python\ndef add(a, b):\n    return a + b\n```\n\n===== Horizontal Rule =====\n---\n\n===== Escape / Line Break =====\nShow literal stars: \\*not italic\\*\nLeave a blank line between paragraphs; add two spaces at line end for a line break.",
     "format_placeholder": "#1 (Platform Choice)-VIBE for Everyone",
+    "episode_num_placeholder": "1",
     "episode_title_placeholder": "Platform Choice",
     "topic_title_placeholder": "VIBE for Everyone",
     "content_placeholder": "# Hello illusd ..."
