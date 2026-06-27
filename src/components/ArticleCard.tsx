@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { parseTitle } from "@/lib/titleParser";
+import { useArticleCoverUrl } from "@/hooks/useArticleCoverUrl";
 
 export interface ArticleCardData {
   id: string;
@@ -12,6 +14,8 @@ export interface ArticleCardData {
 }
 
 export function ArticleCard({ a }: { a: ArticleCardData }) {
+  const { t } = useTranslation();
+  const coverUrl = useArticleCoverUrl(a.cover_url);
   const p = a.episode_num != null
     ? { episodeNum: a.episode_num, episodeTitle: a.episode_title, topicTitle: a.topic_title }
     : parseTitle(a.raw_title);
@@ -23,16 +27,16 @@ export function ArticleCard({ a }: { a: ArticleCardData }) {
       className="group block"
     >
       <div className="aspect-[3/2] overflow-hidden bg-muted border hairline">
-        {a.cover_url ? (
+        {coverUrl ? (
           <img
-            src={a.cover_url}
+            src={coverUrl}
             alt={p.episodeTitle ?? p.topicTitle}
             className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
             loading="lazy"
           />
         ) : (
           <div className="h-full w-full flex items-center justify-center text-muted-foreground text-xs">
-            無封面
+            {t("article.no_cover")}
           </div>
         )}
       </div>
@@ -44,7 +48,7 @@ export function ArticleCard({ a }: { a: ArticleCardData }) {
           {p.episodeTitle ?? p.topicTitle}
         </h3>
         <div className="mt-1 text-xs text-muted-foreground">
-          自「{p.topicTitle}」
+          {t("article.from_series", { topic: p.topicTitle })}
         </div>
       </div>
     </Link>

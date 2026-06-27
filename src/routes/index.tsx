@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 import { AnnouncementMarquee } from "@/components/AnnouncementMarquee";
 
 export const Route = createFileRoute("/")({
   head: () => {
-    const title = "illusd.com — 從10歲開始，做出屬於自己的作品";
-    const description =
-      "illusd 是 Vibe Coding 文章平台：從0開始學寫程式、做產品、寫文章。10歲也能踏出第一步——我可以，你也可以。";
+    const title = i18n.t("meta.home_title");
+    const description = i18n.t("meta.home_description");
     const url = "https://illusd.com/";
     return {
       meta: [

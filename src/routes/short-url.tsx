@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { useServerFn } from "@tanstack/react-start";
 import { Link as LinkIcon, FileUp, Copy } from "lucide-react";
 import { Recaptcha } from "@/components/Recaptcha";
@@ -12,8 +13,8 @@ import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/short-url")({
   head: () => {
-    const title = "illurl 短網址與檔案分享 — illusd";
-    const description = "免費生成 illusd.com 短網址與檔案分享連結，最大 200MB。";
+    const title = i18n.t("meta.short_title");
+    const description = i18n.t("meta.short_description");
     const url = "https://illusd.com/short-url";
     return {
       meta: [
@@ -159,7 +160,7 @@ function ShortUrlPage() {
               required
               value={target}
               onChange={(e) => setTarget(e.target.value)}
-              placeholder="https://example.com/very/long/url"
+              placeholder={t("short.target_placeholder")}
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </div>
@@ -220,7 +221,7 @@ function ShortUrlPage() {
             <button
               onClick={() => { navigator.clipboard.writeText(resultUrl); toast.success(t("short.copied")); }}
               className="border hairline p-2 hover:bg-accent"
-              aria-label="copy"
+              aria-label={t("common.copy")}
             >
               <Copy size={14} />
             </button>

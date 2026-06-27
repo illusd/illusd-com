@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { useTranslation } from "react-i18next";
 import { getRecaptchaSiteKey } from "@/lib/recaptcha.functions";
 
 declare global {
@@ -34,7 +35,7 @@ function loadScript(): Promise<void> {
           resolve();
         } else if (Date.now() - startedAt > 10000) {
           clearInterval(check);
-          reject(new Error("reCAPTCHA 載入逾時，請檢查網路或重新整理頁面"));
+          reject(new Error("recaptcha_timeout"));
         }
       }, 100);
       return;
@@ -45,7 +46,7 @@ function loadScript(): Promise<void> {
     s.async = true;
     s.defer = true;
     s.onload = () => resolve();
-    s.onerror = () => reject(new Error("reCAPTCHA 腳本載入失敗，請檢查網路或瀏覽器阻擋設定"));
+    s.onerror = () => reject(new Error("recaptcha_script_failed"));
     document.head.appendChild(s);
   });
 }
@@ -66,6 +67,7 @@ export function Recaptcha({
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const fetchKey = useServerFn(getRecaptchaSiteKey);
+  const { t } = useTranslation();
 
   const reportError = (message: string) => {
     setError(message);
@@ -80,7 +82,7 @@ export function Recaptcha({
       try {
         const { siteKey } = await fetchKey();
         if (!siteKey) {
-          reportError("尚未設定 reCAPTCHA Site Key（captcha_html），請檢查 Cloud secrets");
+          reportError(t("recaptcha.missing_site_key"));
           return;
         }
         await loadScript();
@@ -96,19 +98,21 @@ export function Recaptcha({
                 onVerified(t);
               },
               "expired-callback": () => {
-                reportError("reCAPTCHA 已逾時，請重新勾選");
+                reportError(t("recaptcha.expired"));
               },
               "error-callback": () => {
-                reportError("reCAPTCHA 驗證發生錯誤，請重新勾選或重新整理頁面");
+                reportError(t("recaptcha.error"));
               },
             });
             setLoading(false);
           } catch (e) {
-            reportError((e as Error).message || "reCAPTCHA 初始化失敗");
+            const code = (e as Error).message;
+            reportError(code === "recaptcha_timeout" ? t("recaptcha.timeout") : code || t("recaptcha.init_failed"));
           }
         });
       } catch (e) {
-        reportError((e as Error).message || "reCAPTCHA 載入失敗");
+        const code = (e as Error).message;
+        reportError(code === "recaptcha_script_failed" ? t("recaptcha.script_failed") : code || t("recaptcha.load_failed"));
       }
     })();
     return () => {
@@ -120,7 +124,7 @@ export function Recaptcha({
   return (
     <div className="border hairline p-3">
       <div ref={holder} />
-      {loading && <p className="text-xs text-muted-foreground mt-2">正在載入 reCAPTCHA…</p>}
+      {loading && <p className="text-xs text-muted-foreground mt-2">{t("recaptcha.loading")}</p>}
       {error && <p role="alert" className="text-xs text-destructive mt-2">{error}</p>}
       <div className="text-[10px] tracking-[0.3em] text-muted-foreground mt-2">reCAPTCHA</div>
     </div>

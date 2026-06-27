@@ -1,6 +1,8 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { Download } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 
 interface ShortFile {
   code: string;
@@ -43,7 +45,7 @@ export const Route = createFileRoute("/f/$code")({
   },
   head: ({ params, loaderData }) => {
     const f = loaderData?.file;
-    const title = f ? `${f.filename} — illurl` : "檔案 — illurl";
+    const title = f ? `${f.filename} — illurl` : i18n.t("meta.file_title");
     const url = `https://illusd.com/f/${params.code}`;
     return {
       meta: [
@@ -60,6 +62,7 @@ export const Route = createFileRoute("/f/$code")({
 
 function FileViewPage() {
   const { file } = Route.useLoaderData();
+  const { t, i18n: i18next } = useTranslation();
   const isImage = file.mime.startsWith("image/");
   const isVideo = file.mime.startsWith("video/");
   const isAudio = file.mime.startsWith("audio/");
@@ -67,11 +70,11 @@ function FileViewPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-5 py-10">
-      <Link to="/" className="text-xs tracking-widest text-muted-foreground">← 回首頁</Link>
+      <Link to="/" className="text-xs tracking-widest text-muted-foreground">{t("common.back_home")}</Link>
       <h1 className="font-serif text-2xl mt-6 break-all">{file.filename}</h1>
       <div className="text-xs text-muted-foreground mt-2">
         {file.mime} · {(file.size / 1024 / 1024).toFixed(2)} MB ·{" "}
-        {new Date(file.created_at).toLocaleString("zh-TW")}
+        {new Date(file.created_at).toLocaleString(i18next.language === "zh" ? "zh-TW" : i18next.language === "ja" ? "ja-JP" : "en-US")}
       </div>
 
       <div className="mt-8 border hairline overflow-hidden bg-muted/30 flex items-center justify-center">
@@ -80,7 +83,7 @@ function FileViewPage() {
         {isAudio && <audio src={file.public_url} controls className="w-full p-6" />}
         {!isImage && !isVideo && !isAudio && (
           <div className="p-10 text-center text-sm text-muted-foreground">
-            {isText ? "文字／二進位檔案" : "二進位檔案"}
+            {isText ? t("common.text_or_binary_file") : t("common.binary_file")}
           </div>
         )}
       </div>
@@ -91,7 +94,7 @@ function FileViewPage() {
           download={file.filename}
           className="flex items-center gap-2 bg-foreground text-background px-5 py-2.5 text-sm hover:opacity-90 transition"
         >
-          <Download size={14} /> 下載
+          <Download size={14} /> {t("common.download")}
         </a>
         <a
           href={file.public_url}
@@ -99,7 +102,7 @@ function FileViewPage() {
           rel="noopener noreferrer"
           className="border hairline px-5 py-2.5 text-sm hover:bg-accent transition"
         >
-          原始連結
+          {t("common.original_link")}
         </a>
       </div>
     </main>

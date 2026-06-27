@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { FullscreenStateOverlay } from "@/components/animations/AppleStateAnimation";
 
 export const Route = createFileRoute("/thanks")({
   head: () => ({
     meta: [
-      { title: "謝謝您的贊助 — illusd" },
+      { title: i18n.t("meta.thanks_title") },
       { name: "robots", content: "noindex" },
     ],
   }),

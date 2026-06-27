@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
@@ -15,21 +16,22 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { CreatorFab } from "../components/CreatorFab";
-import "../i18n";
+import i18n, { htmlLangFor, normalizeLanguage } from "../i18n";
 
 function NotFoundComponent() {
+  const { t } = useTranslation();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-serif text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-serif text-foreground">頁面不存在</h2>
-        <p className="mt-2 text-sm text-muted-foreground">您要找的頁面已被移除或不存在。</p>
+        <h2 className="mt-4 text-xl font-serif text-foreground">{t("common.page_not_found_title")}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">{t("common.page_not_found_body")}</p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center border hairline px-4 py-2 text-sm hover:bg-accent transition"
           >
-            回首頁
+            {t("common.back_home")}
           </Link>
         </div>
       </div>
@@ -40,20 +42,21 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const { t } = useTranslation();
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-serif text-foreground">頁面載入失敗</h1>
-        <p className="mt-2 text-sm text-muted-foreground">請稍後再試或回首頁。</p>
+        <h1 className="text-xl font-serif text-foreground">{t("common.page_load_failed_title")}</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{t("common.page_load_failed_body")}</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => { router.invalidate(); reset(); }}
             className="border hairline px-4 py-2 text-sm hover:bg-accent transition"
-          >重試</button>
-          <a href="/" className="border hairline px-4 py-2 text-sm hover:bg-accent transition">回首頁</a>
+          >{t("common.retry")}</button>
+          <a href="/" className="border hairline px-4 py-2 text-sm hover:bg-accent transition">{t("common.back_home")}</a>
         </div>
       </div>
     </div>
@@ -125,6 +128,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
+      <I18nHydrator />
       <SiteHeader />
       <Outlet />
       <SiteFooter />
@@ -132,4 +136,20 @@ function RootComponent() {
       <Toaster position="top-center" />
     </QueryClientProvider>
   );
+}
+
+function I18nHydrator() {
+  useEffect(() => {
+    const saved = (() => {
+      try {
+        return localStorage.getItem("illusd_lang");
+      } catch {
+        return null;
+      }
+    })();
+    const next = normalizeLanguage(saved || navigator.language);
+    document.documentElement.lang = htmlLangFor(next);
+    if (normalizeLanguage(i18n.language) !== next) void i18n.changeLanguage(next);
+  }, []);
+  return null;
 }

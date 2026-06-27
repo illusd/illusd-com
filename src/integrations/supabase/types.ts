@@ -496,6 +496,7 @@ export type Database = {
           read_ct: number
         }[]
       }
+      sync_current_user_creator_profile: { Args: never; Returns: boolean }
     }
     Enums: {
       app_role: "creator" | "user"

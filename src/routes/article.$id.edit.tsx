@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -12,7 +13,7 @@ import { MarkdownEditor } from "@/components/MarkdownEditor";
 export const Route = createFileRoute("/article/$id/edit")({
   head: () => ({
     meta: [
-      { title: "編輯文章 — illusd" },
+      { title: i18n.t("meta.edit_article_title") },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -39,7 +40,7 @@ function EditArticle() {
     if (authLoading) return;
     if (!user) { navigate({ to: "/sign-up" }); return; }
     if (!isCreator) {
-      toast.error("只有創作者可以編輯文章");
+      toast.error(t("editor.creator_only_edit"));
       navigate({ to: "/article/$id", params: { id } });
       return;
     }
@@ -49,7 +50,7 @@ function EditArticle() {
         .select("*")
         .eq("id", id)
         .maybeSingle();
-      if (!data) { toast.error("找不到文章"); navigate({ to: "/" }); return; }
+      if (!data) { toast.error(t("common.not_found")); navigate({ to: "/" }); return; }
       setAuthorId(data.author_id);
       setRawTitle(data.raw_title ?? "");
       setTopicTitle(data.topic_title ?? "");
@@ -74,12 +75,13 @@ function EditArticle() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !authorId) return;
-    if (!topicTitle.trim()) { toast.error("請填寫話題標題"); return; }
+    if (!topicTitle.trim()) { toast.error(t("editor.topic_required")); return; }
 
     const finalRaw = rawTitle.trim() ||
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
 
     setSubmitting(true);
+    await (supabase as any).rpc("sync_current_user_creator_profile");
     const { error } = await supabase
       .from("articles")
       .update({
@@ -93,7 +95,7 @@ function EditArticle() {
       .eq("id", id);
     setSubmitting(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("已更新");
+    toast.success(t("editor.updated"));
     navigate({ to: "/article/$id", params: { id } });
   };
 
@@ -105,8 +107,8 @@ function EditArticle() {
     <div className="fixed inset-0 z-50 bg-background overflow-y-auto">
       <div className="sticky top-0 bg-background/90 backdrop-blur border-b hairline">
         <div className="mx-auto max-w-5xl px-5 h-14 flex items-center justify-between">
-          <div className="font-serif text-lg">編輯文章</div>
-          <Link to="/article/$id" params={{ id }} aria-label="close" className="p-2 -mr-2">
+          <div className="font-serif text-lg">{t("editor.edit_title")}</div>
+          <Link to="/article/$id" params={{ id }} aria-label={t("common.close")} className="p-2 -mr-2">
             <X size={20} strokeWidth={1.25} />
           </Link>
         </div>
@@ -120,7 +122,7 @@ function EditArticle() {
           <input
             value={rawTitle}
             onChange={(e) => setRawTitle(e.target.value)}
-            placeholder="#1 (平台選擇)-VIBE人人都可實現"
+            placeholder={t("editor.format_placeholder")}
             className="w-full bg-transparent border-b hairline py-2 text-base focus:outline-none focus:border-foreground"
           />
         </section>
@@ -185,7 +187,7 @@ function EditArticle() {
             disabled={submitting}
             className="px-6 py-2 bg-foreground text-background text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50"
           >
-            {submitting ? "儲存中…" : "儲存變更"}
+            {submitting ? t("editor.saving") : t("editor.save_changes")}
           </button>
         </div>
       </form>

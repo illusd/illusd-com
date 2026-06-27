@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { toast } from "sonner";
 import { X, Trash2, Megaphone } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 export const Route = createFileRoute("/new-announcement")({
   head: () => ({
     meta: [
-      { title: "張貼公告 — illusd" },
+      { title: i18n.t("meta.new_announcement_title") },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -37,7 +38,7 @@ function NewAnnouncement() {
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/sign-up" });
     if (!loading && user && !isCreator) {
-      toast.error("僅創作者可張貼公告");
+      toast.error(t("announcement.creator_only"));
       navigate({ to: "/" });
     }
   }, [user, isCreator, loading, navigate]);
@@ -48,6 +49,7 @@ function NewAnnouncement() {
     e.preventDefault();
     if (!user || !content.trim()) return;
     setBusy(true);
+    await (supabase as any).rpc("sync_current_user_creator_profile");
     const { error } = await supabase.from("announcements").insert({
       author_id: user.id,
       content: content.trim(),
@@ -82,7 +84,7 @@ function NewAnnouncement() {
           <div className="font-serif text-lg flex items-center gap-2">
             <Megaphone size={18} strokeWidth={1.5} /> {t("announcement.compose")}
           </div>
-          <Link to="/" aria-label="close" className="p-2 -mr-2">
+          <Link to="/" aria-label={t("common.close")} className="p-2 -mr-2">
             <X size={20} strokeWidth={1.25} />
           </Link>
         </div>
@@ -125,7 +127,7 @@ function NewAnnouncement() {
                 <button onClick={() => toggle(it)} className="text-xs border hairline px-2 py-1 hover:bg-accent">
                   {it.active ? t("announcement.hidden") : t("announcement.active")}
                 </button>
-                <button onClick={() => remove(it.id)} aria-label="delete" className="text-muted-foreground hover:text-destructive">
+                <button onClick={() => remove(it.id)} aria-label={t("article.delete")} className="text-muted-foreground hover:text-destructive">
                   <Trash2 size={14} />
                 </button>
               </li>

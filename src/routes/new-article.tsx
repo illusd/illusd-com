@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
@@ -12,8 +13,8 @@ import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
 
 export const Route = createFileRoute("/new-article")({
   head: () => {
-    const title = "撰寫文章 — illusd";
-    const description = "創作者專用：在 illusd 上發表新的 Vibe Coding 文章。";
+    const title = i18n.t("meta.new_article_title");
+    const description = i18n.t("meta.new_article_description");
     const url = "https://illusd.com/new-article";
     return {
       meta: [
@@ -54,7 +55,7 @@ function NewArticle() {
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/sign-up" });
     if (!loading && user && !isCreator) {
-      toast.error("僅創作者可以發布文章");
+      toast.error(t("editor.creator_only_publish"));
       navigate({ to: "/" });
     }
   }, [user, isCreator, loading, navigate]);
@@ -86,12 +87,13 @@ function NewArticle() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-    if (!topicTitle.trim()) { toast.error("請填寫話題標題 / Topic required"); return; }
+    if (!topicTitle.trim()) { toast.error(t("editor.topic_required")); return; }
 
     const finalRaw = rawTitle.trim() ||
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
 
     setSubmitting(true);
+    await (supabase as any).rpc("sync_current_user_creator_profile");
     const { data, error } = await supabase.from("articles").insert({
       author_id: user.id,
       raw_title: finalRaw,
@@ -105,7 +107,7 @@ function NewArticle() {
 
     if (error) { toast.error(error.message); return; }
     clearAllDrafts();
-    toast.success("已發布 / Published");
+    toast.success(t("editor.published"));
     navigate({ to: "/article/$id", params: { id: data!.id } });
   };
 
@@ -118,7 +120,7 @@ function NewArticle() {
       <div className="sticky top-0 bg-background/90 backdrop-blur border-b hairline">
         <div className="mx-auto max-w-5xl px-5 h-14 flex items-center justify-between">
           <div className="font-serif text-lg">{t("editor.title")}</div>
-          <Link to="/" aria-label="close" className="p-2 -mr-2">
+          <Link to="/" aria-label={t("common.close")} className="p-2 -mr-2">
             <X size={20} strokeWidth={1.25} />
           </Link>
         </div>
@@ -132,7 +134,7 @@ function NewArticle() {
           <input
             value={rawTitle}
             onChange={(e) => setRawTitle(e.target.value)}
-            placeholder="#1 (平台選擇)-VIBE人人都可實現"
+            placeholder={t("editor.format_placeholder")}
             className="w-full bg-transparent border-b hairline py-2 text-base focus:outline-none focus:border-foreground"
           />
           <p className="text-[11px] text-muted-foreground mt-1">{t("editor.format_hint")}</p>
@@ -159,7 +161,7 @@ function NewArticle() {
             <input
               value={episodeTitle}
               onChange={(e) => setEpisodeTitle(e.target.value)}
-              placeholder="平台選擇"
+              placeholder={t("editor.episode_title_placeholder")}
               className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
             />
           </section>
@@ -174,7 +176,7 @@ function NewArticle() {
             onChange={(e) => setTopicTitle(e.target.value)}
             list="topic-options"
             required
-            placeholder="VIBE人人都可實現"
+            placeholder={t("editor.topic_title_placeholder")}
             className="w-full bg-transparent border-b hairline py-2 focus:outline-none focus:border-foreground"
           />
           <datalist id="topic-options">
@@ -197,7 +199,7 @@ function NewArticle() {
           <MarkdownEditor
             value={content}
             onChange={setContent}
-            placeholder="# Hello illusd ..."
+            placeholder={t("editor.content_placeholder")}
           />
         </section>
 

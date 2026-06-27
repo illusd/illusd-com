@@ -8,11 +8,13 @@ import { Recaptcha } from "@/components/Recaptcha";
 import { verifyRecaptcha } from "@/lib/recaptcha.functions";
 import { useServerFn } from "@tanstack/react-start";
 import { useDraftPersist } from "@/hooks/useDraftPersist";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18n";
 
 export const Route = createFileRoute("/sign-up")({
   head: () => {
-    const title = "註冊 / 登入 — illusd";
-    const description = "註冊或登入 illusd，留言、按讚並追蹤你喜歡的創作者與系列。";
+    const title = i18n.t("meta.sign_up_title");
+    const description = i18n.t("meta.sign_up_description");
     const url = "https://illusd.com/sign-up";
     return {
       meta: [
@@ -34,6 +36,7 @@ type Mode = "signin" | "signup";
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user, loading } = useAuth();
   const [mode, setMode] = useState<Mode>("signup");
   const [email, setEmail] = useState("");
@@ -53,7 +56,7 @@ function SignUpPage() {
 
   const guardConsent = () => {
     if (!agreed) {
-      toast.error("請先勾選同意服務條款與隱私權政策");
+      toast.error(t("auth.agree_required"));
       return false;
     }
     return true;
@@ -61,7 +64,7 @@ function SignUpPage() {
 
   const guardCaptcha = async () => {
     if (!capToken) {
-      const message = "請先完成 reCAPTCHA 人機驗證";
+      const message = t("auth.captcha_wait");
       setCaptchaError(message);
       toast.error(message);
       return false;
@@ -69,7 +72,7 @@ function SignUpPage() {
     try {
       const res = await verifyToken({ data: { token: capToken } });
       if (!res.ok) {
-        const message = res.error || "人機驗證失敗，請重試";
+        const message = res.error || t("auth.captcha_failed");
         setCaptchaError(message);
         toast.error(message);
         return false;
@@ -77,7 +80,7 @@ function SignUpPage() {
       setCaptchaError(null);
       return true;
     } catch (error) {
-      const message = (error as Error).message || "reCAPTCHA 驗證服務暫時無法使用，請稍後再試";
+      const message = (error as Error).message || t("auth.captcha_unavailable");
       setCaptchaError(message);
       toast.error(message);
       return false;
@@ -92,12 +95,12 @@ function SignUpPage() {
       redirect_uri: window.location.origin,
     });
     if (res.error) {
-      toast.error("Google 登入失敗，請稍後再試");
+      toast.error(t("auth.google_failed"));
       setBusy(false);
       return;
     }
     if (!res.redirected) {
-      toast.success("登入成功");
+      toast.success(t("auth.signin_success"));
       navigate({ to: "/" });
     }
   };
@@ -116,15 +119,15 @@ function SignUpPage() {
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
-        toast.success("註冊成功！請至信箱確認驗證信。");
+        toast.success(t("auth.signup_success"));
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast.success("登入成功");
+        toast.success(t("auth.signin_success"));
         navigate({ to: "/" });
       }
     } catch (err) {
-      toast.error((err as Error).message ?? "發生錯誤");
+      toast.error((err as Error).message ?? t("common.error"));
     } finally {
       setBusy(false);
     }
@@ -133,12 +136,12 @@ function SignUpPage() {
   return (
     <main className="min-h-[calc(100vh-3.5rem)] flex items-start justify-center px-5 pt-16 pb-24">
       <div className="w-full max-w-sm">
-        <Link to="/" className="text-xs tracking-widest text-muted-foreground">← 回首頁</Link>
+        <Link to="/" className="text-xs tracking-widest text-muted-foreground">{t("common.back_home")}</Link>
         <h1 className="font-serif text-3xl mt-6">
-          {mode === "signup" ? "建立帳號" : "歡迎回來"}
+          {mode === "signup" ? t("auth.create_account") : t("auth.welcome_back")}
         </h1>
         <p className="text-sm text-muted-foreground mt-2">
-          {mode === "signup" ? "註冊後即可留言與按讚。" : "登入以繼續閱讀與互動。"}
+          {mode === "signup" ? t("auth.create_desc") : t("auth.signin_desc")}
         </p>
 
         <button
@@ -147,16 +150,16 @@ function SignUpPage() {
           className="mt-8 w-full border hairline py-3 text-sm hover:bg-accent transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <GoogleIcon />
-          使用 Google 繼續
+          {t("auth.google")}
         </button>
 
         <div className="flex items-center gap-3 my-6 text-xs text-muted-foreground">
-          <div className="flex-1 h-px bg-border" /> 或 <div className="flex-1 h-px bg-border" />
+          <div className="flex-1 h-px bg-border" /> {t("auth.or")} <div className="flex-1 h-px bg-border" />
         </div>
 
         <form onSubmit={handleEmail} className="space-y-3">
           <div>
-            <label className="block text-xs tracking-wider text-muted-foreground mb-1">EMAIL</label>
+            <label className="block text-xs tracking-wider text-muted-foreground mb-1">{t("auth.email")}</label>
             <input
               type="email"
               required
@@ -167,7 +170,7 @@ function SignUpPage() {
             />
           </div>
           <div>
-            <label className="block text-xs tracking-wider text-muted-foreground mb-1">密碼</label>
+            <label className="block text-xs tracking-wider text-muted-foreground mb-1">{t("auth.password")}</label>
             <input
               type="password"
               required
@@ -198,10 +201,10 @@ function SignUpPage() {
               className="mt-0.5 accent-foreground"
             />
             <span>
-              我已同意 illusd.com 及 illusd.com 服務的{" "}
-              <Link to="/terms-of-service" className="underline">服務條款</Link>{" "}
-              與{" "}
-              <Link to="/privacy" className="underline">隱私權政策</Link>。
+              {t("auth.agree_prefix")}{" "}
+              <Link to="/terms-of-service" className="underline">{t("footer.terms")}</Link>{" "}
+              {t("auth.agree_and")}{" "}
+              <Link to="/privacy" className="underline">{t("footer.privacy")}</Link>{t("auth.agree_suffix")}
             </span>
           </label>
 
@@ -210,18 +213,18 @@ function SignUpPage() {
             disabled={busy || !agreed}
             className="w-full bg-foreground text-background py-3 text-sm tracking-wider hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {mode === "signup" ? "註冊" : "登入"}
+            {mode === "signup" ? t("auth.sign_up") : t("auth.sign_in")}
           </button>
         </form>
 
         <p className="mt-6 text-xs text-center text-muted-foreground">
-          {mode === "signup" ? "已有帳號？" : "還沒有帳號？"}{" "}
+          {mode === "signup" ? t("auth.have_account") : t("auth.no_account")}{" "}
           <button
             type="button"
             onClick={() => setMode(mode === "signup" ? "signin" : "signup")}
             className="underline underline-offset-2 text-foreground"
           >
-            {mode === "signup" ? "登入" : "註冊"}
+            {mode === "signup" ? t("auth.sign_in") : t("auth.sign_up")}
           </button>
         </p>
       </div>

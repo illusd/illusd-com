@@ -51,17 +51,30 @@ export function AnnouncementMarquee() {
           <Megaphone size={12} strokeWidth={1.5} />
           {t("announcement.title")}
         </span>
-        <div className="relative flex-1 overflow-hidden">
-          <div className="marquee-track whitespace-nowrap will-change-transform">
-            <span className="inline-block pr-16">{text}</span>
-            <span className="inline-block pr-16">{text}</span>
+        <div className="illusd-marquee-viewport relative flex-1 overflow-hidden" aria-label={text}>
+          <div className="illusd-marquee-track whitespace-nowrap will-change-transform">
+            <span>{text}</span>
+            <span aria-hidden="true">{text}</span>
           </div>
         </div>
       </div>
       <style>{`
-        @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .marquee-track { animation: marquee-scroll 60s linear infinite; }
-        .marquee-track:hover { animation-play-state: paused; }
+        .illusd-marquee-viewport { --marquee-gap: 5rem; }
+        .illusd-marquee-track {
+          display: inline-flex;
+          gap: var(--marquee-gap);
+          min-width: max-content;
+          animation: illusd-marquee-scroll 48s linear infinite;
+        }
+        .illusd-marquee-track span { flex: 0 0 auto; }
+        .illusd-marquee-track:hover { animation-play-state: paused; }
+        @keyframes illusd-marquee-scroll {
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(calc(-50% - (var(--marquee-gap) / 2)), 0, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .illusd-marquee-track { animation-duration: 120s; }
+        }
       `}</style>
     </div>
   );

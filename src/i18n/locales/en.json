@@ -11,7 +11,8 @@
     "message": "Chat Room",
     "donate": "Support Creator",
     "new_article": "New Article",
-    "new_announcement": "Post Announcement"
+    "new_announcement": "Post Announcement",
+    "menu": "Menu"
   },
   "home": {
     "site_title": "illusd.com",
@@ -41,7 +42,8 @@
     "hidden": "Hidden",
     "manage": "Manage Announcements",
     "delete_confirm": "Delete this announcement?",
-    "empty": "No announcements yet."
+    "empty": "No announcements yet.",
+    "creator_only": "Only creators can post announcements"
   },
   "article": {
     "comments": "Comments",
@@ -62,7 +64,20 @@
     "sign_in_prompt": "Sign up or sign in to comment and like.",
     "edited": "edited",
     "reader": "Reader",
-    "delete_confirm": "Delete this comment?"
+    "delete_confirm": "Delete this comment?",
+    "no_cover": "No cover",
+    "no_content": "(No content)",
+    "article_label": "Article"
+  },
+  "topic": {
+    "title": "All Articles",
+    "subtitle": "Browse by topic and episode",
+    "topic": "Topic",
+    "episode": "Episode",
+    "all": "All",
+    "count": "{{count}} article",
+    "count_plural": "{{count}} articles",
+    "empty": "No articles match these filters."
   },
   "message": {
     "subtitle": "Signed-in chat room. Creators are tagged next to their name.",
@@ -85,7 +100,42 @@
     "publish": "Publish",
     "publishing": "Publishing…",
     "cancel": "Cancel",
-    "draft_restored": "Restored your previous draft"
+    "draft_restored": "Restored your previous draft",
+    "edit_title": "Edit Article",
+    "save_changes": "Save Changes",
+    "saving": "Saving…",
+    "updated": "Updated",
+    "published": "Published",
+    "topic_required": "Please enter a topic",
+    "creator_only_edit": "Only creators can edit articles",
+    "creator_only_publish": "Only creators can publish articles",
+    "help_markdown": "===== Headings =====\n# H1 (use once per article)\n## H2 for sections\n### H3 for subsections\n\n===== Inline =====\n**bold**  __also bold__\n*italic*  _also italic_\n~~strikethrough~~\n`inline code`\n\n===== Blockquote =====\n> Single-line quote\n>\n> Second paragraph\n>> Nested quote\n\n===== Lists =====\n- Unordered item A\n- Unordered item B\n  - Child item\n\n1. Ordered item one\n2. Ordered item two\n   1. Nested ordered item\n\n- [ ] Todo\n- [x] Done\n\n===== Links & Images =====\nThis is a [link](https://illusd.com \"hover title\")\nAutolink: <https://illusd.com>\nReference link: see [docs][doc]\n\n[doc]: https://illusd.com/terms-of-service\n\nImage:\n![Alt text](https://example.com/cover.jpg)\n\nClickable image:\n[![Alt text](https://example.com/thumb.jpg)](https://illusd.com)\n\n===== Tables =====\n| Field | Center | Right |\n| :--- | :---: | ---: |\n| A | C | 1 |\n| B | C | 22 |\n\n===== Code Blocks =====\n```js\nfunction greet(name) {\n  console.log(`hello ${name}`);\n}\n```\n\n```python\ndef add(a, b):\n    return a + b\n```\n\n===== Horizontal Rule =====\n---\n\n===== Escape / Line Break =====\nShow literal stars: \\*not italic\\*\nLeave a blank line between paragraphs; add two spaces at line end for a line break.",
+    "format_placeholder": "#1 (Platform Choice)-VIBE for Everyone",
+    "episode_title_placeholder": "Platform Choice",
+    "topic_title_placeholder": "VIBE for Everyone",
+    "content_placeholder": "# Hello illusd ..."
+  },
+  "upload": {
+    "select_image": "Please choose an image file",
+    "too_large": "Image must be 10MB or smaller",
+    "failed": "Upload failed: {{message}}",
+    "uploaded": "Cover uploaded",
+    "preview_alt": "Cover preview",
+    "remove_cover": "Remove cover",
+    "uploading": "Uploading…",
+    "cta": "Upload cover (jpg / png, max 10MB)",
+    "replace_cover": "Replace cover",
+    "upload_hint": "If the preview does not appear immediately, the uploaded image will still load through a secure link."
+  },
+  "markdown": {
+    "unclosed_fence": "Unclosed ``` code fence",
+    "unbalanced_brackets": "Unbalanced [ ]",
+    "parentheses_mismatch": "Parentheses count looks mismatched",
+    "table_mismatch": "Table row {{line}} column count does not match the header"
+  },
+  "comment_success": {
+    "title": "Comment posted!",
+    "subtitle": "Your comment is now live"
   },
   "push": {
     "subscribe": "Subscribe to new articles",
@@ -114,13 +164,30 @@
     "no_account": "Don't have an account?",
     "signup_success": "Sign-up succeeded — check your inbox for verification.",
     "signin_success": "Signed in",
-    "back_home": "← Back home"
+    "back_home": "← Back home",
+    "agree_prefix": "I agree to the",
+    "agree_and": "and",
+    "agree_suffix": " of illusd.com.",
+    "captcha_failed": "Captcha failed — please try again",
+    "captcha_unavailable": "reCAPTCHA verification is temporarily unavailable. Please try again later.",
+    "google_failed": "Google sign-in failed. Please try again later."
+  },
+  "recaptcha": {
+    "missing_site_key": "reCAPTCHA Site Key (captcha_html) is not configured",
+    "expired": "reCAPTCHA expired — please check it again",
+    "error": "reCAPTCHA error — please check it again or refresh the page",
+    "timeout": "reCAPTCHA timed out — check your network or refresh",
+    "script_failed": "reCAPTCHA script failed to load — check network or browser blocking",
+    "init_failed": "reCAPTCHA failed to initialize",
+    "load_failed": "reCAPTCHA failed to load",
+    "loading": "Loading reCAPTCHA…"
   },
   "donate_page": {
     "title": "Support Creator",
     "desc": "Pay securely via Ko-fi. After a successful donation you'll be returned to /thanks. We never collect any card or payment information.",
     "fallback": "Can't see the window?",
-    "open_kofi": "Open Ko-fi in a new tab"
+    "open_kofi": "Open Ko-fi in a new tab",
+    "support_kofi_title": "Support illusd on Ko-fi"
   },
   "thanks": {
     "title": "Thank you for your support!",
@@ -140,11 +207,115 @@
     "uploading": "Uploading…",
     "result": "Permanent link",
     "copied": "Link copied",
-    "agree_note": "Using illurl means you agree to the Terms of Service and Privacy Policy. We log the source to prevent abuse."
+    "agree_note": "Using illurl means you agree to the Terms of Service and Privacy Policy. We log the source to prevent abuse.",
+    "target_placeholder": "https://example.com/very/long/url"
   },
   "common": {
     "loading": "Loading…",
     "back_home": "← Back home",
-    "not_found": "Article not found."
+    "not_found": "Article not found.",
+    "page_not_found_title": "Page not found",
+    "page_not_found_body": "The page you are looking for was removed or does not exist.",
+    "page_load_failed_title": "Page failed to load",
+    "page_load_failed_body": "Please try again later or go back home.",
+    "retry": "Retry",
+    "close": "Close",
+    "open": "Open",
+    "error": "Something went wrong",
+    "file": "File",
+    "text_or_binary_file": "Text / binary file",
+    "binary_file": "Binary file",
+    "download": "Download",
+    "original_link": "Original link",
+    "copy": "Copy",
+    "back_home_plain": "Home",
+    "delete": "Delete"
+  },
+  "meta": {
+    "topic_title": "All Articles — illusd",
+    "topic_description": "Browse every Vibe Coding topic and episode on illusd, filtered by subject or episode.",
+    "thanks_title": "Thank you for your support — illusd",
+    "privacy_title": "Privacy Policy — illusd",
+    "privacy_description": "How illusd collects, uses, and protects your personal data and activity records.",
+    "terms_title": "Terms of Service — illusd",
+    "terms_description": "Terms, responsibilities, and account rules for illusd and illurl.",
+    "new_article_title": "Write Article — illusd",
+    "new_article_description": "Creator-only: publish a new Vibe Coding article on illusd.",
+    "edit_article_title": "Edit Article — illusd",
+    "sign_up_title": "Sign up / Sign in — illusd",
+    "sign_up_description": "Sign up or sign in to comment, like, and follow creators and series on illusd.",
+    "donate_title": "Support Creators — illusd",
+    "donate_description": "Support illusd creators through Ko-fi. Every contribution helps us keep going.",
+    "home_title": "illusd.com — Start at 10 and build your own work",
+    "home_description": "illusd is a Vibe Coding article platform: start from zero, learn programming, build products, and write. If a 10-year-old can begin, so can you.",
+    "short_title": "illurl short links and file sharing — illusd",
+    "short_description": "Create free illusd.com short links and file sharing links up to 200MB.",
+    "message_title": "Chatroom — illusd",
+    "message_description": "A signed-in chatroom for illusd.",
+    "new_announcement_title": "Post Announcement — illusd",
+    "article_fallback_title": "Article — illusd",
+    "article_fallback_description": "A Vibe Coding article on illusd.",
+    "article_series_description": "An article in the “{{topic}}” series by an illusd creator.",
+    "file_title": "File — illurl"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: June 26, 2026",
+    "intro": "This page is maintained by illusd to explain how we collect, use, and protect your personal information. By using this service, you agree to the practices below.",
+    "s1_title": "1. Data we collect",
+    "account_label": "Account data:",
+    "account": "Email address, display name, and avatar. If you sign in with Google, we also receive your basic public Google profile.",
+    "content_label": "Content data:",
+    "content": "Articles, comments, likes, uploaded files, and short-link targets you post.",
+    "usage_label": "Usage records:",
+    "usage": "IP address, browser information, action timestamps, and captcha records for risk control.",
+    "payment_label": "Payment data:",
+    "payment": "When you support us through Ko-fi, payment information is processed by Ko-fi. We do not store credit card or payment account data.",
+    "s2_title": "2. How we use data",
+    "use_1": "Provide and maintain core service features.",
+    "use_2": "Send system emails such as verification, password reset, and support notifications.",
+    "use_3": "Detect abnormal traffic and block automated abuse.",
+    "use_4": "Improve service quality and content recommendations.",
+    "s3_title": "3. Third-party services",
+    "third_party": "This service currently uses Supabase (database and authentication), Cloudflare (domain and protection), Google (OAuth sign-in), Ko-fi (support payments), and Lovable (deployment). Each provider has its own privacy policy.",
+    "s4_title": "4. Cookies and local storage",
+    "cookies": "We use necessary localStorage to maintain sign-in state. We do not place advertising tracking cookies unless you actively interact with such services.",
+    "s5_title": "5. Your rights",
+    "rights_prefix": "You may request access, correction, or deletion of your personal data at any time. Contact us at ",
+    "rights_suffix": " and we will respond within a reasonable period.",
+    "s6_title": "6. Retention",
+    "retention": "Account data is retained until you request deletion; system logs are usually kept for 90 days; violation records may be kept longer to prevent repeated abuse.",
+    "s7_title": "7. Children’s privacy",
+    "children": "We do not knowingly collect personal data from children under 13. If we become aware of such data, we will delete it promptly.",
+    "s8_title": "8. Policy updates",
+    "updates": "If this policy changes, we will publish the update on this page and change the last updated date. Material changes may also be announced in-app or by email."
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "updated": "Last updated: June 26, 2026",
+    "intro": "Welcome to illusd.com and related services, including illurl short links/file sharing, creator support, and article comments (collectively, the “Service”). By using the Service, you acknowledge that you have read, understood, and agreed to these terms.",
+    "s1_title": "1. Accounts and eligibility",
+    "s1": "You must be at least 13 years old, or have consent from a legal guardian, to register. You should provide accurate information and keep your account secure. Creator status is limited to pre-approved accounts; other users may use the Service as readers.",
+    "s2_title": "2. User content",
+    "s2a": "You retain ownership of and responsibility for articles, comments, files, short-link targets, and other content you post. You must ensure your content does not infringe any third-party rights, including copyright, trademark, privacy, or portrait rights.",
+    "s2b": "You grant illusd a non-exclusive, royalty-free, worldwide, sublicensable license to store, reproduce, reformat, and publicly transmit your content for the purpose of providing and promoting the Service.",
+    "s3_title": "3. Prohibited conduct",
+    "ban_1": "Distributing illegal, sexual, violent, discriminatory, harassing, defamatory, or fraudulent information.",
+    "ban_2": "Uploading malware, phishing links, or abusing illurl storage.",
+    "ban_3": "Unauthorized system access, bypassing captcha, stress testing, or automated scraping.",
+    "ban_4": "Impersonating others, creator labels, or stealing others’ work.",
+    "s4_title": "4. illurl service rules",
+    "s4": "Short links and file links are publicly accessible to anyone with the link. The maximum file size is 200 MB. We may delete abusive content, rate-limit, or terminate service when needed.",
+    "s5_title": "5. Support and payments",
+    "s5": "Creator support is processed through Ko-fi. Payments, refunds, and disputes follow Ko-fi and payment-provider rules. illusd does not directly hold funds and does not guarantee any creator reward. Successful payments are redirected to illusd.com/thanks.",
+    "s6_title": "6. Changes and termination",
+    "s6": "We may add, modify, suspend, or end any feature at any time without prior notice. If you violate these terms, we may suspend your account or remove related content.",
+    "s7_title": "7. Disclaimer",
+    "s7": "The Service is provided “as is” without guarantees of continuity, availability, or content accuracy. To the extent permitted by law, illusd is not liable for indirect, incidental, or consequential damages from use or inability to use the Service.",
+    "s8_title": "8. Governing law",
+    "s8": "These terms are governed by the laws of the Republic of China (Taiwan). For disputes, the parties agree that the Taiwan Taipei District Court has jurisdiction in the first instance.",
+    "s9_title": "9. Contact",
+    "contact_prefix": "For questions, email ",
+    "contact_suffix": "."
   }
 }
