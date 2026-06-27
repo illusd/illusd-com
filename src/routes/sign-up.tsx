@@ -41,6 +41,7 @@ function SignUpPage() {
   const [password, setPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [capToken, setCapToken] = useState<string | null>(null);
+  const [captchaError, setCaptchaError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const verifyToken = useServerFn(verifyRecaptcha);
 
@@ -60,15 +61,27 @@ function SignUpPage() {
 
   const guardCaptcha = async () => {
     if (!capToken) {
-      toast.error("請先完成 reCAPTCHA 人機驗證");
+      const message = "請先完成 reCAPTCHA 人機驗證";
+      setCaptchaError(message);
+      toast.error(message);
       return false;
     }
-    const res = await verifyToken({ data: { token: capToken } });
-    if (!res.ok) {
-      toast.error("人機驗證失敗，請重試");
+    try {
+      const res = await verifyToken({ data: { token: capToken } });
+      if (!res.ok) {
+        const message = res.error || "人機驗證失敗，請重試";
+        setCaptchaError(message);
+        toast.error(message);
+        return false;
+      }
+      setCaptchaError(null);
+      return true;
+    } catch (error) {
+      const message = (error as Error).message || "reCAPTCHA 驗證服務暫時無法使用，請稍後再試";
+      setCaptchaError(message);
+      toast.error(message);
       return false;
     }
-    return true;
   };
 
   const handleGoogle = async () => {
@@ -167,7 +180,14 @@ function SignUpPage() {
           </div>
 
           <div className="pt-2">
-            <Recaptcha onVerified={setCapToken} />
+            <Recaptcha
+              onVerified={(token) => {
+                setCapToken(token);
+                if (token) setCaptchaError(null);
+              }}
+              onError={setCaptchaError}
+            />
+            {captchaError && <p role="alert" className="text-xs text-destructive mt-2">{captchaError}</p>}
           </div>
 
           <label className="flex items-start gap-2 text-xs leading-relaxed pt-2 cursor-pointer select-none">

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import webpush from "web-push";
+import { buildNewArticleNotification } from "@/lib/notifications";
+import { sendWebPushNoPayload, WebPushSendError } from "@/lib/webPushCompat.server";
 
 export const Route = createFileRoute("/api/public/hooks/notify-new-article")({
   server: {
@@ -21,44 +22,48 @@ export const Route = createFileRoute("/api/public/hooks/notify-new-article")({
           return new Response("Invalid payload", { status: 400 });
         }
 
-        webpush.setVapidDetails(
-          process.env.VAPID_SUBJECT || "mailto:lan.2015.se@gmail.com",
-          process.env.VAPID_PUBLIC_KEY!,
-          process.env.VAPID_PRIVATE_KEY!,
-        );
+        const publicKey = process.env.VAPID_PUBLIC_KEY;
+        const privateKey = process.env.VAPID_PRIVATE_KEY;
+        if (!publicKey || !privateKey) {
+          return Response.json(
+            { ok: false, error: "VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY are not configured" },
+            { status: 500 },
+          );
+        }
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { data: subs, error } = await supabaseAdmin
           .from("push_subscriptions")
-          .select("endpoint, p256dh, auth");
+          .select("endpoint");
 
         if (error) {
           return new Response(`DB error: ${error.message}`, { status: 500 });
         }
 
-        const epTxt = payload.episode_num != null ? `Ep.${payload.episode_num} ` : "";
-        const head = `${epTxt}${payload.episode_title ?? payload.topic_title}`;
-        const body = `${head} — ${payload.topic_title}`;
-        const notification = JSON.stringify({
-          title: "新文章 / New Article",
-          body,
-          url: `/article/${payload.id}`,
-          tag: `article-${payload.id}`,
-        });
+        const notification = buildNewArticleNotification(
+          {
+            id: payload.id,
+            episode_num: payload.episode_num,
+            episode_title: payload.episode_title,
+            topic_title: payload.topic_title,
+          },
+          "https://illusd.com",
+        );
 
         const expired: string[] = [];
         await Promise.all(
           (subs ?? []).map(async (s) => {
             try {
-              await webpush.sendNotification(
+              await sendWebPushNoPayload(
+                { endpoint: s.endpoint },
                 {
-                  endpoint: s.endpoint,
-                  keys: { p256dh: s.p256dh, auth: s.auth },
+                  subject: process.env.VAPID_SUBJECT || "mailto:lan.2015.se@gmail.com",
+                  publicKey,
+                  privateKey,
                 },
-                notification,
               );
             } catch (err: unknown) {
-              const status = (err as { statusCode?: number })?.statusCode;
+              const status = err instanceof WebPushSendError ? err.statusCode : undefined;
               if (status === 404 || status === 410) expired.push(s.endpoint);
             }
           }),
@@ -70,6 +75,7 @@ export const Route = createFileRoute("/api/public/hooks/notify-new-article")({
 
         return Response.json({
           ok: true,
+          notification,
           sent: (subs?.length ?? 0) - expired.length,
           expired: expired.length,
         });

@@ -31,9 +31,12 @@
     "creator_tag": "クリエイター",
     "no_comments": "まだコメントはありません。最初の一言を。",
     "placeholder": "感想を書いてみよう…",
+    "reply_placeholder": "Markdown で返信を書く…",
+    "markdown_supported": "Markdown 対応：**太字**、リンク、リスト、コード、表。",
     "sign_in_prompt": "登録またはログインでコメント・いいねが可能になります。",
     "edited": "編集済み",
-    "reader": "読者"
+    "reader": "読者",
+    "delete_confirm": "このコメントを削除しますか？"
   },
   "editor": {
     "title": "記事を書く",

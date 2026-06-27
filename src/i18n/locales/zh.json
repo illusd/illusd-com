@@ -31,9 +31,12 @@
     "creator_tag": "創作者",
     "no_comments": "還沒有留言，第一個分享想法吧。",
     "placeholder": "留下你的想法…",
+    "reply_placeholder": "用 Markdown 回覆這則留言…",
+    "markdown_supported": "支援 Markdown：**粗體**、連結、清單、程式碼與表格。",
     "sign_in_prompt": "註冊或登入後即可留言與按讚。",
     "edited": "已編輯",
-    "reader": "讀者"
+    "reader": "讀者",
+    "delete_confirm": "確定要刪除這則留言嗎？"
   },
   "editor": {
     "title": "撰寫文章",
