@@ -49,6 +49,7 @@ function NewAnnouncement() {
     e.preventDefault();
     if (!user || !content.trim()) return;
     setBusy(true);
+    await (supabase as any).rpc("sync_current_user_creator_profile");
     const { error } = await supabase.from("announcements").insert({
       author_id: user.id,
       content: content.trim(),

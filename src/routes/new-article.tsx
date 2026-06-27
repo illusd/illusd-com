@@ -93,6 +93,7 @@ function NewArticle() {
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
 
     setSubmitting(true);
+    await (supabase as any).rpc("sync_current_user_creator_profile");
     const { data, error } = await supabase.from("articles").insert({
       author_id: user.id,
       raw_title: finalRaw,
