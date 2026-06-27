@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useServerFn } from "@tanstack/react-start";
 import { Link as LinkIcon, FileUp, Copy } from "lucide-react";
-import { CapCaptcha } from "@/components/CapCaptcha";
+import { Recaptcha } from "@/components/Recaptcha";
 import { FullscreenStateOverlay } from "@/components/animations/AppleStateAnimation";
 import { supabase } from "@/integrations/supabase/client";
 import { createShortLink, prepareShortFile } from "@/lib/illurl.functions";
