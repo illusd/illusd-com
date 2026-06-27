@@ -59,7 +59,7 @@ function TermsPage() {
 
         <h2 className="font-serif text-xl mt-8">5. 贊助與付款</h2>
         <p>
-          創作者贊助透過 Shopify（pay.illusd.com）處理。付款、退款、爭議皆依 Shopify 與信用卡發卡機構之規範辦理；illusd 不直接保管款項，亦不擔保特定創作者必然提供任何回饋。
+          創作者贊助透過 ECPay 綠界金流處理。付款、退款、爭議皆依 ECPay 與信用卡發卡機構之規範辦理；illusd 不直接保管款項，亦不擔保特定創作者必然提供任何回饋。付款成功後將自動導回 illusd.com/thanks。
         </p>
 
         <h2 className="font-serif text-xl mt-8">6. 服務變更與終止</h2>

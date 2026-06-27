@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Heart, Coffee } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Heart, Coffee, Edit2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { formatDisplay } from "@/lib/titleParser";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { CommentSection } from "@/components/CommentSection";
+import { DONATE_URL } from "@/lib/donate";
 
 interface Article {
   id: string;
@@ -85,6 +87,7 @@ export const Route = createFileRoute("/article/$id")({
 function ArticleDetail() {
   const { id } = Route.useParams();
   const { user } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const [article, setArticle] = useState<Article | null>(null);
@@ -174,14 +177,24 @@ function ArticleDetail() {
             {likeCount}
           </button>
           <a
-            href="https://pay.illusd.com/products/vibecoding"
+            href={DONATE_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-sm border hairline px-4 py-2 hover:bg-accent transition"
           >
             <Coffee size={16} strokeWidth={1.5} />
-            Donate to Creator
+            {t("article.donate")}
           </a>
+          {user?.id === article.author_id && (
+            <Link
+              to="/article/$id/edit"
+              params={{ id: article.id }}
+              className="flex items-center gap-2 text-sm border hairline px-4 py-2 hover:bg-accent transition"
+            >
+              <Edit2 size={16} strokeWidth={1.5} />
+              編輯
+            </Link>
+          )}
           <span className="text-xs text-muted-foreground ml-auto">{formatDisplay(parsed)}</span>
         </div>
       </article>

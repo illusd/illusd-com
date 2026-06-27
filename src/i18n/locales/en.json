@@ -9,7 +9,7 @@
     "creator": "Creator",
     "language": "Language",
     "message": "Chat Room",
-    "donate": "Donate to Creator"
+    "donate": "Support Creator"
   },
   "home": {
     "tagline_a": "Started at age 10 —",
@@ -22,8 +22,8 @@
   },
   "article": {
     "comments": "Comments",
-    "donate": "Donate to Creator",
-    "donate_article": "Donate to this article",
+    "donate": "Support Creator",
+    "donate_article": "Support this article",
     "reply": "Reply",
     "edit": "Edit",
     "delete": "Delete",
