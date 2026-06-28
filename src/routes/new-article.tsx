@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -46,6 +47,7 @@ function NewArticle() {
   const [isFeatured, setIsFeatured] = useState(false);
   const [existingTopics, setExistingTopics] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const createArticleFn = useServerFn(createArticleAsCreator);
 
   // Persist drafts across tab visibility / navigation
   useDraftPersist("new-article:rawTitle", rawTitle, setRawTitle);
@@ -97,11 +99,7 @@ function NewArticle() {
 
     setSubmitting(true);
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-      if (!token) throw new Error(t("editor.creator_only_publish"));
-      const data = await createArticleAsCreator({
-        headers: { Authorization: `Bearer ${token}` },
+      const data = await createArticleFn({
         data: {
           rawTitle: finalRaw,
           topicTitle: topicTitle.trim(),
