@@ -16,8 +16,11 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as ShortUrlRouteImport } from './routes/short-url'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PoostRouteImport } from './routes/poost'
+import { Route as NewPoostRouteImport } from './routes/new-poost'
 import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as NewAnnouncementRouteImport } from './routes/new-announcement'
+import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as CodeRouteImport } from './routes/$code'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -71,6 +74,16 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PoostRoute = PoostRouteImport.update({
+  id: '/poost',
+  path: '/poost',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewPoostRoute = NewPoostRouteImport.update({
+  id: '/new-poost',
+  path: '/new-poost',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewArticleRoute = NewArticleRouteImport.update({
   id: '/new-article',
   path: '/new-article',
@@ -79,6 +92,11 @@ const NewArticleRoute = NewArticleRouteImport.update({
 const NewAnnouncementRoute = NewAnnouncementRouteImport.update({
   id: '/new-announcement',
   path: '/new-announcement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DonateRoute = DonateRouteImport.update({
@@ -174,8 +192,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$code': typeof CodeRoute
   '/donate': typeof DonateRoute
+  '/feedback': typeof FeedbackRoute
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
+  '/new-poost': typeof NewPoostRoute
+  '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
@@ -201,8 +222,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$code': typeof CodeRoute
   '/donate': typeof DonateRoute
+  '/feedback': typeof FeedbackRoute
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
+  '/new-poost': typeof NewPoostRoute
+  '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
@@ -230,8 +254,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/$code': typeof CodeRoute
   '/donate': typeof DonateRoute
+  '/feedback': typeof FeedbackRoute
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
+  '/new-poost': typeof NewPoostRoute
+  '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
@@ -259,8 +286,11 @@ export interface FileRouteTypes {
     | '/'
     | '/$code'
     | '/donate'
+    | '/feedback'
     | '/new-announcement'
     | '/new-article'
+    | '/new-poost'
+    | '/poost'
     | '/privacy'
     | '/short-url'
     | '/sign-up'
@@ -286,8 +316,11 @@ export interface FileRouteTypes {
     | '/'
     | '/$code'
     | '/donate'
+    | '/feedback'
     | '/new-announcement'
     | '/new-article'
+    | '/new-poost'
+    | '/poost'
     | '/privacy'
     | '/short-url'
     | '/sign-up'
@@ -314,8 +347,11 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/$code'
     | '/donate'
+    | '/feedback'
     | '/new-announcement'
     | '/new-article'
+    | '/new-poost'
+    | '/poost'
     | '/privacy'
     | '/short-url'
     | '/sign-up'
@@ -343,8 +379,11 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CodeRoute: typeof CodeRoute
   DonateRoute: typeof DonateRoute
+  FeedbackRoute: typeof FeedbackRoute
   NewAnnouncementRoute: typeof NewAnnouncementRoute
   NewArticleRoute: typeof NewArticleRoute
+  NewPoostRoute: typeof NewPoostRoute
+  PoostRoute: typeof PoostRoute
   PrivacyRoute: typeof PrivacyRoute
   ShortUrlRoute: typeof ShortUrlRoute
   SignUpRoute: typeof SignUpRoute
@@ -414,6 +453,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/poost': {
+      id: '/poost'
+      path: '/poost'
+      fullPath: '/poost'
+      preLoaderRoute: typeof PoostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-poost': {
+      id: '/new-poost'
+      path: '/new-poost'
+      fullPath: '/new-poost'
+      preLoaderRoute: typeof NewPoostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/new-article': {
       id: '/new-article'
       path: '/new-article'
@@ -426,6 +479,13 @@ declare module '@tanstack/react-router' {
       path: '/new-announcement'
       fullPath: '/new-announcement'
       preLoaderRoute: typeof NewAnnouncementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/donate': {
@@ -582,8 +642,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CodeRoute: CodeRoute,
   DonateRoute: DonateRoute,
+  FeedbackRoute: FeedbackRoute,
   NewAnnouncementRoute: NewAnnouncementRoute,
   NewArticleRoute: NewArticleRoute,
+  NewPoostRoute: NewPoostRoute,
+  PoostRoute: PoostRoute,
   PrivacyRoute: PrivacyRoute,
   ShortUrlRoute: ShortUrlRoute,
   SignUpRoute: SignUpRoute,
