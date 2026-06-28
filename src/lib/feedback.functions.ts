@@ -88,7 +88,7 @@ export const submitFeedback = createServerFn({ method: "POST" })
       email_status: "pending",
     } as any).select("id").single();
     if (error) throw new Error(error.message);
-    const row = rowRaw as { id: string };
+    const row = rowRaw as unknown as { id: string };
 
     const linksHtml = shortUrls.length
       ? `<p style="font-size:14px;line-height:1.7"><strong>圖片短網址：</strong></p><ul>${shortUrls.map((u) => `<li><a href="${u}">${u}</a></li>`).join("")}</ul>`
