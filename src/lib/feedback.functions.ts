@@ -79,7 +79,7 @@ export const submitFeedback = createServerFn({ method: "POST" })
     const senderEmail = (data.email || user.email || "").trim() || null;
     const shortUrls = (data.imageUrls ?? []).filter((u) => /^https:\/\/illusd\.com\/f\/[0-9A-Z]{5}$/.test(u));
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row, error } = await supabaseAdmin.from("feedback" as any).insert({
+    const { data: rowRaw, error } = await supabaseAdmin.from("feedback" as any).insert({
       user_id: user.id,
       email: senderEmail,
       message,
@@ -88,6 +88,7 @@ export const submitFeedback = createServerFn({ method: "POST" })
       email_status: "pending",
     } as any).select("id").single();
     if (error) throw new Error(error.message);
+    const row = rowRaw as unknown as { id: string };
 
     const linksHtml = shortUrls.length
       ? `<p style="font-size:14px;line-height:1.7"><strong>圖片短網址：</strong></p><ul>${shortUrls.map((u) => `<li><a href="${u}">${u}</a></li>`).join("")}</ul>`

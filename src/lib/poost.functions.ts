@@ -27,5 +27,5 @@ export const createPoostAsCreator = createServerFn({ method: "POST" })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
-    return { id: row.id as string };
+    return { id: (row as unknown as { id: string }).id };
   });
