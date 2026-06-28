@@ -10,6 +10,7 @@ import { parseTitle } from "@/lib/titleParser";
 import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { LegalFooterLinks } from "@/components/SiteFooter";
+import { updateArticleAsCreator } from "@/lib/articles.functions";
 
 export const Route = createFileRoute("/article/$id/edit")({
   head: () => ({
@@ -33,6 +34,7 @@ function EditArticle() {
   const [episodeTitle, setEpisodeTitle] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
   const [content, setContent] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -57,6 +59,7 @@ function EditArticle() {
       setEpisodeTitle(data.episode_title ?? "");
       setCoverUrl(data.cover_url ?? "");
       setContent(data.content ?? "");
+      setIsFeatured(Boolean((data as any).is_featured));
       setLoading(false);
     })();
   }, [id, user, isCreator, authLoading, navigate]);
@@ -80,22 +83,30 @@ function EditArticle() {
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
 
     setSubmitting(true);
-    await (supabase as any).rpc("sync_current_user_creator_profile");
-    const { error } = await supabase
-      .from("articles")
-      .update({
-        raw_title: finalRaw,
-        topic_title: topicTitle.trim(),
-        episode_num: episodeNum ? parseInt(episodeNum, 10) : null,
-        episode_title: episodeTitle.trim() || null,
-        cover_url: coverUrl.trim() || null,
-        content,
-      })
-      .eq("id", id);
-    setSubmitting(false);
-    if (error) { toast.error(error.message); return; }
-    toast.success(t("editor.updated"));
-    navigate({ to: "/article/$id", params: { id } });
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      const token = sessionData.session?.access_token;
+      if (!token) throw new Error(t("editor.creator_only_edit"));
+      await updateArticleAsCreator({
+        headers: { Authorization: `Bearer ${token}` },
+        data: {
+          id,
+          rawTitle: finalRaw,
+          topicTitle: topicTitle.trim(),
+          episodeNum: episodeNum ? parseInt(episodeNum, 10) : null,
+          episodeTitle: episodeTitle.trim() || null,
+          coverUrl: coverUrl.trim() || null,
+          content,
+          isFeatured,
+        },
+      });
+      toast.success(t("editor.updated"));
+      navigate({ to: "/article/$id", params: { id } });
+    } catch (error: any) {
+      toast.error(error?.message ?? t("common.error"));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -176,6 +187,16 @@ function EditArticle() {
           </label>
           <MarkdownEditor value={content} onChange={setContent} />
         </section>
+
+        <label className="flex items-center gap-3 border hairline p-4 text-sm cursor-pointer hover:bg-accent/40 transition">
+          <input
+            type="checkbox"
+            checked={isFeatured}
+            onChange={(event) => setIsFeatured(event.target.checked)}
+            className="size-4 accent-foreground"
+          />
+          <span>{t("editor.featured")}</span>
+        </label>
 
         <div className="flex justify-end gap-3 pt-4 border-t hairline">
           <Link to="/article/$id" params={{ id }} className="px-5 py-2 border hairline text-sm hover:bg-accent transition">
