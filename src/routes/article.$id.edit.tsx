@@ -5,13 +5,12 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
 import { X } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { parseTitle } from "@/lib/titleParser";
 import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { LegalFooterLinks } from "@/components/SiteFooter";
-import { updateArticleAsCreator } from "@/lib/articles.functions";
+import { getArticleForEdit, updateArticleAsCreator } from "@/lib/articles.functions";
 
 export const Route = createFileRoute("/article/$id/edit")({
   head: () => ({
@@ -39,6 +38,7 @@ function EditArticle() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const updateArticleFn = useServerFn(updateArticleAsCreator);
+  const getArticleFn = useServerFn(getArticleForEdit);
 
   useEffect(() => {
     if (authLoading) return;
@@ -49,22 +49,22 @@ function EditArticle() {
       return;
     }
     (async () => {
-      const { data } = await supabase
-        .from("articles")
-        .select("*")
-        .eq("id", id)
-        .maybeSingle();
-      if (!data) { toast.error(t("common.not_found")); navigate({ to: "/" }); return; }
-      setRawTitle(data.raw_title ?? "");
-      setTopicTitle(data.topic_title ?? "");
-      setEpisodeNum(data.episode_num != null ? String(data.episode_num) : "");
-      setEpisodeTitle(data.episode_title ?? "");
-      setCoverUrl(data.cover_url ?? "");
-      setContent(data.content ?? "");
-      setIsFeatured(Boolean((data as any).is_featured));
-      setLoading(false);
+      try {
+        const data = await getArticleFn({ data: { id } });
+        setRawTitle(data.raw_title ?? "");
+        setTopicTitle(data.topic_title ?? "");
+        setEpisodeNum(data.episode_num != null ? String(data.episode_num) : "");
+        setEpisodeTitle(data.episode_title ?? "");
+        setCoverUrl(data.cover_url ?? "");
+        setContent(data.content ?? "");
+        setIsFeatured(Boolean((data as any).is_featured));
+        setLoading(false);
+      } catch (error: any) {
+        toast.error(error?.message ?? t("common.not_found"));
+        navigate({ to: "/" });
+      }
     })();
-  }, [id, user, isCreator, authLoading, navigate]);
+  }, [id, user, isCreator, authLoading, navigate, getArticleFn]);
 
   useEffect(() => {
     if (!rawTitle) return;

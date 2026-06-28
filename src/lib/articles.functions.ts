@@ -25,6 +25,21 @@ export interface ArticleFormPayload {
   isFeatured?: boolean;
 }
 
+export const getArticleForEdit = createServerFn({ method: "POST" })
+  .inputValidator((data: { id: string }) => data)
+  .handler(async ({ data }) => {
+    await requireCreatorUserId();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row, error } = await supabaseAdmin
+      .from("articles")
+      .select("*")
+      .eq("id", data.id)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!row) throw new Error("找不到文章");
+    return row;
+  });
+
 export const updateArticleAsCreator = createServerFn({ method: "POST" })
   .inputValidator((data: ArticleFormPayload) => data)
   .handler(async ({ data }) => {
