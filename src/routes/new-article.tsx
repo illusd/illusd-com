@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -11,6 +12,7 @@ import { CoverUploader } from "@/components/CoverUploader";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { LegalFooterLinks } from "@/components/SiteFooter";
 import { useDraftPersist, clearDraft } from "@/hooks/useDraftPersist";
+import { createArticleAsCreator } from "@/lib/articles.functions";
 
 export const Route = createFileRoute("/new-article")({
   head: () => {
@@ -42,8 +44,10 @@ function NewArticle() {
   const [episodeTitle, setEpisodeTitle] = useState("");
   const [coverUrl, setCoverUrl] = useState("");
   const [content, setContent] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
   const [existingTopics, setExistingTopics] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
+  const createArticleFn = useServerFn(createArticleAsCreator);
 
   // Persist drafts across tab visibility / navigation
   useDraftPersist("new-article:rawTitle", rawTitle, setRawTitle);
@@ -94,22 +98,26 @@ function NewArticle() {
       `#${episodeNum || "?"} (${episodeTitle || ""})-${topicTitle}`;
 
     setSubmitting(true);
-    await (supabase as any).rpc("sync_current_user_creator_profile");
-    const { data, error } = await supabase.from("articles").insert({
-      author_id: user.id,
-      raw_title: finalRaw,
-      topic_title: topicTitle.trim(),
-      episode_num: episodeNum ? parseInt(episodeNum, 10) : null,
-      episode_title: episodeTitle.trim() || null,
-      cover_url: coverUrl.trim() || null,
-      content,
-    }).select("id").single();
-    setSubmitting(false);
-
-    if (error) { toast.error(error.message); return; }
-    clearAllDrafts();
-    toast.success(t("editor.published"));
-    navigate({ to: "/article/$id", params: { id: data!.id } });
+    try {
+      const data = await createArticleFn({
+        data: {
+          rawTitle: finalRaw,
+          topicTitle: topicTitle.trim(),
+          episodeNum: episodeNum ? parseInt(episodeNum, 10) : null,
+          episodeTitle: episodeTitle.trim() || null,
+          coverUrl: coverUrl.trim() || null,
+          content,
+          isFeatured,
+        },
+      });
+      clearAllDrafts();
+      toast.success(t("editor.published"));
+      navigate({ to: "/article/$id", params: { id: data.id } });
+    } catch (error: any) {
+      toast.error(error?.message ?? t("common.error"));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (loading || !user || !isCreator) {
@@ -203,6 +211,16 @@ function NewArticle() {
             placeholder={t("editor.content_placeholder")}
           />
         </section>
+
+        <label className="flex items-center gap-3 border hairline p-4 text-sm cursor-pointer hover:bg-accent/40 transition">
+          <input
+            type="checkbox"
+            checked={isFeatured}
+            onChange={(event) => setIsFeatured(event.target.checked)}
+            className="size-4 accent-foreground"
+          />
+          <span>{t("editor.featured")}</span>
+        </label>
 
         <div className="flex justify-end gap-3 pt-4 border-t hairline">
           <Link to="/" className="px-5 py-2 border hairline text-sm hover:bg-accent transition">

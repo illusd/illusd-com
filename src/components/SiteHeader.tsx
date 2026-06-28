@@ -44,6 +44,8 @@ export function SiteHeader() {
             <Link to="/" onClick={close} className="border-b hairline pb-3">{t("nav.home")}</Link>
             <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">{t("nav.all_articles")}</Link>
             <Link to="/short-url" onClick={close} className="border-b hairline pb-3">{t("nav.short_url")}</Link>
+            <Link to="/poost" onClick={close} className="border-b hairline pb-3">{t("nav.poost")}</Link>
+            <Link to="/feedback" onClick={close} className="border-b hairline pb-3">{t("nav.feedback")}</Link>
             {user && (
               <Link to="/my/illurl" onClick={close} className="border-b hairline pb-3">{t("nav.my_illurl")}</Link>
             )}
@@ -75,9 +77,14 @@ export function SiteHeader() {
                   )}
                 </div>
                 {isCreator && (
-                  <Link to="/new-article" onClick={close} className="border-b hairline pb-3">
-                    {t("nav.write")}
-                  </Link>
+                  <>
+                    <Link to="/new-article" onClick={close} className="border-b hairline pb-3">
+                      {t("nav.write")}
+                    </Link>
+                    <Link to="/new-poost" onClick={close} className="border-b hairline pb-3">
+                      {t("nav.new_poost")}
+                    </Link>
+                  </>
                 )}
                 <button
                   className="text-left border-b hairline pb-3"

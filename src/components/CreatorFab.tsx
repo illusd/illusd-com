@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
-import { Plus, FileText, Megaphone, X } from "lucide-react";
+import { Plus, FileText, Megaphone, X, MessageSquareText } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -37,6 +37,13 @@ export function CreatorFab() {
             className="flex items-center gap-2 bg-background border hairline px-4 py-2 text-sm shadow hover:bg-accent transition"
           >
             <Megaphone size={14} strokeWidth={1.5} /> {t("nav.new_announcement")}
+          </Link>
+          <Link
+            to="/new-poost"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 bg-background border hairline px-4 py-2 text-sm shadow hover:bg-accent transition"
+          >
+            <MessageSquareText size={14} strokeWidth={1.5} /> {t("nav.new_poost")}
           </Link>
         </div>
       )}

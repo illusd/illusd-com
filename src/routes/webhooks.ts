@@ -34,6 +34,10 @@ async function logEvent(args: {
   linksUpgraded?: number;
   filesUpgraded?: number;
   raw?: unknown;
+  verificationResult?: unknown;
+  writeResult?: unknown;
+  upgradeBefore?: unknown;
+  upgradeAfter?: unknown;
 }) {
   try {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -48,6 +52,10 @@ async function logEvent(args: {
       links_upgraded: args.linksUpgraded ?? 0,
       files_upgraded: args.filesUpgraded ?? 0,
       raw: args.raw ?? null,
+      verification_result: args.verificationResult ?? null,
+      write_result: args.writeResult ?? null,
+      upgrade_before: args.upgradeBefore ?? null,
+      upgrade_after: args.upgradeAfter ?? null,
     } as any);
   } catch (e) {
     console.warn("webhook_events log failed", e);
@@ -101,6 +109,8 @@ export const Route = createFileRoute("/webhooks")({
             email: payload.email?.toLowerCase() ?? null,
             messageId: payload.message_id ?? null,
             reason: "verification_token mismatch",
+            raw: payload,
+            verificationResult: { ok: false, reason: "verification_token mismatch", received_length: got.length, expected_length: expected.length },
           });
           return new Response("Invalid token", { status: 401 });
         }
@@ -114,6 +124,7 @@ export const Route = createFileRoute("/webhooks")({
             messageId: payload.message_id ?? null,
             reason: `Unsupported event type: ${payload.type}`,
             raw: payload,
+            verificationResult: { ok: true, token: "matched", event_type_allowed: false },
           });
           return new Response("Unsupported event type", { status: 422 });
         }
@@ -126,6 +137,7 @@ export const Route = createFileRoute("/webhooks")({
             messageId: payload.message_id ?? null,
             reason: "Missing or invalid email",
             raw: payload,
+            verificationResult: { ok: true, token: "matched", event_type_allowed: true, email_valid: false },
           });
           return new Response("Missing or invalid email", { status: 422 });
         }
@@ -141,6 +153,16 @@ export const Route = createFileRoute("/webhooks")({
           .maybeSingle();
 
         const prevTotal = Number(((existing as any)?.total_amount) ?? 0);
+        const writeResult = {
+          table: "kofi_supporters",
+          email,
+          previous_total_amount: prevTotal,
+          added_amount: amount,
+          next_total_amount: prevTotal + amount,
+          transaction_id: payload.message_id ?? null,
+          tier_name: payload.tier_name ?? null,
+          is_subscription: Boolean(payload.is_subscription_payment),
+        };
 
         const { error: upsertErr } = await supabaseAdmin.from("kofi_supporters" as any).upsert(
           {
@@ -165,6 +187,8 @@ export const Route = createFileRoute("/webhooks")({
             messageId: payload.message_id ?? null,
             reason: `kofi_supporters upsert failed: ${upsertErr.message}`,
             raw: payload,
+            verificationResult: { ok: true, token: "matched", event_type_allowed: true, email_valid: true },
+            writeResult: { ...writeResult, ok: false, error: upsertErr.message },
           });
           return new Response("DB error", { status: 500 });
         }
@@ -172,10 +196,15 @@ export const Route = createFileRoute("/webhooks")({
         // --- Upgrade matched short links / files to permanent ---
         let linksUpgraded = 0;
         let filesUpgraded = 0;
+        let upgradeBefore: unknown = { matched_user: false };
+        let upgradeAfter: unknown = { matched_user: false };
         try {
           const { data: users } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
           const match = users?.users?.find((u) => (u.email || "").toLowerCase() === email);
           if (match) {
+            const { count: linksBefore } = await supabaseAdmin.from("short_links").select("code", { count: "exact", head: true }).eq("created_by", match.id).not("expires_at", "is", null);
+            const { count: filesBefore } = await supabaseAdmin.from("short_files").select("code", { count: "exact", head: true }).eq("created_by", match.id).not("expires_at", "is", null);
+            upgradeBefore = { matched_user: true, user_id: match.id, expiring_links: linksBefore ?? 0, expiring_files: filesBefore ?? 0 };
             const { count: lc } = await supabaseAdmin
               .from("short_links")
               .update({ expires_at: null, expiry_reminder_sent_at: null } as any, { count: "exact" })
@@ -188,6 +217,9 @@ export const Route = createFileRoute("/webhooks")({
               .not("expires_at", "is", null);
             linksUpgraded = lc ?? 0;
             filesUpgraded = fc ?? 0;
+            const { count: linksAfter } = await supabaseAdmin.from("short_links").select("code", { count: "exact", head: true }).eq("created_by", match.id).not("expires_at", "is", null);
+            const { count: filesAfter } = await supabaseAdmin.from("short_files").select("code", { count: "exact", head: true }).eq("created_by", match.id).not("expires_at", "is", null);
+            upgradeAfter = { matched_user: true, user_id: match.id, expiring_links: linksAfter ?? 0, expiring_files: filesAfter ?? 0, upgraded_links: linksUpgraded, upgraded_files: filesUpgraded };
           }
         } catch (e) {
           console.warn("kofi upgrade lookup failed", e);
@@ -203,6 +235,10 @@ export const Route = createFileRoute("/webhooks")({
           linksUpgraded,
           filesUpgraded,
           raw: payload,
+          verificationResult: { ok: true, token: "matched", event_type_allowed: true, email_valid: true },
+          writeResult: { ...writeResult, ok: true },
+          upgradeBefore,
+          upgradeAfter,
         });
 
         return Response.json({ ok: true, linksUpgraded, filesUpgraded });

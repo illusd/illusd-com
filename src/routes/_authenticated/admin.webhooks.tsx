@@ -135,8 +135,8 @@ function WebhookEventsPage() {
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.id} className="border-t hairline align-top">
-                    <td className="p-2 whitespace-nowrap">{new Date(r.created_at).toLocaleString("zh-TW")}</td>
+                  <tr key={r.id} className="border-t hairline align-top hover:bg-accent/30">
+                    <td className="p-2 whitespace-nowrap"><Link to="/admin/webhooks/$id" params={{ id: r.id }} className="underline underline-offset-4">{new Date(r.created_at).toLocaleString("zh-TW")}</Link></td>
                     <td className="p-2">
                       <span className={`px-2 py-0.5 text-[10px] ${badge(r.status)}`}>{r.status}</span>
                     </td>

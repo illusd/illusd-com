@@ -50,6 +50,7 @@ export type Database = {
           episode_num: number | null
           episode_title: string | null
           id: string
+          is_featured: boolean
           raw_title: string
           topic_title: string
           updated_at: string
@@ -62,6 +63,7 @@ export type Database = {
           episode_num?: number | null
           episode_title?: string | null
           id?: string
+          is_featured?: boolean
           raw_title: string
           topic_title: string
           updated_at?: string
@@ -74,6 +76,7 @@ export type Database = {
           episode_num?: number | null
           episode_title?: string | null
           id?: string
+          is_featured?: boolean
           raw_title?: string
           topic_title?: string
           updated_at?: string
@@ -280,6 +283,39 @@ export type Database = {
         }
         Relationships: []
       }
+      feedback: {
+        Row: {
+          created_at: string
+          email: string | null
+          email_status: string
+          id: string
+          image_urls: string[]
+          message: string
+          short_urls: string[]
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          email_status?: string
+          id?: string
+          image_urls?: string[]
+          message: string
+          short_urls?: string[]
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          email_status?: string
+          id?: string
+          image_urls?: string[]
+          message?: string
+          short_urls?: string[]
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       kofi_supporters: {
         Row: {
           created_at: string
@@ -341,6 +377,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      poosts: {
+        Row: {
+          author_id: string
+          content: string
+          created_at: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          content: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -521,6 +581,10 @@ export type Database = {
           reason: string | null
           source: string
           status: string
+          upgrade_after: Json | null
+          upgrade_before: Json | null
+          verification_result: Json | null
+          write_result: Json | null
         }
         Insert: {
           created_at?: string
@@ -535,6 +599,10 @@ export type Database = {
           reason?: string | null
           source: string
           status: string
+          upgrade_after?: Json | null
+          upgrade_before?: Json | null
+          verification_result?: Json | null
+          write_result?: Json | null
         }
         Update: {
           created_at?: string
@@ -549,6 +617,10 @@ export type Database = {
           reason?: string | null
           source?: string
           status?: string
+          upgrade_after?: Json | null
+          upgrade_before?: Json | null
+          verification_result?: Json | null
+          write_result?: Json | null
         }
         Relationships: []
       }

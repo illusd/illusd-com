@@ -5,6 +5,7 @@ import i18n from "@/i18n";
 import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 import { AnnouncementMarquee } from "@/components/AnnouncementMarquee";
+import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 
 export const Route = createFileRoute("/")({
   head: () => {
@@ -31,18 +32,28 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { t } = useTranslation();
   const [articles, setArticles] = useState<ArticleCardData[]>([]);
+  const [latestPoost, setLatestPoost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    supabase
-      .from("articles")
-      .select("id, raw_title, topic_title, episode_num, episode_title, cover_url, created_at")
-      .order("created_at", { ascending: false })
-      .limit(6)
-      .then(({ data }) => {
-        setArticles((data ?? []) as ArticleCardData[]);
-        setLoading(false);
-      });
+    Promise.all([
+      supabase
+        .from("articles")
+        .select("id, raw_title, topic_title, episode_num, episode_title, cover_url, created_at")
+        .eq("is_featured" as any, true)
+        .order("created_at", { ascending: false })
+        .limit(6),
+      (supabase as any)
+        .from("poosts")
+        .select("id, content, created_at, author_id")
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]).then(([articlesRes, poostRes]) => {
+      setArticles((articlesRes.data ?? []) as ArticleCardData[]);
+      setLatestPoost(poostRes.data ?? null);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -75,6 +86,21 @@ function Index() {
         >
           {t("home.google_notice")}
         </aside>
+
+        {latestPoost && (
+          <section className="mt-6 border hairline p-5 font-sans">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <h2 className="font-serif text-lg">{t("poost.latest")}</h2>
+              <a href="/poost" className="text-[11px] tracking-widest text-muted-foreground hover:text-foreground">
+                {t("nav.poost")} →
+              </a>
+            </div>
+            <MarkdownRenderer content={latestPoost.content} />
+            <div className="mt-3 text-[10px] tracking-widest text-muted-foreground uppercase">
+              Powered by Poost.illusd.com
+            </div>
+          </section>
+        )}
       </section>
 
       <section className="mx-auto max-w-5xl px-5 pb-24">
