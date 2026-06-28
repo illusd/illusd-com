@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -37,6 +38,7 @@ function EditArticle() {
   const [isFeatured, setIsFeatured] = useState(false);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const updateArticleFn = useServerFn(updateArticleAsCreator);
 
   useEffect(() => {
     if (authLoading) return;
@@ -84,11 +86,7 @@ function EditArticle() {
 
     setSubmitting(true);
     try {
-      const { data: sessionData } = await supabase.auth.getSession();
-      const token = sessionData.session?.access_token;
-      if (!token) throw new Error(t("editor.creator_only_edit"));
-      await updateArticleAsCreator({
-        headers: { Authorization: `Bearer ${token}` },
+      await updateArticleFn({
         data: {
           id,
           rawTitle: finalRaw,
