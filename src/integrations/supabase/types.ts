@@ -50,6 +50,7 @@ export type Database = {
           episode_num: number | null
           episode_title: string | null
           id: string
+          is_featured: boolean
           raw_title: string
           topic_title: string
           updated_at: string
@@ -62,6 +63,7 @@ export type Database = {
           episode_num?: number | null
           episode_title?: string | null
           id?: string
+          is_featured?: boolean
           raw_title: string
           topic_title: string
           updated_at?: string
@@ -74,6 +76,7 @@ export type Database = {
           episode_num?: number | null
           episode_title?: string | null
           id?: string
+          is_featured?: boolean
           raw_title?: string
           topic_title?: string
           updated_at?: string
