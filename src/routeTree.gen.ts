@@ -38,7 +38,7 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 import { Route as ApiPublicPushLatestRouteImport } from './routes/api/public/push/latest'
 import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
 import { Route as ApiPublicHooksIllurlExpiryRemindersRouteImport } from './routes/api/public/hooks/illurl-expiry-reminders'
-import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin.webhooks.'
+import { Route as AuthenticatedAdminWebhooksIdRouteImport } from './routes/_authenticated/admin.webhooks.$id'
 
 const WebhooksRoute = WebhooksRouteImport.update({
   id: '/webhooks',
@@ -188,10 +188,10 @@ const ApiPublicHooksIllurlExpiryRemindersRoute =
     path: '/api/public/hooks/illurl-expiry-reminders',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthenticatedAdminWebhooksRoute =
-  AuthenticatedAdminWebhooksRouteImport.update({
-    id: '/',
-    path: '/',
+const AuthenticatedAdminWebhooksIdRoute =
+  AuthenticatedAdminWebhooksIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
     getParentRoute: () => AuthenticatedAdminWebhooksRoute,
   } as any)
 
@@ -218,7 +218,7 @@ export interface FileRoutesByFullPath {
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
-  '/admin/webhooks/': typeof AuthenticatedAdminWebhooksRoute
+  '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
@@ -246,9 +246,10 @@ export interface FileRoutesByTo {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/topic/all': typeof TopicAllRoute
+  '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
-  '/admin/webhooks': typeof AuthenticatedAdminWebhooksRoute
+  '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
@@ -281,7 +282,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
-  '/_authenticated/admin/webhooks/': typeof AuthenticatedAdminWebhooksRoute
+  '/_authenticated/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
@@ -314,7 +315,7 @@ export interface FileRouteTypes {
     | '/admin/webhooks'
     | '/my/illurl'
     | '/article/$id/edit'
-    | '/admin/webhooks/'
+    | '/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
@@ -342,9 +343,10 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/topic/all'
+    | '/admin/webhooks'
     | '/my/illurl'
     | '/article/$id/edit'
-    | '/admin/webhooks'
+    | '/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
@@ -376,7 +378,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/webhooks'
     | '/_authenticated/my/illurl'
     | '/article/$id/edit'
-    | '/_authenticated/admin/webhooks/'
+    | '/_authenticated/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/push/latest'
@@ -618,23 +620,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksIllurlExpiryRemindersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin/webhooks/': {
-      id: '/_authenticated/admin/webhooks/'
-      path: '/'
-      fullPath: '/admin/webhooks/'
-      preLoaderRoute: typeof AuthenticatedAdminWebhooksRouteImport
+    '/_authenticated/admin/webhooks/$id': {
+      id: '/_authenticated/admin/webhooks/$id'
+      path: '/$id'
+      fullPath: '/admin/webhooks/$id'
+      preLoaderRoute: typeof AuthenticatedAdminWebhooksIdRouteImport
       parentRoute: typeof AuthenticatedAdminWebhooksRoute
     }
   }
 }
 
 interface AuthenticatedAdminWebhooksRouteChildren {
-  AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRoute
+  AuthenticatedAdminWebhooksIdRoute: typeof AuthenticatedAdminWebhooksIdRoute
 }
 
 const AuthenticatedAdminWebhooksRouteChildren: AuthenticatedAdminWebhooksRouteChildren =
   {
-    AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRoute,
+    AuthenticatedAdminWebhooksIdRoute: AuthenticatedAdminWebhooksIdRoute,
   }
 
 const AuthenticatedAdminWebhooksRouteWithChildren =

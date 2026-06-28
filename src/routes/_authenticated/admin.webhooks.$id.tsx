@@ -12,7 +12,7 @@ interface DetailRow {
   raw: Jsonish; verification_result: Jsonish; write_result: Jsonish; upgrade_before: Jsonish; upgrade_after: Jsonish; created_at: string;
 }
 
-export const Route = createFileRoute("/_authenticated/admin/webhooks/")({
+export const Route = createFileRoute("/_authenticated/admin/webhooks/$id")({
   head: () => ({ meta: [{ title: "Webhook 事件詳情 · illusd.com" }, { name: "robots", content: "noindex" }] }),
   component: WebhookEventDetailPage,
 });
