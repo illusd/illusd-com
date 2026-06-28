@@ -14,7 +14,10 @@
     "new_announcement": "お知らせを投稿",
     "my_illurl": "マイ illurl",
     "webhook_events": "Webhook イベント",
-    "menu": "メニュー"
+    "menu": "メニュー",
+    "feedback": "フィードバック",
+    "poost": "Poost",
+    "new_poost": "新規 Poost"
   },
   "home": {
     "site_title": "illusd.com",
@@ -322,5 +325,25 @@
     "s9_title": "9. 連絡先",
     "contact_prefix": "ご質問は ",
     "contact_suffix": " までメールでお問い合わせください。"
+  },
+  "feedback": {
+    "title": "フィードバック",
+    "desc": "問題、提案、スクリーンショットを送信できます。内容は illusd チームへメール送信されます。",
+    "message": "内容",
+    "placeholder": "フィードバック、問題、提案を入力してください…",
+    "upload": "画像をアップロード",
+    "uploaded": "画像をアップロードし illurl 短縮リンクを作成しました",
+    "send": "送信",
+    "sending": "送信中…",
+    "sent": "フィードバックを送信しました。ありがとうございます！"
+  },
+  "poost": {
+    "latest": "最新 Poost",
+    "compose": "新規 Poost",
+    "placeholder": "短い Poost を書く…",
+    "publish": "Poost を公開",
+    "publishing": "公開中…",
+    "published": "Poost を公開しました",
+    "empty": "Poost はまだありません。"
   }
 }

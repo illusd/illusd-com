@@ -14,7 +14,10 @@
     "new_announcement": "Post Announcement",
     "my_illurl": "My illurl",
     "webhook_events": "Webhook Events",
-    "menu": "Menu"
+    "menu": "Menu",
+    "feedback": "Feedback",
+    "poost": "Poost",
+    "new_poost": "New Poost"
   },
   "home": {
     "site_title": "illusd.com",
@@ -322,5 +325,25 @@
     "s9_title": "9. Contact",
     "contact_prefix": "For questions, email ",
     "contact_suffix": "."
+  },
+  "feedback": {
+    "title": "Feedback",
+    "desc": "Tell us what happened, share suggestions, or upload screenshots. Your feedback will be emailed to the illusd team.",
+    "message": "Feedback",
+    "placeholder": "Write your feedback, issue, or suggestion…",
+    "upload": "Upload images",
+    "uploaded": "Images uploaded and illurl short links created",
+    "send": "Send feedback",
+    "sending": "Sending…",
+    "sent": "Feedback sent. Thank you!"
+  },
+  "poost": {
+    "latest": "Latest Poost",
+    "compose": "New Poost",
+    "placeholder": "Write a short Poost…",
+    "publish": "Publish Poost",
+    "publishing": "Publishing…",
+    "published": "Poost published",
+    "empty": "No Poosts yet."
   }
 }
