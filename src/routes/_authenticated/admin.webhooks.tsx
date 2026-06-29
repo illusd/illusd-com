@@ -102,7 +102,7 @@ function WebhookEventsPage() {
       <main className="mx-auto max-w-5xl px-5 py-10">
         <Link to="/" className="text-xs tracking-widest text-muted-foreground">← 回首頁</Link>
         <h1 className="font-serif text-3xl mt-4">Webhook 事件</h1>
-        <p className="text-sm text-muted-foreground mt-2">最近 100 筆 Ko-fi webhook 處理紀錄。</p>
+        <p className="text-sm text-muted-foreground mt-2">最近 100 筆 Ko-fi webhook 處理紀錄。<Link to="/webhooks/share" className="ml-2 underline underline-offset-4">Ko-fi 用戶查詢 →</Link></p>
 
         {rows && rows.length > 0 && (
           <div className="mt-4 flex gap-2">

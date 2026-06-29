@@ -30,6 +30,7 @@ import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
+import { Route as AuthenticatedWebhooksShareRouteImport } from './routes/_authenticated/webhooks.share'
 import { Route as AuthenticatedMyIllurlRouteImport } from './routes/_authenticated/my.illurl'
 import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin.webhooks'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -144,6 +145,12 @@ const ArticleIdEditRoute = ArticleIdEditRouteImport.update({
   path: '/edit',
   getParentRoute: () => ArticleIdRoute,
 } as any)
+const AuthenticatedWebhooksShareRoute =
+  AuthenticatedWebhooksShareRouteImport.update({
+    id: '/webhooks/share',
+    path: '/webhooks/share',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMyIllurlRoute = AuthenticatedMyIllurlRouteImport.update({
   id: '/my/illurl',
   path: '/my/illurl',
@@ -217,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/topic/all': typeof TopicAllRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
   '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
@@ -248,6 +256,7 @@ export interface FileRoutesByTo {
   '/topic/all': typeof TopicAllRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
   '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
@@ -281,6 +290,7 @@ export interface FileRoutesById {
   '/topic/all': typeof TopicAllRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/_authenticated/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
   '/_authenticated/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
@@ -314,6 +324,7 @@ export interface FileRouteTypes {
     | '/topic/all'
     | '/admin/webhooks'
     | '/my/illurl'
+    | '/webhooks/share'
     | '/article/$id/edit'
     | '/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
@@ -345,6 +356,7 @@ export interface FileRouteTypes {
     | '/topic/all'
     | '/admin/webhooks'
     | '/my/illurl'
+    | '/webhooks/share'
     | '/article/$id/edit'
     | '/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
@@ -377,6 +389,7 @@ export interface FileRouteTypes {
     | '/topic/all'
     | '/_authenticated/admin/webhooks'
     | '/_authenticated/my/illurl'
+    | '/_authenticated/webhooks/share'
     | '/article/$id/edit'
     | '/_authenticated/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
@@ -564,6 +577,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticleIdEditRouteImport
       parentRoute: typeof ArticleIdRoute
     }
+    '/_authenticated/webhooks/share': {
+      id: '/_authenticated/webhooks/share'
+      path: '/webhooks/share'
+      fullPath: '/webhooks/share'
+      preLoaderRoute: typeof AuthenticatedWebhooksShareRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my/illurl': {
       id: '/_authenticated/my/illurl'
       path: '/my/illurl'
@@ -648,12 +668,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMessageRoute: typeof AuthenticatedMessageRoute
   AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRouteWithChildren
   AuthenticatedMyIllurlRoute: typeof AuthenticatedMyIllurlRoute
+  AuthenticatedWebhooksShareRoute: typeof AuthenticatedWebhooksShareRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMessageRoute: AuthenticatedMessageRoute,
   AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRouteWithChildren,
   AuthenticatedMyIllurlRoute: AuthenticatedMyIllurlRoute,
+  AuthenticatedWebhooksShareRoute: AuthenticatedWebhooksShareRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
