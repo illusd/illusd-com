@@ -29,3 +29,14 @@ export const createPoostAsCreator = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { id: (row as unknown as { id: string }).id };
   });
+
+export const deletePoostAsCreator = createServerFn({ method: "POST" })
+  .inputValidator((data: { id: string }) => data)
+  .handler(async ({ data }) => {
+    await requireCreatorUserId();
+    if (!data.id) throw new Error("缺少 Poost ID");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("poosts" as any).delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
