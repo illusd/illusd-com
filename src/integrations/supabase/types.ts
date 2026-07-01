@@ -459,6 +459,77 @@ export type Database = {
         }
         Relationships: []
       }
+      rednote_films: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          film_id: string
+          id: string
+          target_url: string | null
+          title: string
+          updated_at: string
+          video_mime: string | null
+          video_path: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          film_id: string
+          id?: string
+          target_url?: string | null
+          title: string
+          updated_at?: string
+          video_mime?: string | null
+          video_path?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          film_id?: string
+          id?: string
+          target_url?: string | null
+          title?: string
+          updated_at?: string
+          video_mime?: string | null
+          video_path?: string | null
+        }
+        Relationships: []
+      }
+      rednote_open_codes: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          film_id: string
+          id: string
+          open_id: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          film_id: string
+          id?: string
+          open_id: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          film_id?: string
+          id?: string
+          open_id?: string
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rednote_open_codes_film_id_fkey"
+            columns: ["film_id"]
+            isOneToOne: false
+            referencedRelation: "rednote_films"
+            referencedColumns: ["film_id"]
+          },
+        ]
+      }
       short_files: {
         Row: {
           code: string
