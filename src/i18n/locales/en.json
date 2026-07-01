@@ -17,7 +17,11 @@
     "menu": "Menu",
     "feedback": "Feedback",
     "poost": "Poost",
-    "new_poost": "New Poost"
+    "new_poost": "New Poost",
+    "rednote_manage": "Rednote videos",
+    "section_services": "Services",
+    "section_main": "Main",
+    "section_creator": "Creator"
   },
   "home": {
     "site_title": "illusd.com",
