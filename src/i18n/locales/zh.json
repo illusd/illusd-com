@@ -17,7 +17,11 @@
     "menu": "選單",
     "feedback": "回饋",
     "poost": "Poost",
-    "new_poost": "新增 Poost"
+    "new_poost": "新增 Poost",
+    "rednote_manage": "小紅書影片管理",
+    "section_services": "服務",
+    "section_main": "主要",
+    "section_creator": "創作者專區"
   },
   "home": {
     "site_title": "illusd.com",
