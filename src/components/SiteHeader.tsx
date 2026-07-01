@@ -40,21 +40,23 @@ export function SiteHeader() {
 
       {open && (
         <div className="fixed inset-0 z-40 bg-background pt-14 animate-in fade-in duration-150 overflow-y-auto">
-          <nav className="mx-auto max-w-5xl px-5 py-10 flex flex-col gap-6 text-xl font-serif">
+          <nav className="mx-auto max-w-5xl px-5 py-8 flex flex-col gap-5 text-lg font-serif">
             <Link to="/" onClick={close} className="border-b hairline pb-3">{t("nav.home")}</Link>
-            <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">{t("nav.all_articles")}</Link>
-            <Link to="/short-url" onClick={close} className="border-b hairline pb-3">{t("nav.short_url")}</Link>
-            <Link to="/poost" onClick={close} className="border-b hairline pb-3">{t("nav.poost")}</Link>
-            <Link to="/feedback" onClick={close} className="border-b hairline pb-3">{t("nav.feedback")}</Link>
+
+            <div className="text-xs tracking-widest text-muted-foreground pt-2 font-sans">{t("nav.section_services")}</div>
             {user && (
               <Link to="/my/illurl" onClick={close} className="border-b hairline pb-3">{t("nav.my_illurl")}</Link>
             )}
+            <Link to="/feedback" onClick={close} className="border-b hairline pb-3">{t("nav.feedback")}</Link>
+
+            <div className="text-xs tracking-widest text-muted-foreground pt-2 font-sans">{t("nav.section_main")}</div>
+            <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">{t("nav.all_articles")}</Link>
+            <Link to="/short-url" onClick={close} className="border-b hairline pb-3">{t("nav.short_url")}</Link>
+            <Link to="/poost" onClick={close} className="border-b hairline pb-3">{t("nav.poost")}</Link>
             {user && (
               <Link to="/message" onClick={close} className="border-b hairline pb-3">{t("nav.message")}</Link>
             )}
-            {isCreator && (
-              <Link to="/admin/webhooks" onClick={close} className="border-b hairline pb-3 text-sm text-muted-foreground">{t("nav.webhook_events")}</Link>
-            )}
+
             <Link
               to={DONATE_PATH}
               onClick={close}
@@ -63,7 +65,17 @@ export function SiteHeader() {
               <Coffee size={18} strokeWidth={1.25} /> {t("nav.donate")}
             </Link>
 
-            <div className="border-b hairline pb-3 flex items-center justify-between text-sm font-sans">
+            {isCreator && (
+              <>
+                <div className="text-xs tracking-widest text-muted-foreground pt-2 font-sans">{t("nav.section_creator")}</div>
+                <Link to="/new-article" onClick={close} className="border-b hairline pb-3">{t("nav.write")}</Link>
+                <Link to="/new-poost" onClick={close} className="border-b hairline pb-3">{t("nav.new_poost")}</Link>
+                <Link to="/rednote/manage" onClick={close} className="border-b hairline pb-3">{t("nav.rednote_manage")}</Link>
+                <Link to="/admin/webhooks" onClick={close} className="border-b hairline pb-3 text-sm text-muted-foreground">{t("nav.webhook_events")}</Link>
+              </>
+            )}
+
+            <div className="border-b hairline pb-3 flex items-center justify-between text-sm font-sans pt-2">
               <LanguageSwitcher />
               <PushSubscribeButton />
             </div>
@@ -76,16 +88,6 @@ export function SiteHeader() {
                     <div className="text-xs mt-1">{t("nav.creator")} · {profile.creator_id}</div>
                   )}
                 </div>
-                {isCreator && (
-                  <>
-                    <Link to="/new-article" onClick={close} className="border-b hairline pb-3">
-                      {t("nav.write")}
-                    </Link>
-                    <Link to="/new-poost" onClick={close} className="border-b hairline pb-3">
-                      {t("nav.new_poost")}
-                    </Link>
-                  </>
-                )}
                 <button
                   className="text-left border-b hairline pb-3"
                   onClick={async () => {
@@ -104,6 +106,7 @@ export function SiteHeader() {
           </nav>
         </div>
       )}
+
     </>
   );
 }

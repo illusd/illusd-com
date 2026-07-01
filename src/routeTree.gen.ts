@@ -31,8 +31,10 @@ import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
 import { Route as AuthenticatedWebhooksShareRouteImport } from './routes/_authenticated/webhooks.share'
+import { Route as AuthenticatedRednoteManageRouteImport } from './routes/_authenticated/rednote.manage'
 import { Route as AuthenticatedMyIllurlRouteImport } from './routes/_authenticated/my.illurl'
 import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin.webhooks'
+import { Route as RednoteCnFilmOpenRouteImport } from './routes/rednote.cn.$film.$open'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -151,6 +153,12 @@ const AuthenticatedWebhooksShareRoute =
     path: '/webhooks/share',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedRednoteManageRoute =
+  AuthenticatedRednoteManageRouteImport.update({
+    id: '/rednote/manage',
+    path: '/rednote/manage',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMyIllurlRoute = AuthenticatedMyIllurlRouteImport.update({
   id: '/my/illurl',
   path: '/my/illurl',
@@ -162,6 +170,11 @@ const AuthenticatedAdminWebhooksRoute =
     path: '/admin/webhooks',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const RednoteCnFilmOpenRoute = RednoteCnFilmOpenRouteImport.update({
+  id: '/rednote/cn/$film/$open',
+  path: '/rednote/cn/$film/$open',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -224,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/topic/all': typeof TopicAllRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/rednote/manage': typeof AuthenticatedRednoteManageRoute
   '/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
   '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
@@ -233,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/rednote/cn/$film/$open': typeof RednoteCnFilmOpenRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -256,6 +271,7 @@ export interface FileRoutesByTo {
   '/topic/all': typeof TopicAllRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/rednote/manage': typeof AuthenticatedRednoteManageRoute
   '/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
   '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
@@ -265,6 +281,7 @@ export interface FileRoutesByTo {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/rednote/cn/$film/$open': typeof RednoteCnFilmOpenRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -290,6 +307,7 @@ export interface FileRoutesById {
   '/topic/all': typeof TopicAllRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/_authenticated/rednote/manage': typeof AuthenticatedRednoteManageRoute
   '/_authenticated/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
   '/_authenticated/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
@@ -299,6 +317,7 @@ export interface FileRoutesById {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/rednote/cn/$film/$open': typeof RednoteCnFilmOpenRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -324,6 +343,7 @@ export interface FileRouteTypes {
     | '/topic/all'
     | '/admin/webhooks'
     | '/my/illurl'
+    | '/rednote/manage'
     | '/webhooks/share'
     | '/article/$id/edit'
     | '/admin/webhooks/$id'
@@ -333,6 +353,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/rednote/cn/$film/$open'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -356,6 +377,7 @@ export interface FileRouteTypes {
     | '/topic/all'
     | '/admin/webhooks'
     | '/my/illurl'
+    | '/rednote/manage'
     | '/webhooks/share'
     | '/article/$id/edit'
     | '/admin/webhooks/$id'
@@ -365,6 +387,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/rednote/cn/$film/$open'
   id:
     | '__root__'
     | '/'
@@ -389,6 +412,7 @@ export interface FileRouteTypes {
     | '/topic/all'
     | '/_authenticated/admin/webhooks'
     | '/_authenticated/my/illurl'
+    | '/_authenticated/rednote/manage'
     | '/_authenticated/webhooks/share'
     | '/article/$id/edit'
     | '/_authenticated/admin/webhooks/$id'
@@ -398,6 +422,7 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/rednote/cn/$film/$open'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -426,6 +451,7 @@ export interface RootRouteChildren {
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
+  RednoteCnFilmOpenRoute: typeof RednoteCnFilmOpenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -584,6 +610,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWebhooksShareRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/rednote/manage': {
+      id: '/_authenticated/rednote/manage'
+      path: '/rednote/manage'
+      fullPath: '/rednote/manage'
+      preLoaderRoute: typeof AuthenticatedRednoteManageRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my/illurl': {
       id: '/_authenticated/my/illurl'
       path: '/my/illurl'
@@ -597,6 +630,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/webhooks'
       preLoaderRoute: typeof AuthenticatedAdminWebhooksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/rednote/cn/$film/$open': {
+      id: '/rednote/cn/$film/$open'
+      path: '/rednote/cn/$film/$open'
+      fullPath: '/rednote/cn/$film/$open'
+      preLoaderRoute: typeof RednoteCnFilmOpenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/queue/process': {
       id: '/lovable/email/queue/process'
@@ -668,6 +708,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMessageRoute: typeof AuthenticatedMessageRoute
   AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRouteWithChildren
   AuthenticatedMyIllurlRoute: typeof AuthenticatedMyIllurlRoute
+  AuthenticatedRednoteManageRoute: typeof AuthenticatedRednoteManageRoute
   AuthenticatedWebhooksShareRoute: typeof AuthenticatedWebhooksShareRoute
 }
 
@@ -675,6 +716,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMessageRoute: AuthenticatedMessageRoute,
   AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRouteWithChildren,
   AuthenticatedMyIllurlRoute: AuthenticatedMyIllurlRoute,
+  AuthenticatedRednoteManageRoute: AuthenticatedRednoteManageRoute,
   AuthenticatedWebhooksShareRoute: AuthenticatedWebhooksShareRoute,
 }
 
@@ -720,6 +762,7 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
+  RednoteCnFilmOpenRoute: RednoteCnFilmOpenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
