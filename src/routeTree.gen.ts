@@ -26,6 +26,7 @@ import { Route as CodeRouteImport } from './routes/$code'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
+import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
@@ -125,6 +126,11 @@ const IndexRoute = IndexRouteImport.update({
 const TopicAllRoute = TopicAllRouteImport.update({
   id: '/topic/all',
   path: '/topic/all',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Oauth2SplatRoute = Oauth2SplatRouteImport.update({
+  id: '/oauth2/$',
+  path: '/oauth2/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FCodeRoute = FCodeRouteImport.update({
@@ -234,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
+  '/oauth2/$': typeof Oauth2SplatRoute
   '/topic/all': typeof TopicAllRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
@@ -268,6 +275,7 @@ export interface FileRoutesByTo {
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
+  '/oauth2/$': typeof Oauth2SplatRoute
   '/topic/all': typeof TopicAllRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
@@ -304,6 +312,7 @@ export interface FileRoutesById {
   '/_authenticated/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
+  '/oauth2/$': typeof Oauth2SplatRoute
   '/topic/all': typeof TopicAllRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
@@ -340,6 +349,7 @@ export interface FileRouteTypes {
     | '/message'
     | '/article/$id'
     | '/f/$code'
+    | '/oauth2/$'
     | '/topic/all'
     | '/admin/webhooks'
     | '/my/illurl'
@@ -374,6 +384,7 @@ export interface FileRouteTypes {
     | '/message'
     | '/article/$id'
     | '/f/$code'
+    | '/oauth2/$'
     | '/topic/all'
     | '/admin/webhooks'
     | '/my/illurl'
@@ -409,6 +420,7 @@ export interface FileRouteTypes {
     | '/_authenticated/message'
     | '/article/$id'
     | '/f/$code'
+    | '/oauth2/$'
     | '/topic/all'
     | '/_authenticated/admin/webhooks'
     | '/_authenticated/my/illurl'
@@ -444,6 +456,7 @@ export interface RootRouteChildren {
   WebhooksRoute: typeof WebhooksRoute
   ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
+  Oauth2SplatRoute: typeof Oauth2SplatRoute
   TopicAllRoute: typeof TopicAllRoute
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
@@ -573,6 +586,13 @@ declare module '@tanstack/react-router' {
       path: '/topic/all'
       fullPath: '/topic/all'
       preLoaderRoute: typeof TopicAllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth2/$': {
+      id: '/oauth2/$'
+      path: '/oauth2/$'
+      fullPath: '/oauth2/$'
+      preLoaderRoute: typeof Oauth2SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/f/$code': {
@@ -754,6 +774,7 @@ const rootRouteChildren: RootRouteChildren = {
   WebhooksRoute: WebhooksRoute,
   ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
+  Oauth2SplatRoute: Oauth2SplatRoute,
   TopicAllRoute: TopicAllRoute,
   ApiPublicHooksIllurlExpiryRemindersRoute:
     ApiPublicHooksIllurlExpiryRemindersRoute,
