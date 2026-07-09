@@ -20,6 +20,7 @@ import { Route as PoostRouteImport } from './routes/poost'
 import { Route as NewPoostRouteImport } from './routes/new-poost'
 import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as NewAnnouncementRouteImport } from './routes/new-announcement'
+import { Route as IllurlNocaptcha15155RouteImport } from './routes/illurl-nocaptcha-15155'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as CodeRouteImport } from './routes/$code'
@@ -97,6 +98,11 @@ const NewArticleRoute = NewArticleRouteImport.update({
 const NewAnnouncementRoute = NewAnnouncementRouteImport.update({
   id: '/new-announcement',
   path: '/new-announcement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IllurlNocaptcha15155Route = IllurlNocaptcha15155RouteImport.update({
+  id: '/illurl-nocaptcha-15155',
+  path: '/illurl-nocaptcha-15155',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeedbackRoute = FeedbackRouteImport.update({
@@ -226,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/$code': typeof CodeRoute
   '/donate': typeof DonateRoute
   '/feedback': typeof FeedbackRoute
+  '/illurl-nocaptcha-15155': typeof IllurlNocaptcha15155Route
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/$code': typeof CodeRoute
   '/donate': typeof DonateRoute
   '/feedback': typeof FeedbackRoute
+  '/illurl-nocaptcha-15155': typeof IllurlNocaptcha15155Route
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
@@ -298,6 +306,7 @@ export interface FileRoutesById {
   '/$code': typeof CodeRoute
   '/donate': typeof DonateRoute
   '/feedback': typeof FeedbackRoute
+  '/illurl-nocaptcha-15155': typeof IllurlNocaptcha15155Route
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
@@ -335,6 +344,7 @@ export interface FileRouteTypes {
     | '/$code'
     | '/donate'
     | '/feedback'
+    | '/illurl-nocaptcha-15155'
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
@@ -370,6 +380,7 @@ export interface FileRouteTypes {
     | '/$code'
     | '/donate'
     | '/feedback'
+    | '/illurl-nocaptcha-15155'
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
@@ -406,6 +417,7 @@ export interface FileRouteTypes {
     | '/$code'
     | '/donate'
     | '/feedback'
+    | '/illurl-nocaptcha-15155'
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
@@ -443,6 +455,7 @@ export interface RootRouteChildren {
   CodeRoute: typeof CodeRoute
   DonateRoute: typeof DonateRoute
   FeedbackRoute: typeof FeedbackRoute
+  IllurlNocaptcha15155Route: typeof IllurlNocaptcha15155Route
   NewAnnouncementRoute: typeof NewAnnouncementRoute
   NewArticleRoute: typeof NewArticleRoute
   NewPoostRoute: typeof NewPoostRoute
@@ -544,6 +557,13 @@ declare module '@tanstack/react-router' {
       path: '/new-announcement'
       fullPath: '/new-announcement'
       preLoaderRoute: typeof NewAnnouncementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/illurl-nocaptcha-15155': {
+      id: '/illurl-nocaptcha-15155'
+      path: '/illurl-nocaptcha-15155'
+      fullPath: '/illurl-nocaptcha-15155'
+      preLoaderRoute: typeof IllurlNocaptcha15155RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/feedback': {
@@ -761,6 +781,7 @@ const rootRouteChildren: RootRouteChildren = {
   CodeRoute: CodeRoute,
   DonateRoute: DonateRoute,
   FeedbackRoute: FeedbackRoute,
+  IllurlNocaptcha15155Route: IllurlNocaptcha15155Route,
   NewAnnouncementRoute: NewAnnouncementRoute,
   NewArticleRoute: NewArticleRoute,
   NewPoostRoute: NewPoostRoute,

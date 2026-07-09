@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 import { AnnouncementMarquee } from "@/components/AnnouncementMarquee";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { getFeaturedAiSummary } from "@/lib/aiSummary.functions";
+import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/")({
   head: () => {
