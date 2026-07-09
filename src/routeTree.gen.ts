@@ -32,6 +32,7 @@ import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
+import { Route as AuthenticatedIllurlApiRouteImport } from './routes/_authenticated/illurl-api'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
@@ -45,6 +46,7 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPushLatestRouteImport } from './routes/api/public/push/latest'
+import { Route as ApiPublicIllurlShortenRouteImport } from './routes/api/public/illurl/shorten'
 import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
 import { Route as ApiPublicHooksIllurlExpiryRemindersRouteImport } from './routes/api/public/hooks/illurl-expiry-reminders'
 import { Route as AuthenticatedAdminWebhooksIdRouteImport } from './routes/_authenticated/admin.webhooks.$id'
@@ -163,6 +165,11 @@ const AuthenticatedMessageRoute = AuthenticatedMessageRouteImport.update({
   path: '/message',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIllurlApiRoute = AuthenticatedIllurlApiRouteImport.update({
+  id: '/illurl-api',
+  path: '/illurl-api',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -235,6 +242,11 @@ const ApiPublicPushLatestRoute = ApiPublicPushLatestRouteImport.update({
   path: '/api/public/push/latest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicIllurlShortenRoute = ApiPublicIllurlShortenRouteImport.update({
+  id: '/api/public/illurl/shorten',
+  path: '/api/public/illurl/shorten',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicHooksNotifyNewArticleRoute =
   ApiPublicHooksNotifyNewArticleRouteImport.update({
     id: '/api/public/hooks/notify-new-article',
@@ -274,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/webhooks': typeof WebhooksRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/illurl-api': typeof AuthenticatedIllurlApiRoute
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
@@ -288,6 +301,7 @@ export interface FileRoutesByFullPath {
   '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
+  '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -314,6 +328,7 @@ export interface FileRoutesByTo {
   '/webhooks': typeof WebhooksRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/illurl-api': typeof AuthenticatedIllurlApiRoute
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
@@ -328,6 +343,7 @@ export interface FileRoutesByTo {
   '/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
+  '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -356,6 +372,7 @@ export interface FileRoutesById {
   '/webhooks': typeof WebhooksRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/_authenticated/illurl-api': typeof AuthenticatedIllurlApiRoute
   '/_authenticated/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
@@ -370,6 +387,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/webhooks/$id': typeof AuthenticatedAdminWebhooksIdRoute
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
+  '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -398,6 +416,7 @@ export interface FileRouteTypes {
     | '/webhooks'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/illurl-api'
     | '/message'
     | '/article/$id'
     | '/f/$code'
@@ -412,6 +431,7 @@ export interface FileRouteTypes {
     | '/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
+    | '/api/public/illurl/shorten'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -438,6 +458,7 @@ export interface FileRouteTypes {
     | '/webhooks'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/illurl-api'
     | '/message'
     | '/article/$id'
     | '/f/$code'
@@ -452,6 +473,7 @@ export interface FileRouteTypes {
     | '/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
+    | '/api/public/illurl/shorten'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -479,6 +501,7 @@ export interface FileRouteTypes {
     | '/webhooks'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/_authenticated/illurl-api'
     | '/_authenticated/message'
     | '/article/$id'
     | '/f/$code'
@@ -493,6 +516,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/webhooks/$id'
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
+    | '/api/public/illurl/shorten'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -528,6 +552,7 @@ export interface RootRouteChildren {
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
+  ApiPublicIllurlShortenRoute: typeof ApiPublicIllurlShortenRoute
   ApiPublicPushLatestRoute: typeof ApiPublicPushLatestRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -698,6 +723,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMessageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/illurl-api': {
+      id: '/_authenticated/illurl-api'
+      path: '/illurl-api'
+      fullPath: '/illurl-api'
+      preLoaderRoute: typeof AuthenticatedIllurlApiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -789,6 +821,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPushLatestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/illurl/shorten': {
+      id: '/api/public/illurl/shorten'
+      path: '/api/public/illurl/shorten'
+      fullPath: '/api/public/illurl/shorten'
+      preLoaderRoute: typeof ApiPublicIllurlShortenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/notify-new-article': {
       id: '/api/public/hooks/notify-new-article'
       path: '/api/public/hooks/notify-new-article'
@@ -828,6 +867,7 @@ const AuthenticatedAdminWebhooksRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedIllurlApiRoute: typeof AuthenticatedIllurlApiRoute
   AuthenticatedMessageRoute: typeof AuthenticatedMessageRoute
   AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRouteWithChildren
   AuthenticatedMyIllurlRoute: typeof AuthenticatedMyIllurlRoute
@@ -836,6 +876,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedIllurlApiRoute: AuthenticatedIllurlApiRoute,
   AuthenticatedMessageRoute: AuthenticatedMessageRoute,
   AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRouteWithChildren,
   AuthenticatedMyIllurlRoute: AuthenticatedMyIllurlRoute,
@@ -888,6 +929,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicHooksIllurlExpiryRemindersRoute:
     ApiPublicHooksIllurlExpiryRemindersRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
+  ApiPublicIllurlShortenRoute: ApiPublicIllurlShortenRoute,
   ApiPublicPushLatestRoute: ApiPublicPushLatestRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
