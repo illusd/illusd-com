@@ -20,6 +20,7 @@ import { Route as PoostRouteImport } from './routes/poost'
 import { Route as NewPoostRouteImport } from './routes/new-poost'
 import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as NewAnnouncementRouteImport } from './routes/new-announcement'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IllurlNocaptcha15155RouteImport } from './routes/illurl-nocaptcha-15155'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as DonateRouteImport } from './routes/donate'
@@ -31,11 +32,14 @@ import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
 import { Route as AuthenticatedWebhooksShareRouteImport } from './routes/_authenticated/webhooks.share'
 import { Route as AuthenticatedRednoteManageRouteImport } from './routes/_authenticated/rednote.manage'
 import { Route as AuthenticatedMyIllurlRouteImport } from './routes/_authenticated/my.illurl'
 import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin.webhooks'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as RednoteCnFilmOpenRouteImport } from './routes/rednote.cn.$film.$open'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -100,6 +104,11 @@ const NewAnnouncementRoute = NewAnnouncementRouteImport.update({
   path: '/new-announcement',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IllurlNocaptcha15155Route = IllurlNocaptcha15155RouteImport.update({
   id: '/illurl-nocaptcha-15155',
   path: '/illurl-nocaptcha-15155',
@@ -154,6 +163,18 @@ const AuthenticatedMessageRoute = AuthenticatedMessageRouteImport.update({
   path: '/message',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ArticleIdEditRoute = ArticleIdEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -181,6 +202,12 @@ const AuthenticatedAdminWebhooksRoute =
     id: '/admin/webhooks',
     path: '/admin/webhooks',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const RednoteCnFilmOpenRoute = RednoteCnFilmOpenRouteImport.update({
   id: '/rednote/cn/$film/$open',
@@ -233,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/donate': typeof DonateRoute
   '/feedback': typeof FeedbackRoute
   '/illurl-nocaptcha-15155': typeof IllurlNocaptcha15155Route
+  '/mcp': typeof McpRoute
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
@@ -244,11 +272,14 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/thanks': typeof ThanksRoute
   '/webhooks': typeof WebhooksRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
   '/topic/all': typeof TopicAllRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/rednote/manage': typeof AuthenticatedRednoteManageRoute
@@ -269,6 +300,7 @@ export interface FileRoutesByTo {
   '/donate': typeof DonateRoute
   '/feedback': typeof FeedbackRoute
   '/illurl-nocaptcha-15155': typeof IllurlNocaptcha15155Route
+  '/mcp': typeof McpRoute
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
@@ -280,11 +312,14 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/thanks': typeof ThanksRoute
   '/webhooks': typeof WebhooksRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
   '/topic/all': typeof TopicAllRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/rednote/manage': typeof AuthenticatedRednoteManageRoute
@@ -307,6 +342,7 @@ export interface FileRoutesById {
   '/donate': typeof DonateRoute
   '/feedback': typeof FeedbackRoute
   '/illurl-nocaptcha-15155': typeof IllurlNocaptcha15155Route
+  '/mcp': typeof McpRoute
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
@@ -318,11 +354,14 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/thanks': typeof ThanksRoute
   '/webhooks': typeof WebhooksRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
   '/topic/all': typeof TopicAllRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
   '/_authenticated/rednote/manage': typeof AuthenticatedRednoteManageRoute
@@ -345,6 +384,7 @@ export interface FileRouteTypes {
     | '/donate'
     | '/feedback'
     | '/illurl-nocaptcha-15155'
+    | '/mcp'
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
@@ -356,11 +396,14 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/thanks'
     | '/webhooks'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/message'
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
     | '/topic/all'
+    | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
     | '/my/illurl'
     | '/rednote/manage'
@@ -381,6 +424,7 @@ export interface FileRouteTypes {
     | '/donate'
     | '/feedback'
     | '/illurl-nocaptcha-15155'
+    | '/mcp'
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
@@ -392,11 +436,14 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/thanks'
     | '/webhooks'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/message'
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
     | '/topic/all'
+    | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
     | '/my/illurl'
     | '/rednote/manage'
@@ -418,6 +465,7 @@ export interface FileRouteTypes {
     | '/donate'
     | '/feedback'
     | '/illurl-nocaptcha-15155'
+    | '/mcp'
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
@@ -429,11 +477,14 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/thanks'
     | '/webhooks'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/_authenticated/message'
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
     | '/topic/all'
+    | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin/webhooks'
     | '/_authenticated/my/illurl'
     | '/_authenticated/rednote/manage'
@@ -456,6 +507,7 @@ export interface RootRouteChildren {
   DonateRoute: typeof DonateRoute
   FeedbackRoute: typeof FeedbackRoute
   IllurlNocaptcha15155Route: typeof IllurlNocaptcha15155Route
+  McpRoute: typeof McpRoute
   NewAnnouncementRoute: typeof NewAnnouncementRoute
   NewArticleRoute: typeof NewArticleRoute
   NewPoostRoute: typeof NewPoostRoute
@@ -467,10 +519,13 @@ export interface RootRouteChildren {
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   ThanksRoute: typeof ThanksRoute
   WebhooksRoute: typeof WebhooksRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
   Oauth2SplatRoute: typeof Oauth2SplatRoute
   TopicAllRoute: typeof TopicAllRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
   ApiPublicPushLatestRoute: typeof ApiPublicPushLatestRoute
@@ -559,6 +614,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewAnnouncementRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/illurl-nocaptcha-15155': {
       id: '/illurl-nocaptcha-15155'
       path: '/illurl-nocaptcha-15155'
@@ -636,6 +698,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMessageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/article/$id/edit': {
       id: '/article/$id/edit'
       path: '/edit'
@@ -670,6 +746,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/webhooks'
       preLoaderRoute: typeof AuthenticatedAdminWebhooksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/rednote/cn/$film/$open': {
       id: '/rednote/cn/$film/$open'
@@ -782,6 +865,7 @@ const rootRouteChildren: RootRouteChildren = {
   DonateRoute: DonateRoute,
   FeedbackRoute: FeedbackRoute,
   IllurlNocaptcha15155Route: IllurlNocaptcha15155Route,
+  McpRoute: McpRoute,
   NewAnnouncementRoute: NewAnnouncementRoute,
   NewArticleRoute: NewArticleRoute,
   NewPoostRoute: NewPoostRoute,
@@ -793,10 +877,14 @@ const rootRouteChildren: RootRouteChildren = {
   TermsOfServiceRoute: TermsOfServiceRoute,
   ThanksRoute: ThanksRoute,
   WebhooksRoute: WebhooksRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
   Oauth2SplatRoute: Oauth2SplatRoute,
   TopicAllRoute: TopicAllRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiPublicHooksIllurlExpiryRemindersRoute:
     ApiPublicHooksIllurlExpiryRemindersRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
@@ -809,3 +897,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
