@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_cache: {
+        Row: {
+          cache_key: string
+          content: string
+          updated_at: string
+        }
+        Insert: {
+          cache_key: string
+          content: string
+          updated_at?: string
+        }
+        Update: {
+          cache_key?: string
+          content?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       announcements: {
         Row: {
           active: boolean

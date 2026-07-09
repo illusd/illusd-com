@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { ArticleCard, type ArticleCardData } from "@/components/ArticleCard";
 import { AnnouncementMarquee } from "@/components/AnnouncementMarquee";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
+import { getFeaturedAiSummary } from "@/lib/aiSummary.functions";
+import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/")({
   head: () => {
@@ -34,6 +36,8 @@ function Index() {
   const [articles, setArticles] = useState<ArticleCardData[]>([]);
   const [latestPoost, setLatestPoost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [aiSummary, setAiSummary] = useState<string>("");
+  const fetchSummary = useServerFn(getFeaturedAiSummary);
 
   useEffect(() => {
     Promise.all([
@@ -54,6 +58,7 @@ function Index() {
       setLatestPoost(poostRes.data ?? null);
       setLoading(false);
     });
+    fetchSummary().then((r) => setAiSummary(r?.content ?? "")).catch(() => {});
   }, []);
 
   return (
@@ -121,6 +126,13 @@ function Index() {
               <ArticleCard key={a.id} a={a} />
             ))}
           </div>
+        )}
+
+        {aiSummary && (
+          <aside className="mt-10 border hairline p-5 text-sm leading-relaxed font-sans">
+            <div className="text-[10px] tracking-widest text-muted-foreground uppercase mb-2">AI 摘要 · 每日更新</div>
+            <p className="text-foreground/85">{aiSummary}</p>
+          </aside>
         )}
       </section>
     </main>
