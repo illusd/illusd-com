@@ -67,10 +67,13 @@ export const Route = createFileRoute("/illurl-nocaptcha-15155")({
 function Page() {
   const run = useServerFn(nocaptchaShorten);
   const [url, setUrl] = useState("");
+  const [fileUrl, setFileUrl] = useState("");
   const [email, setEmail] = useState("");
   const [result, setResult] = useState("");
+  const [fileResult, setFileResult] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [fileBusy, setFileBusy] = useState(false);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,19 +88,46 @@ function Page() {
     }
   };
 
+  const submitFile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFileBusy(true); setErr(""); setFileResult("");
+    try {
+      const r = await run({ data: { targetUrl: fileUrl, email: email || undefined } });
+      setFileResult(`${r.url} ${r.permanent ? "(永久)" : "(1年)"}`);
+    } catch (ex) {
+      setErr((ex as Error).message);
+    } finally {
+      setFileBusy(false);
+    }
+  };
+
   return (
     <main>
       <h1>illurl (no captcha)</h1>
+
+      <h2>縮網址</h2>
       <form onSubmit={submit}>
         <p>
           <label>網址：<input type="url" required value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://example.com" /></label>
         </p>
-        <p>
-          <label>Email（會員或創作者信箱，選填，可生成永久連結）：<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></label>
-        </p>
         <p><button type="submit" disabled={busy}>{busy ? "產生中..." : "生成短網址"}</button></p>
       </form>
-      {result && <p>{result}</p>}
+      {result && <p>結果：{result}</p>}
+
+      <h2>縮檔案（貼檔案網址，不接受上傳）</h2>
+      <form onSubmit={submitFile}>
+        <p>
+          <label>檔案網址：<input type="url" required value={fileUrl} onChange={(e) => setFileUrl(e.target.value)} placeholder="https://cdn.example.com/file.pdf" /></label>
+        </p>
+        <p><button type="submit" disabled={fileBusy}>{fileBusy ? "產生中..." : "生成檔案短網址"}</button></p>
+      </form>
+      {fileResult && <p>結果：{fileResult}</p>}
+
+      <h2>Email（會員/創作者信箱，選填，可生成永久連結）</h2>
+      <p>
+        <label>Email：<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" /></label>
+      </p>
+
       {err && <p>錯誤：{err}</p>}
     </main>
   );
