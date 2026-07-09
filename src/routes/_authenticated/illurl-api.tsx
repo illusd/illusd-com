@@ -106,6 +106,23 @@ r = requests.post(
     json={"url": "https://example.com/long-path"},
 )
 print(r.json()["url"])`}</pre>
+
+        <h3 className="font-semibold mt-4">縮檔案（貼檔案網址）</h3>
+        <div className="rounded border p-3 bg-muted/30 space-y-2">
+          <div>本 API 不接受檔案上傳，只接受<b>檔案的直接下載網址</b>。把該網址放進 <code>url</code> 欄位即可，回傳格式與縮一般網址相同。</div>
+          <pre className="text-xs bg-background p-2 rounded overflow-x-auto">{`curl -X POST ${endpoint} \\
+  -H "Content-Type: application/json" \\
+  -H "X-API-Key: illurl_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \\
+  -d '{"url":"https://cdn.example.com/path/report.pdf"}'`}</pre>
+          <div>回傳：</div>
+          <pre className="text-xs bg-background p-2 rounded overflow-x-auto">{`{
+  "url": "https://illusd.com/AB12C",
+  "code": "AB12C",
+  "permanent": false,
+  "expires_at": "2027-07-09T02:18:05.000Z"
+}`}</pre>
+          <div className="text-xs text-muted-foreground">短網址會 302 轉址到你提供的檔案網址。權限規則（會員/創作者永久連結）與一般網址相同。</div>
+        </div>
       </section>
 
       {/* Keys */}
