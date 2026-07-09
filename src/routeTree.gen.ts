@@ -32,6 +32,7 @@ import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
+import { Route as AuthenticatedIllurlApiRouteImport } from './routes/_authenticated/illurl-api'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
@@ -164,6 +165,11 @@ const AuthenticatedMessageRoute = AuthenticatedMessageRouteImport.update({
   path: '/message',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIllurlApiRoute = AuthenticatedIllurlApiRouteImport.update({
+  id: '/illurl-api',
+  path: '/illurl-api',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -280,6 +286,7 @@ export interface FileRoutesByFullPath {
   '/webhooks': typeof WebhooksRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/illurl-api': typeof AuthenticatedIllurlApiRoute
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
@@ -321,6 +328,7 @@ export interface FileRoutesByTo {
   '/webhooks': typeof WebhooksRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/illurl-api': typeof AuthenticatedIllurlApiRoute
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
@@ -364,6 +372,7 @@ export interface FileRoutesById {
   '/webhooks': typeof WebhooksRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/_authenticated/illurl-api': typeof AuthenticatedIllurlApiRoute
   '/_authenticated/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
@@ -407,6 +416,7 @@ export interface FileRouteTypes {
     | '/webhooks'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/illurl-api'
     | '/message'
     | '/article/$id'
     | '/f/$code'
@@ -448,6 +458,7 @@ export interface FileRouteTypes {
     | '/webhooks'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/illurl-api'
     | '/message'
     | '/article/$id'
     | '/f/$code'
@@ -490,6 +501,7 @@ export interface FileRouteTypes {
     | '/webhooks'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/_authenticated/illurl-api'
     | '/_authenticated/message'
     | '/article/$id'
     | '/f/$code'
@@ -711,6 +723,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMessageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/illurl-api': {
+      id: '/_authenticated/illurl-api'
+      path: '/illurl-api'
+      fullPath: '/illurl-api'
+      preLoaderRoute: typeof AuthenticatedIllurlApiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -848,6 +867,7 @@ const AuthenticatedAdminWebhooksRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedIllurlApiRoute: typeof AuthenticatedIllurlApiRoute
   AuthenticatedMessageRoute: typeof AuthenticatedMessageRoute
   AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRouteWithChildren
   AuthenticatedMyIllurlRoute: typeof AuthenticatedMyIllurlRoute
@@ -856,6 +876,7 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedIllurlApiRoute: AuthenticatedIllurlApiRoute,
   AuthenticatedMessageRoute: AuthenticatedMessageRoute,
   AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRouteWithChildren,
   AuthenticatedMyIllurlRoute: AuthenticatedMyIllurlRoute,
