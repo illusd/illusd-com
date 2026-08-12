@@ -46,6 +46,7 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPushLatestRouteImport } from './routes/api/public/push/latest'
+import { Route as ApiPublicOauth2TokenRouteImport } from './routes/api/public/oauth2/token'
 import { Route as ApiPublicIllurlShortenRouteImport } from './routes/api/public/illurl/shorten'
 import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
 import { Route as ApiPublicHooksIllurlExpiryRemindersRouteImport } from './routes/api/public/hooks/illurl-expiry-reminders'
@@ -242,6 +243,11 @@ const ApiPublicPushLatestRoute = ApiPublicPushLatestRouteImport.update({
   path: '/api/public/push/latest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicOauth2TokenRoute = ApiPublicOauth2TokenRouteImport.update({
+  id: '/api/public/oauth2/token',
+  path: '/api/public/oauth2/token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicIllurlShortenRoute = ApiPublicIllurlShortenRouteImport.update({
   id: '/api/public/illurl/shorten',
   path: '/api/public/illurl/shorten',
@@ -302,6 +308,7 @@ export interface FileRoutesByFullPath {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -344,6 +351,7 @@ export interface FileRoutesByTo {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -388,6 +396,7 @@ export interface FileRoutesById {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -432,6 +441,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/token'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -474,6 +484,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/token'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -517,6 +528,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/token'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -553,6 +565,7 @@ export interface RootRouteChildren {
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
   ApiPublicIllurlShortenRoute: typeof ApiPublicIllurlShortenRoute
+  ApiPublicOauth2TokenRoute: typeof ApiPublicOauth2TokenRoute
   ApiPublicPushLatestRoute: typeof ApiPublicPushLatestRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -821,6 +834,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPushLatestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/oauth2/token': {
+      id: '/api/public/oauth2/token'
+      path: '/api/public/oauth2/token'
+      fullPath: '/api/public/oauth2/token'
+      preLoaderRoute: typeof ApiPublicOauth2TokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/illurl/shorten': {
       id: '/api/public/illurl/shorten'
       path: '/api/public/illurl/shorten'
@@ -930,6 +950,7 @@ const rootRouteChildren: RootRouteChildren = {
     ApiPublicHooksIllurlExpiryRemindersRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
   ApiPublicIllurlShortenRoute: ApiPublicIllurlShortenRoute,
+  ApiPublicOauth2TokenRoute: ApiPublicOauth2TokenRoute,
   ApiPublicPushLatestRoute: ApiPublicPushLatestRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
