@@ -28,6 +28,7 @@ import { Route as CodeRouteImport } from './routes/$code'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
+import { Route as Oauth2AuthorizeRouteImport } from './routes/oauth2.authorize'
 import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
@@ -146,6 +147,11 @@ const IndexRoute = IndexRouteImport.update({
 const TopicAllRoute = TopicAllRouteImport.update({
   id: '/topic/all',
   path: '/topic/all',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Oauth2AuthorizeRoute = Oauth2AuthorizeRouteImport.update({
+  id: '/oauth2/authorize',
+  path: '/oauth2/authorize',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Oauth2SplatRoute = Oauth2SplatRouteImport.update({
@@ -310,6 +316,7 @@ export interface FileRoutesByFullPath {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
+  '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
@@ -355,6 +362,7 @@ export interface FileRoutesByTo {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
+  '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
@@ -402,6 +410,7 @@ export interface FileRoutesById {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
+  '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
@@ -449,6 +458,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
+    | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
@@ -494,6 +504,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
+    | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
@@ -540,6 +551,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
+    | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin/webhooks'
@@ -585,6 +597,7 @@ export interface RootRouteChildren {
   ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
   Oauth2SplatRoute: typeof Oauth2SplatRoute
+  Oauth2AuthorizeRoute: typeof Oauth2AuthorizeRoute
   TopicAllRoute: typeof TopicAllRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
@@ -733,6 +746,13 @@ declare module '@tanstack/react-router' {
       path: '/topic/all'
       fullPath: '/topic/all'
       preLoaderRoute: typeof TopicAllRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/oauth2/authorize': {
+      id: '/oauth2/authorize'
+      path: '/oauth2/authorize'
+      fullPath: '/oauth2/authorize'
+      preLoaderRoute: typeof Oauth2AuthorizeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/oauth2/$': {
@@ -985,6 +1005,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
   Oauth2SplatRoute: Oauth2SplatRoute,
+  Oauth2AuthorizeRoute: Oauth2AuthorizeRoute,
   TopicAllRoute: TopicAllRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiPublicHooksIllurlExpiryRemindersRoute:
