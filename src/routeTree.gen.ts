@@ -28,6 +28,7 @@ import { Route as CodeRouteImport } from './routes/$code'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
+import { Route as Oauth2AuthorizeRouteImport } from './routes/oauth2.authorize'
 import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
@@ -46,6 +47,9 @@ import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/e
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as ApiPublicPushLatestRouteImport } from './routes/api/public/push/latest'
+import { Route as ApiPublicOauth2UserinfoRouteImport } from './routes/api/public/oauth2/userinfo'
+import { Route as ApiPublicOauth2TokenRouteImport } from './routes/api/public/oauth2/token'
+import { Route as ApiPublicOauth2DiscoveryRouteImport } from './routes/api/public/oauth2/discovery'
 import { Route as ApiPublicIllurlShortenRouteImport } from './routes/api/public/illurl/shorten'
 import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
 import { Route as ApiPublicHooksIllurlExpiryRemindersRouteImport } from './routes/api/public/hooks/illurl-expiry-reminders'
@@ -145,6 +149,11 @@ const TopicAllRoute = TopicAllRouteImport.update({
   path: '/topic/all',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Oauth2AuthorizeRoute = Oauth2AuthorizeRouteImport.update({
+  id: '/oauth2/authorize',
+  path: '/oauth2/authorize',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Oauth2SplatRoute = Oauth2SplatRouteImport.update({
   id: '/oauth2/$',
   path: '/oauth2/$',
@@ -242,6 +251,22 @@ const ApiPublicPushLatestRoute = ApiPublicPushLatestRouteImport.update({
   path: '/api/public/push/latest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicOauth2UserinfoRoute = ApiPublicOauth2UserinfoRouteImport.update({
+  id: '/api/public/oauth2/userinfo',
+  path: '/api/public/oauth2/userinfo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicOauth2TokenRoute = ApiPublicOauth2TokenRouteImport.update({
+  id: '/api/public/oauth2/token',
+  path: '/api/public/oauth2/token',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicOauth2DiscoveryRoute =
+  ApiPublicOauth2DiscoveryRouteImport.update({
+    id: '/api/public/oauth2/discovery',
+    path: '/api/public/oauth2/discovery',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicIllurlShortenRoute = ApiPublicIllurlShortenRouteImport.update({
   id: '/api/public/illurl/shorten',
   path: '/api/public/illurl/shorten',
@@ -291,6 +316,7 @@ export interface FileRoutesByFullPath {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
+  '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
@@ -302,6 +328,9 @@ export interface FileRoutesByFullPath {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/discovery': typeof ApiPublicOauth2DiscoveryRoute
+  '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
+  '/api/public/oauth2/userinfo': typeof ApiPublicOauth2UserinfoRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -333,6 +362,7 @@ export interface FileRoutesByTo {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
+  '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
@@ -344,6 +374,9 @@ export interface FileRoutesByTo {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/discovery': typeof ApiPublicOauth2DiscoveryRoute
+  '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
+  '/api/public/oauth2/userinfo': typeof ApiPublicOauth2UserinfoRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -377,6 +410,7 @@ export interface FileRoutesById {
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
   '/oauth2/$': typeof Oauth2SplatRoute
+  '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
@@ -388,6 +422,9 @@ export interface FileRoutesById {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/discovery': typeof ApiPublicOauth2DiscoveryRoute
+  '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
+  '/api/public/oauth2/userinfo': typeof ApiPublicOauth2UserinfoRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -421,6 +458,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
+    | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
@@ -432,6 +470,9 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/discovery'
+    | '/api/public/oauth2/token'
+    | '/api/public/oauth2/userinfo'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -463,6 +504,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
+    | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
@@ -474,6 +516,9 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/discovery'
+    | '/api/public/oauth2/token'
+    | '/api/public/oauth2/userinfo'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -506,6 +551,7 @@ export interface FileRouteTypes {
     | '/article/$id'
     | '/f/$code'
     | '/oauth2/$'
+    | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin/webhooks'
@@ -517,6 +563,9 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/discovery'
+    | '/api/public/oauth2/token'
+    | '/api/public/oauth2/userinfo'
     | '/api/public/push/latest'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -548,11 +597,15 @@ export interface RootRouteChildren {
   ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
   Oauth2SplatRoute: typeof Oauth2SplatRoute
+  Oauth2AuthorizeRoute: typeof Oauth2AuthorizeRoute
   TopicAllRoute: typeof TopicAllRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
   ApiPublicIllurlShortenRoute: typeof ApiPublicIllurlShortenRoute
+  ApiPublicOauth2DiscoveryRoute: typeof ApiPublicOauth2DiscoveryRoute
+  ApiPublicOauth2TokenRoute: typeof ApiPublicOauth2TokenRoute
+  ApiPublicOauth2UserinfoRoute: typeof ApiPublicOauth2UserinfoRoute
   ApiPublicPushLatestRoute: typeof ApiPublicPushLatestRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -695,6 +748,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TopicAllRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/oauth2/authorize': {
+      id: '/oauth2/authorize'
+      path: '/oauth2/authorize'
+      fullPath: '/oauth2/authorize'
+      preLoaderRoute: typeof Oauth2AuthorizeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/oauth2/$': {
       id: '/oauth2/$'
       path: '/oauth2/$'
@@ -821,6 +881,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicPushLatestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/oauth2/userinfo': {
+      id: '/api/public/oauth2/userinfo'
+      path: '/api/public/oauth2/userinfo'
+      fullPath: '/api/public/oauth2/userinfo'
+      preLoaderRoute: typeof ApiPublicOauth2UserinfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/oauth2/token': {
+      id: '/api/public/oauth2/token'
+      path: '/api/public/oauth2/token'
+      fullPath: '/api/public/oauth2/token'
+      preLoaderRoute: typeof ApiPublicOauth2TokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/oauth2/discovery': {
+      id: '/api/public/oauth2/discovery'
+      path: '/api/public/oauth2/discovery'
+      fullPath: '/api/public/oauth2/discovery'
+      preLoaderRoute: typeof ApiPublicOauth2DiscoveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/illurl/shorten': {
       id: '/api/public/illurl/shorten'
       path: '/api/public/illurl/shorten'
@@ -924,12 +1005,16 @@ const rootRouteChildren: RootRouteChildren = {
   ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
   Oauth2SplatRoute: Oauth2SplatRoute,
+  Oauth2AuthorizeRoute: Oauth2AuthorizeRoute,
   TopicAllRoute: TopicAllRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiPublicHooksIllurlExpiryRemindersRoute:
     ApiPublicHooksIllurlExpiryRemindersRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
   ApiPublicIllurlShortenRoute: ApiPublicIllurlShortenRoute,
+  ApiPublicOauth2DiscoveryRoute: ApiPublicOauth2DiscoveryRoute,
+  ApiPublicOauth2TokenRoute: ApiPublicOauth2TokenRoute,
+  ApiPublicOauth2UserinfoRoute: ApiPublicOauth2UserinfoRoute,
   ApiPublicPushLatestRoute: ApiPublicPushLatestRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
