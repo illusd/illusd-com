@@ -423,6 +423,117 @@ export type Database = {
           },
         ]
       }
+      oauth_access_tokens: {
+        Row: {
+          access_token_hash: string
+          client_id: string
+          created_at: string
+          expires_at: string
+          id: string
+          refresh_token_hash: string | null
+          revoked: boolean
+          scope: string
+          user_id: string
+        }
+        Insert: {
+          access_token_hash: string
+          client_id: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          refresh_token_hash?: string | null
+          revoked?: boolean
+          scope?: string
+          user_id: string
+        }
+        Update: {
+          access_token_hash?: string
+          client_id?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          refresh_token_hash?: string | null
+          revoked?: boolean
+          scope?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      oauth_authorization_codes: {
+        Row: {
+          client_id: string
+          code: string
+          code_challenge: string | null
+          code_challenge_method: string | null
+          created_at: string
+          expires_at: string
+          redirect_uri: string
+          scope: string
+          used: boolean
+          user_id: string
+        }
+        Insert: {
+          client_id: string
+          code: string
+          code_challenge?: string | null
+          code_challenge_method?: string | null
+          created_at?: string
+          expires_at: string
+          redirect_uri: string
+          scope?: string
+          used?: boolean
+          user_id: string
+        }
+        Update: {
+          client_id?: string
+          code?: string
+          code_challenge?: string | null
+          code_challenge_method?: string | null
+          created_at?: string
+          expires_at?: string
+          redirect_uri?: string
+          scope?: string
+          used?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
+      oauth_clients: {
+        Row: {
+          client_id: string
+          client_secret_hash: string
+          created_at: string
+          homepage_url: string
+          id: string
+          name: string
+          owner_id: string
+          redirect_uris: string[]
+          verified: boolean
+        }
+        Insert: {
+          client_id: string
+          client_secret_hash: string
+          created_at?: string
+          homepage_url: string
+          id?: string
+          name: string
+          owner_id: string
+          redirect_uris?: string[]
+          verified?: boolean
+        }
+        Update: {
+          client_id?: string
+          client_secret_hash?: string
+          created_at?: string
+          homepage_url?: string
+          id?: string
+          name?: string
+          owner_id?: string
+          redirect_uris?: string[]
+          verified?: boolean
+        }
+        Relationships: []
+      }
       poosts: {
         Row: {
           author_id: string
