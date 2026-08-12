@@ -48,6 +48,7 @@ import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/em
 import { Route as ApiPublicPushLatestRouteImport } from './routes/api/public/push/latest'
 import { Route as ApiPublicOauth2UserinfoRouteImport } from './routes/api/public/oauth2/userinfo'
 import { Route as ApiPublicOauth2TokenRouteImport } from './routes/api/public/oauth2/token'
+import { Route as ApiPublicOauth2DiscoveryRouteImport } from './routes/api/public/oauth2/discovery'
 import { Route as ApiPublicIllurlShortenRouteImport } from './routes/api/public/illurl/shorten'
 import { Route as ApiPublicHooksNotifyNewArticleRouteImport } from './routes/api/public/hooks/notify-new-article'
 import { Route as ApiPublicHooksIllurlExpiryRemindersRouteImport } from './routes/api/public/hooks/illurl-expiry-reminders'
@@ -254,6 +255,12 @@ const ApiPublicOauth2TokenRoute = ApiPublicOauth2TokenRouteImport.update({
   path: '/api/public/oauth2/token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicOauth2DiscoveryRoute =
+  ApiPublicOauth2DiscoveryRouteImport.update({
+    id: '/api/public/oauth2/discovery',
+    path: '/api/public/oauth2/discovery',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicIllurlShortenRoute = ApiPublicIllurlShortenRouteImport.update({
   id: '/api/public/illurl/shorten',
   path: '/api/public/illurl/shorten',
@@ -314,6 +321,7 @@ export interface FileRoutesByFullPath {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/discovery': typeof ApiPublicOauth2DiscoveryRoute
   '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
   '/api/public/oauth2/userinfo': typeof ApiPublicOauth2UserinfoRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
@@ -358,6 +366,7 @@ export interface FileRoutesByTo {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/discovery': typeof ApiPublicOauth2DiscoveryRoute
   '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
   '/api/public/oauth2/userinfo': typeof ApiPublicOauth2UserinfoRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
@@ -404,6 +413,7 @@ export interface FileRoutesById {
   '/api/public/hooks/illurl-expiry-reminders': typeof ApiPublicHooksIllurlExpiryRemindersRoute
   '/api/public/hooks/notify-new-article': typeof ApiPublicHooksNotifyNewArticleRoute
   '/api/public/illurl/shorten': typeof ApiPublicIllurlShortenRoute
+  '/api/public/oauth2/discovery': typeof ApiPublicOauth2DiscoveryRoute
   '/api/public/oauth2/token': typeof ApiPublicOauth2TokenRoute
   '/api/public/oauth2/userinfo': typeof ApiPublicOauth2UserinfoRoute
   '/api/public/push/latest': typeof ApiPublicPushLatestRoute
@@ -450,6 +460,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/discovery'
     | '/api/public/oauth2/token'
     | '/api/public/oauth2/userinfo'
     | '/api/public/push/latest'
@@ -494,6 +505,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/discovery'
     | '/api/public/oauth2/token'
     | '/api/public/oauth2/userinfo'
     | '/api/public/push/latest'
@@ -539,6 +551,7 @@ export interface FileRouteTypes {
     | '/api/public/hooks/illurl-expiry-reminders'
     | '/api/public/hooks/notify-new-article'
     | '/api/public/illurl/shorten'
+    | '/api/public/oauth2/discovery'
     | '/api/public/oauth2/token'
     | '/api/public/oauth2/userinfo'
     | '/api/public/push/latest'
@@ -577,6 +590,7 @@ export interface RootRouteChildren {
   ApiPublicHooksIllurlExpiryRemindersRoute: typeof ApiPublicHooksIllurlExpiryRemindersRoute
   ApiPublicHooksNotifyNewArticleRoute: typeof ApiPublicHooksNotifyNewArticleRoute
   ApiPublicIllurlShortenRoute: typeof ApiPublicIllurlShortenRoute
+  ApiPublicOauth2DiscoveryRoute: typeof ApiPublicOauth2DiscoveryRoute
   ApiPublicOauth2TokenRoute: typeof ApiPublicOauth2TokenRoute
   ApiPublicOauth2UserinfoRoute: typeof ApiPublicOauth2UserinfoRoute
   ApiPublicPushLatestRoute: typeof ApiPublicPushLatestRoute
@@ -861,6 +875,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicOauth2TokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/oauth2/discovery': {
+      id: '/api/public/oauth2/discovery'
+      path: '/api/public/oauth2/discovery'
+      fullPath: '/api/public/oauth2/discovery'
+      preLoaderRoute: typeof ApiPublicOauth2DiscoveryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/illurl/shorten': {
       id: '/api/public/illurl/shorten'
       path: '/api/public/illurl/shorten'
@@ -970,6 +991,7 @@ const rootRouteChildren: RootRouteChildren = {
     ApiPublicHooksIllurlExpiryRemindersRoute,
   ApiPublicHooksNotifyNewArticleRoute: ApiPublicHooksNotifyNewArticleRoute,
   ApiPublicIllurlShortenRoute: ApiPublicIllurlShortenRoute,
+  ApiPublicOauth2DiscoveryRoute: ApiPublicOauth2DiscoveryRoute,
   ApiPublicOauth2TokenRoute: ApiPublicOauth2TokenRoute,
   ApiPublicOauth2UserinfoRoute: ApiPublicOauth2UserinfoRoute,
   ApiPublicPushLatestRoute: ApiPublicPushLatestRoute,
