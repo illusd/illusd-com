@@ -15,6 +15,7 @@ import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as ShortUrlRouteImport } from './routes/short-url'
+import { Route as RecommendRouteImport } from './routes/recommend'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PoostRouteImport } from './routes/poost'
 import { Route as NewPoostRouteImport } from './routes/new-poost'
@@ -83,6 +84,11 @@ const SignUpRoute = SignUpRouteImport.update({
 const ShortUrlRoute = ShortUrlRouteImport.update({
   id: '/short-url',
   path: '/short-url',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecommendRoute = RecommendRouteImport.update({
+  id: '/recommend',
+  path: '/recommend',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -303,6 +309,7 @@ export interface FileRoutesByFullPath {
   '/new-poost': typeof NewPoostRoute
   '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
+  '/recommend': typeof RecommendRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -349,6 +356,7 @@ export interface FileRoutesByTo {
   '/new-poost': typeof NewPoostRoute
   '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
+  '/recommend': typeof RecommendRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -397,6 +405,7 @@ export interface FileRoutesById {
   '/new-poost': typeof NewPoostRoute
   '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
+  '/recommend': typeof RecommendRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -445,6 +454,7 @@ export interface FileRouteTypes {
     | '/new-poost'
     | '/poost'
     | '/privacy'
+    | '/recommend'
     | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
@@ -491,6 +501,7 @@ export interface FileRouteTypes {
     | '/new-poost'
     | '/poost'
     | '/privacy'
+    | '/recommend'
     | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
@@ -538,6 +549,7 @@ export interface FileRouteTypes {
     | '/new-poost'
     | '/poost'
     | '/privacy'
+    | '/recommend'
     | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
@@ -586,6 +598,7 @@ export interface RootRouteChildren {
   NewPoostRoute: typeof NewPoostRoute
   PoostRoute: typeof PoostRoute
   PrivacyRoute: typeof PrivacyRoute
+  RecommendRoute: typeof RecommendRoute
   ShortUrlRoute: typeof ShortUrlRoute
   SignUpRoute: typeof SignUpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -655,6 +668,13 @@ declare module '@tanstack/react-router' {
       path: '/short-url'
       fullPath: '/short-url'
       preLoaderRoute: typeof ShortUrlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recommend': {
+      id: '/recommend'
+      path: '/recommend'
+      fullPath: '/recommend'
+      preLoaderRoute: typeof RecommendRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -993,6 +1013,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewPoostRoute: NewPoostRoute,
   PoostRoute: PoostRoute,
   PrivacyRoute: PrivacyRoute,
+  RecommendRoute: RecommendRoute,
   ShortUrlRoute: ShortUrlRoute,
   SignUpRoute: SignUpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
