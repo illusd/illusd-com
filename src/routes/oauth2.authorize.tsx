@@ -64,15 +64,20 @@ function AuthorizePage() {
           scope: sp.get("scope") ?? undefined,
         },
       });
-      if (!("ok" in res)) {
-        setState({ phase: "error", message: res.message });
+      if (!("ok" in res) || !res.client || !res.scope) {
+        setState({
+          phase: "error",
+          message: "message" in res && res.message ? res.message : "授權請求無效",
+        });
         return;
       }
+      const client: ClientInfo = res.client;
+      const scope: string = res.scope;
       const { data } = await supabase.auth.getUser();
       if (data.user) {
-        setState({ phase: "consent", client: res.client, scope: res.scope, email: data.user.email ?? "" });
+        setState({ phase: "consent", client, scope, email: data.user.email ?? "" });
       } else {
-        setState({ phase: "auth", client: res.client, scope: res.scope });
+        setState({ phase: "auth", client, scope });
       }
     };
     void run().catch((e) => setState({ phase: "error", message: (e as Error).message }));
