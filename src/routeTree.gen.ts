@@ -15,9 +15,11 @@ import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as ShortUrlRouteImport } from './routes/short-url'
+import { Route as RecommendChar61splatRouteImport } from './routes/recommend[=]$'
 import { Route as RecommendRouteImport } from './routes/recommend'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PoostRouteImport } from './routes/poost'
+import { Route as NewRecommendRouteImport } from './routes/new-recommend'
 import { Route as NewPoostRouteImport } from './routes/new-poost'
 import { Route as NewArticleRouteImport } from './routes/new-article'
 import { Route as NewAnnouncementRouteImport } from './routes/new-announcement'
@@ -86,6 +88,11 @@ const ShortUrlRoute = ShortUrlRouteImport.update({
   path: '/short-url',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecommendChar61splatRoute = RecommendChar61splatRouteImport.update({
+  id: '/recommend=$',
+  path: '/recommend=$',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecommendRoute = RecommendRouteImport.update({
   id: '/recommend',
   path: '/recommend',
@@ -99,6 +106,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const PoostRoute = PoostRouteImport.update({
   id: '/poost',
   path: '/poost',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewRecommendRoute = NewRecommendRouteImport.update({
+  id: '/new-recommend',
+  path: '/new-recommend',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewPoostRoute = NewPoostRouteImport.update({
@@ -307,9 +319,11 @@ export interface FileRoutesByFullPath {
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
+  '/new-recommend': typeof NewRecommendRoute
   '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
   '/recommend': typeof RecommendRoute
+  '/recommend=$': typeof RecommendChar61splatRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -354,9 +368,11 @@ export interface FileRoutesByTo {
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
+  '/new-recommend': typeof NewRecommendRoute
   '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
   '/recommend': typeof RecommendRoute
+  '/recommend=$': typeof RecommendChar61splatRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -403,9 +419,11 @@ export interface FileRoutesById {
   '/new-announcement': typeof NewAnnouncementRoute
   '/new-article': typeof NewArticleRoute
   '/new-poost': typeof NewPoostRoute
+  '/new-recommend': typeof NewRecommendRoute
   '/poost': typeof PoostRoute
   '/privacy': typeof PrivacyRoute
   '/recommend': typeof RecommendRoute
+  '/recommend=$': typeof RecommendChar61splatRoute
   '/short-url': typeof ShortUrlRoute
   '/sign-up': typeof SignUpRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -452,9 +470,11 @@ export interface FileRouteTypes {
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
+    | '/new-recommend'
     | '/poost'
     | '/privacy'
     | '/recommend'
+    | '/recommend=$'
     | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
@@ -499,9 +519,11 @@ export interface FileRouteTypes {
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
+    | '/new-recommend'
     | '/poost'
     | '/privacy'
     | '/recommend'
+    | '/recommend=$'
     | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
@@ -547,9 +569,11 @@ export interface FileRouteTypes {
     | '/new-announcement'
     | '/new-article'
     | '/new-poost'
+    | '/new-recommend'
     | '/poost'
     | '/privacy'
     | '/recommend'
+    | '/recommend=$'
     | '/short-url'
     | '/sign-up'
     | '/sitemap.xml'
@@ -596,9 +620,11 @@ export interface RootRouteChildren {
   NewAnnouncementRoute: typeof NewAnnouncementRoute
   NewArticleRoute: typeof NewArticleRoute
   NewPoostRoute: typeof NewPoostRoute
+  NewRecommendRoute: typeof NewRecommendRoute
   PoostRoute: typeof PoostRoute
   PrivacyRoute: typeof PrivacyRoute
   RecommendRoute: typeof RecommendRoute
+  RecommendChar61splatRoute: typeof RecommendChar61splatRoute
   ShortUrlRoute: typeof ShortUrlRoute
   SignUpRoute: typeof SignUpRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -670,6 +696,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShortUrlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recommend=$': {
+      id: '/recommend=$'
+      path: '/recommend=$'
+      fullPath: '/recommend=$'
+      preLoaderRoute: typeof RecommendChar61splatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recommend': {
       id: '/recommend'
       path: '/recommend'
@@ -689,6 +722,13 @@ declare module '@tanstack/react-router' {
       path: '/poost'
       fullPath: '/poost'
       preLoaderRoute: typeof PoostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-recommend': {
+      id: '/new-recommend'
+      path: '/new-recommend'
+      fullPath: '/new-recommend'
+      preLoaderRoute: typeof NewRecommendRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/new-poost': {
@@ -1011,9 +1051,11 @@ const rootRouteChildren: RootRouteChildren = {
   NewAnnouncementRoute: NewAnnouncementRoute,
   NewArticleRoute: NewArticleRoute,
   NewPoostRoute: NewPoostRoute,
+  NewRecommendRoute: NewRecommendRoute,
   PoostRoute: PoostRoute,
   PrivacyRoute: PrivacyRoute,
   RecommendRoute: RecommendRoute,
+  RecommendChar61splatRoute: RecommendChar61splatRoute,
   ShortUrlRoute: ShortUrlRoute,
   SignUpRoute: SignUpRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
