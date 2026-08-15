@@ -42,6 +42,7 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as ArticleIdEditRouteImport } from './routes/article.$id.edit'
 import { Route as AuthenticatedWebhooksShareRouteImport } from './routes/_authenticated/webhooks.share'
 import { Route as AuthenticatedRednoteManageRouteImport } from './routes/_authenticated/rednote.manage'
+import { Route as AuthenticatedOauth2AppsRouteImport } from './routes/_authenticated/oauth2.apps'
 import { Route as AuthenticatedMyIllurlRouteImport } from './routes/_authenticated/my.illurl'
 import { Route as AuthenticatedAdminWebhooksRouteImport } from './routes/_authenticated/admin.webhooks'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
@@ -226,6 +227,11 @@ const AuthenticatedRednoteManageRoute =
     path: '/rednote/manage',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedOauth2AppsRoute = AuthenticatedOauth2AppsRouteImport.update({
+  id: '/oauth2/apps',
+  path: '/oauth2/apps',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMyIllurlRoute = AuthenticatedMyIllurlRouteImport.update({
   id: '/my/illurl',
   path: '/my/illurl',
@@ -342,6 +348,7 @@ export interface FileRoutesByFullPath {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/oauth2/apps': typeof AuthenticatedOauth2AppsRoute
   '/rednote/manage': typeof AuthenticatedRednoteManageRoute
   '/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
@@ -391,6 +398,7 @@ export interface FileRoutesByTo {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/oauth2/apps': typeof AuthenticatedOauth2AppsRoute
   '/rednote/manage': typeof AuthenticatedRednoteManageRoute
   '/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
@@ -442,6 +450,7 @@ export interface FileRoutesById {
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/admin/webhooks': typeof AuthenticatedAdminWebhooksRouteWithChildren
   '/_authenticated/my/illurl': typeof AuthenticatedMyIllurlRoute
+  '/_authenticated/oauth2/apps': typeof AuthenticatedOauth2AppsRoute
   '/_authenticated/rednote/manage': typeof AuthenticatedRednoteManageRoute
   '/_authenticated/webhooks/share': typeof AuthenticatedWebhooksShareRoute
   '/article/$id/edit': typeof ArticleIdEditRoute
@@ -493,6 +502,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
     | '/my/illurl'
+    | '/oauth2/apps'
     | '/rednote/manage'
     | '/webhooks/share'
     | '/article/$id/edit'
@@ -542,6 +552,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/admin/webhooks'
     | '/my/illurl'
+    | '/oauth2/apps'
     | '/rednote/manage'
     | '/webhooks/share'
     | '/article/$id/edit'
@@ -592,6 +603,7 @@ export interface FileRouteTypes {
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/admin/webhooks'
     | '/_authenticated/my/illurl'
+    | '/_authenticated/oauth2/apps'
     | '/_authenticated/rednote/manage'
     | '/_authenticated/webhooks/share'
     | '/article/$id/edit'
@@ -885,6 +897,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRednoteManageRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/oauth2/apps': {
+      id: '/_authenticated/oauth2/apps'
+      path: '/oauth2/apps'
+      fullPath: '/oauth2/apps'
+      preLoaderRoute: typeof AuthenticatedOauth2AppsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/my/illurl': {
       id: '/_authenticated/my/illurl'
       path: '/my/illurl'
@@ -1012,6 +1031,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedMessageRoute: typeof AuthenticatedMessageRoute
   AuthenticatedAdminWebhooksRoute: typeof AuthenticatedAdminWebhooksRouteWithChildren
   AuthenticatedMyIllurlRoute: typeof AuthenticatedMyIllurlRoute
+  AuthenticatedOauth2AppsRoute: typeof AuthenticatedOauth2AppsRoute
   AuthenticatedRednoteManageRoute: typeof AuthenticatedRednoteManageRoute
   AuthenticatedWebhooksShareRoute: typeof AuthenticatedWebhooksShareRoute
 }
@@ -1021,6 +1041,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedMessageRoute: AuthenticatedMessageRoute,
   AuthenticatedAdminWebhooksRoute: AuthenticatedAdminWebhooksRouteWithChildren,
   AuthenticatedMyIllurlRoute: AuthenticatedMyIllurlRoute,
+  AuthenticatedOauth2AppsRoute: AuthenticatedOauth2AppsRoute,
   AuthenticatedRednoteManageRoute: AuthenticatedRednoteManageRoute,
   AuthenticatedWebhooksShareRoute: AuthenticatedWebhooksShareRoute,
 }
