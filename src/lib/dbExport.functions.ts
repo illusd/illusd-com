@@ -72,7 +72,9 @@ export const exportTableChunk = createServerFn({ method: "POST" })
     const list = (rows ?? []) as unknown as Record<string, unknown>[];
     return {
       table: data.table,
-      rows: list,
+      // Serialized as JSON text: row shapes are dynamic and not statically serializable.
+      rowsJson: JSON.stringify(list),
+      count: list.length,
       nextOffset: list.length === PAGE_SIZE ? offset + PAGE_SIZE : null,
     };
   });
