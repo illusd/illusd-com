@@ -32,7 +32,6 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TopicAllRouteImport } from './routes/topic.all'
 import { Route as Oauth2AuthorizeRouteImport } from './routes/oauth2.authorize'
-import { Route as Oauth2SplatRouteImport } from './routes/oauth2.$'
 import { Route as FCodeRouteImport } from './routes/f.$code'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedMessageRouteImport } from './routes/_authenticated/message'
@@ -171,11 +170,6 @@ const TopicAllRoute = TopicAllRouteImport.update({
 const Oauth2AuthorizeRoute = Oauth2AuthorizeRouteImport.update({
   id: '/oauth2/authorize',
   path: '/oauth2/authorize',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Oauth2SplatRoute = Oauth2SplatRouteImport.update({
-  id: '/oauth2/$',
-  path: '/oauth2/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FCodeRoute = FCodeRouteImport.update({
@@ -342,7 +336,6 @@ export interface FileRoutesByFullPath {
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
-  '/oauth2/$': typeof Oauth2SplatRoute
   '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -392,7 +385,6 @@ export interface FileRoutesByTo {
   '/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
-  '/oauth2/$': typeof Oauth2SplatRoute
   '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -444,7 +436,6 @@ export interface FileRoutesById {
   '/_authenticated/message': typeof AuthenticatedMessageRoute
   '/article/$id': typeof ArticleIdRouteWithChildren
   '/f/$code': typeof FCodeRoute
-  '/oauth2/$': typeof Oauth2SplatRoute
   '/oauth2/authorize': typeof Oauth2AuthorizeRoute
   '/topic/all': typeof TopicAllRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -496,7 +487,6 @@ export interface FileRouteTypes {
     | '/message'
     | '/article/$id'
     | '/f/$code'
-    | '/oauth2/$'
     | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
@@ -546,7 +536,6 @@ export interface FileRouteTypes {
     | '/message'
     | '/article/$id'
     | '/f/$code'
-    | '/oauth2/$'
     | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
@@ -597,7 +586,6 @@ export interface FileRouteTypes {
     | '/_authenticated/message'
     | '/article/$id'
     | '/f/$code'
-    | '/oauth2/$'
     | '/oauth2/authorize'
     | '/topic/all'
     | '/.mcp/invoke-tool/$tool'
@@ -647,7 +635,6 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ArticleIdRoute: typeof ArticleIdRouteWithChildren
   FCodeRoute: typeof FCodeRoute
-  Oauth2SplatRoute: typeof Oauth2SplatRoute
   Oauth2AuthorizeRoute: typeof Oauth2AuthorizeRoute
   TopicAllRoute: typeof TopicAllRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
@@ -825,13 +812,6 @@ declare module '@tanstack/react-router' {
       path: '/oauth2/authorize'
       fullPath: '/oauth2/authorize'
       preLoaderRoute: typeof Oauth2AuthorizeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/oauth2/$': {
-      id: '/oauth2/$'
-      path: '/oauth2/$'
-      fullPath: '/oauth2/$'
-      preLoaderRoute: typeof Oauth2SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/f/$code': {
@@ -1088,7 +1068,6 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ArticleIdRoute: ArticleIdRouteWithChildren,
   FCodeRoute: FCodeRoute,
-  Oauth2SplatRoute: Oauth2SplatRoute,
   Oauth2AuthorizeRoute: Oauth2AuthorizeRoute,
   TopicAllRoute: TopicAllRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,

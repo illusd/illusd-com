@@ -53,6 +53,10 @@ export function SiteHeader() {
             <Link to="/topic/all" onClick={close} className="border-b hairline pb-3">{t("nav.all_articles")}</Link>
             <Link to="/short-url" onClick={close} className="border-b hairline pb-3">{t("nav.short_url")}</Link>
             <Link to="/poost" onClick={close} className="border-b hairline pb-3">{t("nav.poost")}</Link>
+            <Link to="/recommend" onClick={close} className="border-b hairline pb-3">{t("nav.recommend")}</Link>
+            {user && (
+              <Link to="/oauth2/apps" onClick={close} className="border-b hairline pb-3">{t("nav.oauth2_apps")}</Link>
+            )}
             {user && (
               <Link to="/message" onClick={close} className="border-b hairline pb-3">{t("nav.message")}</Link>
             )}
@@ -70,6 +74,7 @@ export function SiteHeader() {
                 <div className="text-xs tracking-widest text-muted-foreground pt-2 font-sans">{t("nav.section_creator")}</div>
                 <Link to="/new-article" onClick={close} className="border-b hairline pb-3">{t("nav.write")}</Link>
                 <Link to="/new-poost" onClick={close} className="border-b hairline pb-3">{t("nav.new_poost")}</Link>
+                <Link to="/new-recommend" onClick={close} className="border-b hairline pb-3">{t("nav.new_recommend")}</Link>
                 <Link to="/rednote/manage" onClick={close} className="border-b hairline pb-3">{t("nav.rednote_manage")}</Link>
                 <Link to="/admin/webhooks" onClick={close} className="border-b hairline pb-3 text-sm text-muted-foreground">{t("nav.webhook_events")}</Link>
               </>

@@ -21,7 +21,10 @@
     "rednote_manage": "小紅書影片管理",
     "section_services": "服務",
     "section_main": "主要",
-    "section_creator": "創作者專區"
+    "section_creator": "創作者專區",
+    "recommend": "Recommend 推薦",
+    "new_recommend": "新增推薦",
+    "oauth2_apps": "OAuth2 應用程式"
   },
   "home": {
     "site_title": "illusd.com",

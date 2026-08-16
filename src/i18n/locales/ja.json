@@ -21,7 +21,10 @@
     "rednote_manage": "小紅書ビデオ管理",
     "section_services": "サービス",
     "section_main": "メイン",
-    "section_creator": "クリエイター"
+    "section_creator": "クリエイター",
+    "recommend": "Recommend おすすめ",
+    "new_recommend": "おすすめを追加",
+    "oauth2_apps": "OAuth2 アプリ"
   },
   "home": {
     "site_title": "illusd.com",

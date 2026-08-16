@@ -21,7 +21,10 @@
     "rednote_manage": "Rednote videos",
     "section_services": "Services",
     "section_main": "Main",
-    "section_creator": "Creator"
+    "section_creator": "Creator",
+    "recommend": "Recommend",
+    "new_recommend": "New Recommendation",
+    "oauth2_apps": "OAuth2 Apps"
   },
   "home": {
     "site_title": "illusd.com",
