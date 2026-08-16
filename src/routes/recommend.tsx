@@ -6,6 +6,7 @@ import { ExternalLink, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { deleteRecommendationAsCreator } from "@/lib/recommend.functions";
+import { bareUrl, fullUrl } from "@/lib/recommendUrl";
 
 interface RecRow {
   id: string;
@@ -79,19 +80,19 @@ function RecommendPage() {
                 <div className="min-w-0">
                   <h2 className="font-serif text-xl">{r.name}</h2>
                   <a
-                    href={r.url}
+                    href={fullUrl(r.url)}
                     target="_blank"
                     rel="noreferrer noopener"
                     className="mt-1 inline-flex items-center gap-1 text-xs text-muted-foreground underline underline-offset-2 break-all"
                   >
-                    {r.url} <ExternalLink size={12} strokeWidth={1.5} />
+                    {bareUrl(r.url)} <ExternalLink size={12} strokeWidth={1.5} />
                   </a>
                   {r.description && (
                     <p className="mt-3 text-sm leading-relaxed whitespace-pre-wrap">{r.description}</p>
                   )}
                   <Link
                     to="/recommend=$"
-                    params={{ _splat: r.url }}
+                    params={{ _splat: bareUrl(r.url) }}
                     className="mt-3 inline-block text-[11px] tracking-widest text-muted-foreground hover:text-foreground"
                   >
                     單頁連結 →

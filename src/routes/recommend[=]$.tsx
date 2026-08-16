@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { bareUrl, fullUrl } from "@/lib/recommendUrl";
 
 interface RecRow {
   id: string;
@@ -45,7 +46,7 @@ function RecommendDetailPage() {
       setRows([]);
       return;
     }
-    const bare = url.replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+    const bare = bareUrl(url);
     (supabase as any)
       .from("recommendations")
       .select("id, name, url, description")
@@ -66,7 +67,7 @@ function RecommendDetailPage() {
         <>
           <h1 className="mt-6 font-serif text-2xl">找不到這個推薦</h1>
           <p className="mt-3 text-sm text-muted-foreground break-all">
-            網址：{target || "（未提供）"}
+            網址：{bareUrl(target) || "（未提供）"}
           </p>
           <p className="mt-3 text-sm text-muted-foreground">
             正確格式為 <code className="text-xs">/recommend=平台網址</code>。
@@ -78,12 +79,12 @@ function RecommendDetailPage() {
             <article key={r.id}>
               <h1 className="font-serif text-3xl">{r.name}</h1>
               <a
-                href={r.url}
+                href={fullUrl(r.url)}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground underline underline-offset-2 break-all"
               >
-                {r.url} <ExternalLink size={12} strokeWidth={1.5} />
+                {bareUrl(r.url)} <ExternalLink size={12} strokeWidth={1.5} />
               </a>
               {r.description && (
                 <p className="mt-6 text-sm leading-relaxed whitespace-pre-wrap">{r.description}</p>
